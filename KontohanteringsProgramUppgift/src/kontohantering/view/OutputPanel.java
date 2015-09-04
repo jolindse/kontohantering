@@ -1,16 +1,12 @@
 package kontohantering.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
 /*
@@ -25,6 +21,7 @@ public class OutputPanel extends JPanel {
 	private JTextArea txtAOutput;
 	private JScrollPane scrTxtOut;
 	private JTable tblOutput;
+	private CustomerTableModel tblModel;
 	private JScrollPane scrTblOut;
 
 	public OutputPanel() {
@@ -36,9 +33,9 @@ public class OutputPanel extends JPanel {
 
 	
 		// Init the list output for search queries
-
-		tblOutput = new JTable(null);
-		tblOutput.setPreferredSize(new Dimension(700, 520));
+		tblModel = new CustomerTableModel();
+		tblOutput = new JTable(tblModel);
+		tblOutput.setPreferredSize(new Dimension(700, 560));
 		tblOutput.setVisible(true);
 		add(tblOutput, BorderLayout.NORTH);
 		
@@ -62,5 +59,14 @@ public class OutputPanel extends JPanel {
 		scrTxtOut.setVisible(true);
 
 	}
+	
+	public void tableView(){
+		txtAOutput.setVisible(false);
+		tblOutput.setVisible(true);
+	}
 
+	public void textAreaView() {
+		txtAOutput.setVisible(true);
+		tblOutput.setVisible(false);
+	}
 }

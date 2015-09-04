@@ -2,6 +2,7 @@ package kontohantering.logic;
 
 import javax.swing.SwingUtilities;
 
+import kontohantering.view.NewCustomerFrame;
 import kontohantering.view.StandardFrame;
 
 public class Application {

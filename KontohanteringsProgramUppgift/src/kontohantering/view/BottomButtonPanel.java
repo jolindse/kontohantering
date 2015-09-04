@@ -38,15 +38,27 @@ public class BottomButtonPanel extends JPanel {
 		btnMortage.setFocusable(false);
 
 		// Set layout and add buttons to panel
+		// In order to make BoxLayout honor dim for buttons
+		// you need to set all three properties.
+		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-		Dimension buttonDim = new Dimension(250, 80);
+		Dimension buttonDim = new Dimension(120, 40);
 
 		btnDeposit.setPreferredSize(buttonDim);
 		btnWithdraw.setPreferredSize(buttonDim);
 		btnFunds.setPreferredSize(buttonDim);
 		btnMortage.setPreferredSize(buttonDim);
 
+		btnDeposit.setMaximumSize(buttonDim);
+		btnDeposit.setMinimumSize(buttonDim);
+		btnWithdraw.setMaximumSize(buttonDim);
+		btnWithdraw.setMinimumSize(buttonDim);
+		btnFunds.setMaximumSize(buttonDim);
+		btnFunds.setMinimumSize(buttonDim);
+		btnMortage.setMaximumSize(buttonDim);
+		btnMortage.setMinimumSize(buttonDim);
+		
 		add(Box.createRigidArea(new Dimension(132, 100)));
 		add(btnDeposit);
 		add(Box.createHorizontalGlue());
