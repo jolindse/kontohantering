@@ -12,8 +12,11 @@ import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import static kontohantering.view.GuiConstants.*;
 
 /* JPanel class for the side panel.
  * --------------------------------
@@ -24,46 +27,116 @@ public class SideButtonPanel extends JPanel {
 
 	private JButton btnNewCustomer;
 	private JButton btnSearchCustomer;
+	private JButton btnEditCustomer;
+	private JButton btnTerminateCustomer;
+	
+	private GridBagConstraints gc;
 
+	private String strSearch;
+	
 	public SideButtonPanel() {
 
 		// Set size
-		this.setPreferredSize(new Dimension(120, 600));
-		
+		this.setPreferredSize(new Dimension(130, 600));
+		SideButtonPanel currPanel = this;
+
 		// Init buttons set properties
 		btnNewCustomer = new JButton("Ny kund");
 		btnSearchCustomer = new JButton("Sök");
+		btnEditCustomer = new JButton("Ändra");
+		btnTerminateCustomer = new JButton("Avsluta konto");
 
-		Dimension buttonDim = new Dimension(110, 40);
-		btnNewCustomer.setPreferredSize(buttonDim);
-		btnSearchCustomer.setPreferredSize(buttonDim);
-		
+		btnNewCustomer.setPreferredSize(BUTTONDIM);
+		btnSearchCustomer.setPreferredSize(BUTTONDIM);
+		btnEditCustomer.setPreferredSize(BUTTONDIM);
+		btnTerminateCustomer.setPreferredSize(BUTTONDIM);
+
 		btnNewCustomer.setFocusable(false);
 		btnSearchCustomer.setFocusable(false);
+		btnEditCustomer.setFocusable(false);
+		btnTerminateCustomer.setFocusable(false);
 
-
-		// ActionListeners
+		// ACTIONLISTENERS
 		
+		// New customer button
 		btnNewCustomer.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				NewCustomerFrame newCustomer = new NewCustomerFrame();
-				
+
 			}
 		});
 		
-		
-		
+		// Search button
+		btnSearchCustomer.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			strSearch = (String)JOptionPane.showInputDialog(getRootPane(), "Sök på namn, personnummer\n eller kontonummer", "Sök kund", JOptionPane.PLAIN_MESSAGE, LOGOMINI, null, null);
+			}
+		});
+
 		// Set up gridbaglayout with a handler.
 		setLayout(new GridBagLayout());
-		GridBagConstraints gc = new GridBagConstraints();
+		gc = new GridBagConstraints();
 
-		/*
-		 * Place items. 
-		 * --------------------- 
-		 * Starting with first row
-		 */
+		// Set edit and terminate buttons non visible by default.
+
+		setViewMode();
+	}
+
+	public void setEditMode() {
+
+		// First row
+
+		gc.gridy = 0;
+		gc.gridx = 0;
+
+		gc.weightx = 1;
+		gc.weighty = 0;
+		gc.insets = new Insets(0, 10, 30, 0);
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.FIRST_LINE_START;
+		add(btnSearchCustomer, gc);
+
+		// Second row
+		gc.gridy++;
+		gc.gridx = 0;
+		gc.weightx = 1;
+		gc.weighty = 0;
+		gc.insets = new Insets(0, 10, 30, 0);
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.FIRST_LINE_START;
+		add(btnNewCustomer, gc);
+
+		// Third row
+		gc.gridy++;
+		gc.gridx = 0;
+		gc.weightx = 1;
+		gc.weighty = 0;
+		gc.insets = new Insets(0, 10, 30, 0);
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.FIRST_LINE_START;
+		add(btnEditCustomer, gc);
+
+		// Forth row
+		gc.gridy++;
+		gc.gridx = 0;
+		gc.weightx = 1;
+		gc.weighty = 0.1;
+		gc.insets = new Insets(0, 10, 30, 0);
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.FIRST_LINE_START;
+		add(btnTerminateCustomer, gc);
+
+		btnEditCustomer.setVisible(true);
+		btnTerminateCustomer.setVisible(true);
+	}
+
+	public void setViewMode() {
+
 		gc.gridy = 0;
 		gc.gridx = 0;
 
@@ -79,12 +152,13 @@ public class SideButtonPanel extends JPanel {
 		gc.gridx = 0;
 		gc.weightx = 1;
 		gc.weighty = 0.1;
-		gc.insets = new Insets(0,10,0,0);
+		gc.insets = new Insets(0, 10, 30, 0);
 		gc.fill = GridBagConstraints.NONE;
 		gc.anchor = GridBagConstraints.FIRST_LINE_START;
 		add(btnNewCustomer, gc);
 
+		btnEditCustomer.setVisible(false);
+		btnTerminateCustomer.setVisible(false);
 	}
 
-	
 }

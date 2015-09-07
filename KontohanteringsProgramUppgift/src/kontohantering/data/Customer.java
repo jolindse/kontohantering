@@ -6,65 +6,47 @@ package kontohantering.data;
  * 
  * Full name
  * Social security number (personnummer)
- * Account number (must be individual.
+ * Account number
+ * Account balance
  * 
  * Also hold optional information such as:
  * 
- * * Account balance
- * * Mortage
+ * * Mortgage
  * * Bonds
- * * Customer rating (calculated value dependning on the ammount of buisness in bank)
+ * * Customer rating (calculated value depending on the amount of business in bank)
  */
 
 public class Customer {
 
 	// Class counter used for generating account number
+	private static int CLEARINGNUMBER = 7777;
 	private static int numAccount = 0;
 	
 	private String name, lastName;
 	private char customerRating;
 	private int accountNumber;
-	private double accountBalance, mortage, bonds;
+	private double accountBalance;
+	private Mortgage mortgage;
+	private Bonds bonds;
 	
-	// Various constructors based on inital accountsetup
-	public Customer (String name, String lastName, int accountNumber) {
+	// Two constructors based on initial account setup
+	public Customer (String name, String lastName) {
 		this.name = name;
 		this.lastName = lastName;
-		this.accountNumber = accountNumber;
-		accountBalance = 0;
-		mortage = 0;
-		bonds = 0;
+		accountBalance = 0.0;
+		accountNumber = generateAccountNumber();
+		
 	}
 	
-	public Customer (String name, String lastName, int accountNumber, double accountBalance) {
+	public Customer (String name, String lastName, double accountBalance) {
 		this.name = name;
 		this.lastName = lastName;
-		this.accountNumber = accountNumber;
 		this.accountBalance = accountBalance;
-		mortage = 0;
-		bonds = 0;
-	}
-	
-	public Customer (String name, String lastName, int accountNumber, double accountBalance, double mortage) {
-		this.name = name;
-		this.lastName = lastName;
-		this.accountNumber = accountNumber;
-		this.accountBalance = accountBalance;
-		this.mortage = mortage;
-		bonds = 0;
-	}
-	
-	public Customer (String name, String lastName, int accountNumber, double accountBalance, double mortage, double bonds) {
-		this.name = name;
-		this.lastName = lastName;
-		this.accountNumber = accountNumber;
-		this.accountBalance = accountBalance;
-		this.mortage = mortage;
-		this.bonds = bonds;
+		accountNumber = generateAccountNumber();
 	}
 
-	// Getters and setters for the values
-	
+	// GETTERS/SETTERS
+
 	public String getName() {
 		return name;
 	}
@@ -105,24 +87,51 @@ public class Customer {
 		this.accountBalance = accountBalance;
 	}
 
-	public double getMortage() {
-		return mortage;
+	public Mortgage getMortage() {
+		return mortgage;
 	}
 
-	public void setMortage(double mortage) {
-		this.mortage = mortage;
+	public void setMortage(Mortgage mortage) {
+		this.mortgage = mortage;
 	}
 
-	public double getBonds() {
+	public Bonds getBonds() {
 		return bonds;
 	}
 
-	public void setBonds(double bonds) {
+	public void setBonds(Bonds bonds) {
 		this.bonds = bonds;
-	}
+	}	
 
-	public static int getNumAccount() {
-		return numAccount;
+	// METHODS
+	
+	private int generateAccountNumber(){
+		/*
+		 * Generate a unique 9 digits account number based on current system time and counter
+		 */
+		String strNumAccount = Integer.toString(numAccount);
+		int digitsBack = 10 - strNumAccount.length();
+		long currTime = System.currentTimeMillis();
+		String longStrNumber = String.valueOf(currTime); 
+		String generatedNumber = CLEARINGNUMBER + longStrNumber.substring(longStrNumber.length()-digitsBack,longStrNumber.length()) + numAccount;
+		return Integer.parseInt(generatedNumber);
 	}
-
+	
+	public void addFunds(double amount) {
+		/*
+		 *  Add funds to account
+		 */
+		accountBalance = accountBalance + amount;
+	}
+	
+	public boolean withdrawFunds (double amount) {
+		/*
+		 *  Withdraw funds
+		 */
+		if (accountBalance >= amount) {
+			accountBalance = accountBalance - amount;
+			return true;
+		}
+		return false;
+	}
 }

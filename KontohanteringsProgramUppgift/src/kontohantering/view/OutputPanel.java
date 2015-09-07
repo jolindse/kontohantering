@@ -27,7 +27,7 @@ public class OutputPanel extends JPanel {
 	public OutputPanel() {
 				
 		// Set size panel and add some padding
-		setPreferredSize(new Dimension(780, 600));
+		setPreferredSize(new Dimension(770, 600));
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(0, 20, 0, 20));
 

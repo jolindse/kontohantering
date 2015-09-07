@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
+import static kontohantering.view.GuiConstants.*;
 /*
  *  Class for Logo panel on top of application
  */
@@ -25,13 +25,13 @@ public class TopLogoPanel extends JPanel {
 		
 		// Logo area init and properties
 
-		ImageIcon iconLogo = new ImageIcon("img/bankLogoFull.png");
+
 		lblLogo = new JLabel();
-		lblLogo.setIcon(iconLogo);
+		lblLogo.setIcon(LOGOFULL);
 		
 		lblBankName = new JLabel("Kontohantering");
-		lblBankName.setForeground(Color.BLACK);
-		lblBankName.setFont(new Font("SanSerif", Font.BOLD,24));
+		lblBankName.setForeground(BANKBLUE);
+		lblBankName.setFont(FONTLARGE);
 		add(lblLogo, BorderLayout.LINE_START);
 		add(lblBankName, BorderLayout.EAST);
 

@@ -26,7 +26,7 @@ public class StandardFrame extends JFrame {
 	public StandardFrame() {
 
 		// Set displayed name of windows and layout
-		super("BankX kontohantering v0.05");
+		super("[b]ank kontohantering v0.07");
 		setLayout(new BorderLayout());
 		// Set native platform look And feel.
 		try {
@@ -71,12 +71,62 @@ public class StandardFrame extends JFrame {
 		// Test menu
 		
 		JMenu testMenu = new JMenu("Test");
+		JMenuItem editFrame = new JMenuItem("Visa redigerafönster");
+		JCheckBoxMenuItem editMode = new JCheckBoxMenuItem("Visa redigeringsläge");
 		JCheckBoxMenuItem tableShow = new JCheckBoxMenuItem("Visa tabellvy");
+		JCheckBoxMenuItem bottomEnabled = new JCheckBoxMenuItem("Bottenpanel aktiverad");
 		tableShow.setSelected(false);
+		
+		testMenu.add(editFrame);
+		testMenu.add(editMode);
+		testMenu.add(bottomEnabled);
 		testMenu.add(tableShow);
 		
 		menuBar.add(fileMenu);
 		menuBar.add(testMenu);
+		
+		// Actions for test menu
+		
+		
+		bottomEnabled.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JCheckBoxMenuItem chkbxBottomPanel = (JCheckBoxMenuItem) e.getSource();
+				if(chkbxBottomPanel.isSelected()){
+					bottomButtonPanel.setActive();;
+				} else {
+					bottomButtonPanel.setDisabled();
+				}
+				
+			}
+		});
+		
+		
+		editMode.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JCheckBoxMenuItem chkbxEditMode = (JCheckBoxMenuItem) e.getSource();
+				if(chkbxEditMode.isSelected()){
+					sideButtonPanel.setEditMode();
+				} else {
+					sideButtonPanel.setViewMode();
+				}
+				
+			}
+		});
+			
+			
+		
+		editFrame.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EditCustomerFrame editCustomerFrame = new EditCustomerFrame();
+				
+			}
+		});
 		
 		tableShow.addActionListener(new ActionListener() {
 			@Override

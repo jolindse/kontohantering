@@ -2,16 +2,15 @@ package kontohantering.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,6 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
+
+import static kontohantering.view.GuiConstants.*;
 
 /*
  * Add a new customer frame class
@@ -37,7 +38,9 @@ public class NewCustomerFrame extends JFrame {
 
 		if (!isActive) {
 			isActive = true;
-
+			// Add handler for close 
+			JFrame newCustomerFrame = this;
+			
 			setLayout(new BorderLayout());
 			setSize(500, 400);
 			setResizable(false);
@@ -58,10 +61,9 @@ public class NewCustomerFrame extends JFrame {
 			topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
 			topPanel.setBorder(new EmptyBorder(0, 0, 0, 20));
 			
-			
 			JLabel lblTopName = new JLabel("Ny kund");
-			lblTopName.setForeground(Color.BLACK);
-			lblTopName.setFont(new Font("SanSerif", Font.BOLD, 18));
+			lblTopName.setForeground(BANKBLUE);
+			lblTopName.setFont(FONTMEDIUM);
 			
 			topPanel.add(Box.createGlue());
 			topPanel.add(lblTopName);
@@ -71,9 +73,8 @@ public class NewCustomerFrame extends JFrame {
 			JPanel sidePanel = new JPanel();
 			sidePanel.setPreferredSize(new Dimension(76,200));
 			sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
-			ImageIcon smallLogo = new ImageIcon("img/bankLogoSymbol.png");
 			JLabel lblLogo = new JLabel();
-			lblLogo.setIcon(smallLogo);
+			lblLogo.setIcon(LOGOSMALL);
 			sidePanel.add(lblLogo);
 			
 			
@@ -90,14 +91,14 @@ public class NewCustomerFrame extends JFrame {
 			JButton btnAddCustomer = new JButton("Lägg till ny kund");
 			JButton btnCancel = new JButton("Avbryt");
 
-			Dimension btnDim = new Dimension(120, 40);
-
-			btnAddCustomer.setPreferredSize(btnDim);
-			btnAddCustomer.setMaximumSize(btnDim);
-			btnAddCustomer.setMinimumSize(btnDim);
-			btnCancel.setPreferredSize(btnDim);
-			btnCancel.setMaximumSize(btnDim);
-			btnCancel.setMinimumSize(btnDim);
+			btnAddCustomer.setPreferredSize(BUTTONDIM);
+			btnAddCustomer.setMaximumSize(BUTTONDIM);
+			btnAddCustomer.setMinimumSize(BUTTONDIM);
+			btnCancel.setPreferredSize(BUTTONDIM);
+			btnCancel.setMaximumSize(BUTTONDIM);
+			btnCancel.setMinimumSize(BUTTONDIM);
+			btnAddCustomer.setFocusable(false);
+			btnCancel.setFocusable(false);
 
 			buttonPanel.add(Box.createGlue());
 			buttonPanel.add(btnAddCustomer);
@@ -113,6 +114,18 @@ public class NewCustomerFrame extends JFrame {
 			add(buttonPanel, BorderLayout.SOUTH);
 
 			setVisible(true);
+			
+			// ACTIONLISTENERS
+			
+			btnCancel.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					newCustomerFrame.dispose();
+					
+				}
+			});
+			
 			
 			// Make sure we set isActive to false when closing window.
 			

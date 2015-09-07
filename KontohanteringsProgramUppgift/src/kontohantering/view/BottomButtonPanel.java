@@ -7,6 +7,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import static kontohantering.view.GuiConstants.*;
 
 /*
  * Class for lower button panel
@@ -43,23 +44,20 @@ public class BottomButtonPanel extends JPanel {
 		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-		Dimension buttonDim = new Dimension(120, 40);
-
-		btnDeposit.setPreferredSize(buttonDim);
-		btnWithdraw.setPreferredSize(buttonDim);
-		btnFunds.setPreferredSize(buttonDim);
-		btnMortage.setPreferredSize(buttonDim);
-
-		btnDeposit.setMaximumSize(buttonDim);
-		btnDeposit.setMinimumSize(buttonDim);
-		btnWithdraw.setMaximumSize(buttonDim);
-		btnWithdraw.setMinimumSize(buttonDim);
-		btnFunds.setMaximumSize(buttonDim);
-		btnFunds.setMinimumSize(buttonDim);
-		btnMortage.setMaximumSize(buttonDim);
-		btnMortage.setMinimumSize(buttonDim);
+		btnDeposit.setPreferredSize(BUTTONDIM);
+		btnWithdraw.setPreferredSize(BUTTONDIM);
+		btnFunds.setPreferredSize(BUTTONDIM);
+		btnMortage.setPreferredSize(BUTTONDIM);
+		btnDeposit.setMaximumSize(BUTTONDIM);
+		btnDeposit.setMinimumSize(BUTTONDIM);
+		btnWithdraw.setMaximumSize(BUTTONDIM);
+		btnWithdraw.setMinimumSize(BUTTONDIM);
+		btnFunds.setMaximumSize(BUTTONDIM);
+		btnFunds.setMinimumSize(BUTTONDIM);
+		btnMortage.setMaximumSize(BUTTONDIM);
+		btnMortage.setMinimumSize(BUTTONDIM);
 		
-		add(Box.createRigidArea(new Dimension(132, 100)));
+		add(Box.createRigidArea(new Dimension(142, 100)));
 		add(btnDeposit);
 		add(Box.createHorizontalGlue());
 		add(btnWithdraw);
@@ -69,6 +67,22 @@ public class BottomButtonPanel extends JPanel {
 		add(btnMortage);
 		add(Box.createRigidArea(new Dimension(20, 100)));
 
+		// Set disabled as start behaviour
+		setDisabled();
+	}
+	
+	public void setActive() {
+		btnDeposit.setEnabled(true);
+		btnWithdraw.setEnabled(true);
+		btnFunds.setEnabled(true);
+		btnMortage.setEnabled(true);
+	}
+	
+	public void setDisabled() {
+		btnDeposit.setEnabled(false);
+		btnWithdraw.setEnabled(false);
+		btnFunds.setEnabled(false);
+		btnMortage.setEnabled(false);
 	}
 
 }
