@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import javax.swing.SwingUtilities;
 
+import kontohantering.data.CustomerDB;
 import kontohantering.view.StandardFrame;
 
 public class Application {
@@ -41,7 +42,10 @@ public class Application {
 
 		// Initialize view
 		StandardFrame view = new StandardFrame();
-
+		// Init model
+		CustomerDB customerDB = new CustomerDB();
+		// Init controller
+		Controller controller = new Controller(view, customerDB);
 	}
 	
 }

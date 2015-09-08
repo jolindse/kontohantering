@@ -1,9 +1,12 @@
 package kontohantering.view;
 
+import static kontohantering.view.GuiConstants.BANKBLUE;
+import static kontohantering.view.GuiConstants.BUTTONDIM;
+import static kontohantering.view.GuiConstants.FONTMEDIUM;
+import static kontohantering.view.GuiConstants.LOGOSMALL;
+
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -20,8 +23,6 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import static kontohantering.view.GuiConstants.*;
-
 /*
  * Add a new customer frame class
  * ------------------------------
@@ -31,6 +32,7 @@ import static kontohantering.view.GuiConstants.*;
 public class NewCustomerFrame extends JFrame {
 
 	private static boolean isActive;
+	private IFormListener formListener;
 
 	public NewCustomerFrame() {
 
@@ -42,10 +44,13 @@ public class NewCustomerFrame extends JFrame {
 			JFrame newCustomerFrame = this;
 			
 			setLayout(new BorderLayout());
-			setSize(500, 400);
+			setSize(600, 500);
 			setResizable(false);
 			
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+			// Set formlistener
+			formListener = StandardFrame.getController();
+			
 			
 			// Set native platform look And feel.
 			try {
@@ -88,7 +93,7 @@ public class NewCustomerFrame extends JFrame {
 			buttonPanel.setPreferredSize(new Dimension(500,100));
 			buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 
-			JButton btnAddCustomer = new JButton("Lägg till ny kund");
+			JButton btnAddCustomer = new JButton("Lägg till kund");
 			JButton btnCancel = new JButton("Avbryt");
 
 			btnAddCustomer.setPreferredSize(BUTTONDIM);
@@ -116,6 +121,18 @@ public class NewCustomerFrame extends JFrame {
 			setVisible(true);
 			
 			// ACTIONLISTENERS
+			
+			btnAddCustomer.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (!inputForm.getInitialDeposit()){
+						FormEvent fevent = new FormEvent(e.getSource(), inputForm.getFirstName(), inputForm.getLastName(), inputForm.getPersNumber(), 0, "newCustomer");
+					} else {
+						FormEvent fevent = new FormEvent(e.getSource(), inputForm.getFirstName(), inputForm.getLastName(), inputForm.getPersNumber(), inputForm.getInitialDepositAmount(), "newCustomer");
+					}
+				}
+			});
 			
 			btnCancel.addActionListener(new ActionListener() {
 				

@@ -24,23 +24,25 @@ public class Customer {
 	
 	private String name, lastName;
 	private char customerRating;
-	private int accountNumber;
+	private int accountNumber, persNumber;
 	private double accountBalance;
 	private Mortgage mortgage;
 	private Bonds bonds;
 	
 	// Two constructors based on initial account setup
-	public Customer (String name, String lastName) {
+	public Customer (String name, String lastName, int persNumber) {
 		this.name = name;
 		this.lastName = lastName;
+		this.persNumber = persNumber;
 		accountBalance = 0.0;
 		accountNumber = generateAccountNumber();
 		
 	}
 	
-	public Customer (String name, String lastName, double accountBalance) {
+	public Customer (String name, String lastName, int persNumber, double accountBalance) {
 		this.name = name;
 		this.lastName = lastName;
+		this.persNumber = persNumber;
 		this.accountBalance = accountBalance;
 		accountNumber = generateAccountNumber();
 	}
@@ -61,6 +63,14 @@ public class Customer {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	
+	public void setPersNumber(int number){
+		this.persNumber = number;
+	}
+	
+	public int getPersNumber(){
+		return persNumber;
 	}
 
 	public char getCustomerRating() {

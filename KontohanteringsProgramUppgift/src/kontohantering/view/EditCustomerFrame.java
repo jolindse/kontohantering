@@ -26,7 +26,7 @@ import javax.swing.border.EmptyBorder;
  * Edit account info class
  * -----------------------
  * Small JFrame class with a couple of panels
- * and that uses the second constructor of InputForm
+ * that uses the second constructor of InputForm
  * for editing an existing account.
  */
 public class EditCustomerFrame extends JFrame {
@@ -37,7 +37,7 @@ public class EditCustomerFrame extends JFrame {
 		JFrame editFrame = this;
 
 		setLayout(new BorderLayout());
-		setSize(500, 400);
+		setSize(600, 500);
 		setResizable(false);
 
 		// Set native platform look And feel.
@@ -80,7 +80,7 @@ public class EditCustomerFrame extends JFrame {
 		buttonPanel.setPreferredSize(new Dimension(500, 100));
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 
-		JButton btnAddCustomer = new JButton("Spara ändringar");
+		JButton btnAddCustomer = new JButton("Spara");
 		JButton btnCancel = new JButton("Avbryt");
 
 		btnAddCustomer.setPreferredSize(BUTTONDIM);

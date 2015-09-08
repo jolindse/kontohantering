@@ -291,4 +291,27 @@ public class InputForm extends JPanel {
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(lblCustomerRatingValue, gc);
 	}
+	
+	public String getFirstName() {
+		return fieldName.getText();
+	}
+	
+	public String getLastName() {
+		return fieldLastName.getText();
+	}
+	
+	public int getPersNumber() {
+		String out = fieldPersNumber.getText();
+		out.replaceAll("[0-9]","");
+		System.out.println(out);
+		return Integer.parseInt(out);
+	}
+	
+	public boolean getInitialDeposit() {
+		return chkbxInitialDeposit.isSelected();
+	}
+	
+	public double getInitialDepositAmount() {
+		return Double.parseDouble(fieldInitialDeposit.getText());
+	}
 }

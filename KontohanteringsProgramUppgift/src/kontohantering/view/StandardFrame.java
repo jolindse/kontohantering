@@ -11,6 +11,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
+import kontohantering.logic.Controller;
+
 /* Mainframe class
  * ----------------
  * Set up the main JFrame thats the program hub
@@ -18,6 +20,8 @@ import javax.swing.UIManager;
 
 public class StandardFrame extends JFrame {
 
+	private static Controller controller;
+	
 	private SideButtonPanel sideButtonPanel;
 	private BottomButtonPanel bottomButtonPanel;
 	private OutputPanel outputPanel;
@@ -144,5 +148,14 @@ public class StandardFrame extends JFrame {
 		
 		return menuBar;
 	}
+	
+	// CONTROLLER GET AND SET
+	
+	public void setController(Controller controller){
+		this.controller = controller;
+	}
 
+	public static Controller getController() {
+		return controller;
+	}
 }
