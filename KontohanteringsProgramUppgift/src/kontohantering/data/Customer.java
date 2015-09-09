@@ -27,7 +27,7 @@ public class Customer {
 	private long persNumber;
 	private long accountNumber;
 	private double accountBalance;
-	private Mortgage mortgage;
+	private double mortgage;
 	private Bonds bonds;
 
 	// Two constructors based on initial account setup
@@ -38,7 +38,8 @@ public class Customer {
 		accountBalance = 0.0;
 		accountNumber = generateAccountNumber();
 		numAccount++;
-		mortgage = null;
+		mortgage = 0;
+		bonds = new Bonds(0, 0, this);
 
 	}
 
@@ -49,7 +50,8 @@ public class Customer {
 		this.accountBalance = accountBalance;
 		accountNumber = generateAccountNumber();
 		numAccount++;
-		mortgage = null;
+		mortgage = 0;
+		bonds = new Bonds(0, 0, this);
 	}
 
 	// GETTERS/SETTERS
@@ -99,15 +101,11 @@ public class Customer {
 	}
 
 	public double getMortage() {
-		if (mortgage == null) {
-			return 0;
-		} else {
-			return 0;
-		}
+		return mortgage;
 	}
 
-	public void setMortage(Mortgage mortage) {
-		this.mortgage = mortage;
+	public void setMortage(double amount) {
+		this.mortgage = amount;
 	}
 
 	public Bonds getBonds() {

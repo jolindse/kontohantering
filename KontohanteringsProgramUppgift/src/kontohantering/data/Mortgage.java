@@ -6,5 +6,9 @@ package kontohantering.data;
  * methods for mortages.
  */
 public class Mortgage {
+	private double amount;
 
+	public Mortgage (double amount){
+		this.amount = amount;
+	}
 }
