@@ -21,7 +21,7 @@ public class Customer {
 	// Class counter used for generating account number
 	private static int CLEARINGNUMBER = 7777;
 	private static int numAccount = 0;
-	
+
 	private String name, lastName;
 	private char customerRating;
 	private long persNumber;
@@ -29,25 +29,27 @@ public class Customer {
 	private double accountBalance;
 	private Mortgage mortgage;
 	private Bonds bonds;
-	
+
 	// Two constructors based on initial account setup
-	public Customer (String name, String lastName, long persNumber) {
+	public Customer(String name, String lastName, long persNumber) {
 		this.name = name;
 		this.lastName = lastName;
 		this.persNumber = persNumber;
 		accountBalance = 0.0;
 		accountNumber = generateAccountNumber();
 		numAccount++;
-		
+		mortgage = null;
+
 	}
-	
-	public Customer (String name, String lastName, long persNumber, double accountBalance) {
+
+	public Customer(String name, String lastName, long persNumber, double accountBalance) {
 		this.name = name;
 		this.lastName = lastName;
 		this.persNumber = persNumber;
 		this.accountBalance = accountBalance;
 		accountNumber = generateAccountNumber();
 		numAccount++;
+		mortgage = null;
 	}
 
 	// GETTERS/SETTERS
@@ -67,12 +69,12 @@ public class Customer {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
-	public void setPersNumber(int number){
+
+	public void setPersNumber(int number) {
 		this.persNumber = number;
 	}
-	
-	public long getPersNumber(){
+
+	public long getPersNumber() {
 		return persNumber;
 	}
 
@@ -96,8 +98,12 @@ public class Customer {
 		this.accountBalance = accountBalance;
 	}
 
-	public Mortgage getMortage() {
-		return mortgage;
+	public double getMortage() {
+		if (mortgage == null) {
+			return 0;
+		} else {
+			return 0;
+		}
 	}
 
 	public void setMortage(Mortgage mortage) {
@@ -110,33 +116,35 @@ public class Customer {
 
 	public void setBonds(Bonds bonds) {
 		this.bonds = bonds;
-	}	
+	}
 
 	// METHODS
-	
-	private long generateAccountNumber(){
+
+	private long generateAccountNumber() {
 		/*
-		 * Generate a unique 9 digits account number based on current system time and counter
+		 * Generate a unique 9 digits account number based on current system
+		 * time and counter + clearingnumber
 		 */
 		String strNumAccount = Integer.toString(numAccount);
 		int digitsBack = 10 - strNumAccount.length();
 		long currTime = System.currentTimeMillis();
-		String longStrNumber = String.valueOf(currTime); 
-		String generatedNumber = CLEARINGNUMBER + longStrNumber.substring(longStrNumber.length()-digitsBack,longStrNumber.length()) + numAccount;
-			
+		String longStrNumber = String.valueOf(currTime);
+		String generatedNumber = CLEARINGNUMBER
+				+ longStrNumber.substring(longStrNumber.length() - digitsBack, longStrNumber.length()) + numAccount;
+
 		return Long.parseLong(generatedNumber);
 	}
-	
+
 	public void addFunds(double amount) {
 		/*
-		 *  Add funds to account
+		 * Add funds to account
 		 */
 		accountBalance = accountBalance + amount;
 	}
-	
-	public boolean withdrawFunds (double amount) {
+
+	public boolean withdrawFunds(double amount) {
 		/*
-		 *  Withdraw funds
+		 * Withdraw funds
 		 */
 		if (accountBalance >= amount) {
 			accountBalance = accountBalance - amount;
@@ -147,9 +155,9 @@ public class Customer {
 
 	@Override
 	public String toString() {
-		String strReturn = name + " " + lastName + "\nPersonnummer: "+persNumber+"\nKontonummer: "+accountNumber+"\nSaldo: "+accountBalance;
+		String strReturn = name + " " + lastName + "\nPersonnummer: " + persNumber + "\nKontonummer: " + accountNumber
+				+ "\nSaldo: " + accountBalance;
 		return strReturn;
 	}
-	
-	
+
 }
