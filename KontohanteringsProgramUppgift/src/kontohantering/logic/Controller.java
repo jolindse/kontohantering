@@ -21,13 +21,19 @@ public class Controller implements IFormListener{
 
 	}
 
+	
+	public String outputDB (){
+		return customerDB.outputDB();
+	}
+	
+	// EVENTOCCURED
+	
 	@Override
 	public void formEventOccured(FormEvent e) {
 		switch(e.getFormType()) {
 		case "newCustomer":
 			currCustomer = new Customer(e.getFirstName(), e.getLastName(), e.getPersNumber(), e.getDepositAmount());
 			customerDB.addToDB(currCustomer);
-			System.out.println(currCustomer);
 			break;
 		}
 		

@@ -15,14 +15,14 @@ public class FormEvent extends EventObject {
 	private String formType;
 	private String firstName;
 	private String lastName;
-	private int persNumber;
+	private long persNumber;
 	private boolean initialDeposit;
 	private double depositAmount;
 	
 	private Customer currCustomer;
 	
 	
-	public FormEvent (Object source,String firstName, String lastName, int persNumber, double depositAmount, String formType){
+	public FormEvent (Object source,String firstName, String lastName, long persNumber, double depositAmount, String formType){
 		super(source);
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -31,7 +31,7 @@ public class FormEvent extends EventObject {
 		this.formType = formType;
 	}
 	
-	public FormEvent (Object source, Customer currCustomer, String firstName, String lastName, int persNumber, String formType) {
+	public FormEvent (Object source, Customer currCustomer, String firstName, String lastName, long persNumber, String formType) {
 		super(source);
 		this.currCustomer = currCustomer;
 		this.firstName = firstName;
@@ -54,7 +54,7 @@ public class FormEvent extends EventObject {
 		return lastName;
 	}
 
-	public int getPersNumber() {
+	public long getPersNumber() {
 		return persNumber;
 	}
 

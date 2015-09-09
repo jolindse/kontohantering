@@ -69,4 +69,9 @@ public class OutputPanel extends JPanel {
 		txtAOutput.setVisible(true);
 		tblOutput.setVisible(false);
 	}
+	
+	public void putTextTxtArea(String outputText){
+		txtAOutput.setText(outputText);
+	}
+	
 }

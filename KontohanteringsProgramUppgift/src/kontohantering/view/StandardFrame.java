@@ -76,12 +76,14 @@ public class StandardFrame extends JFrame {
 		
 		JMenu testMenu = new JMenu("Test");
 		JMenuItem editFrame = new JMenuItem("Visa redigerafönster");
+		JMenuItem outputDB = new JMenuItem("Skriv ut DB");
 		JCheckBoxMenuItem editMode = new JCheckBoxMenuItem("Visa redigeringsläge");
 		JCheckBoxMenuItem tableShow = new JCheckBoxMenuItem("Visa tabellvy");
 		JCheckBoxMenuItem bottomEnabled = new JCheckBoxMenuItem("Bottenpanel aktiverad");
 		tableShow.setSelected(false);
 		
 		testMenu.add(editFrame);
+		testMenu.add(outputDB);
 		testMenu.add(editMode);
 		testMenu.add(bottomEnabled);
 		testMenu.add(tableShow);
@@ -143,6 +145,15 @@ public class StandardFrame extends JFrame {
 				if(!showTableOnOff.isSelected()){
 					outputPanel.textAreaView();
 				}
+			}
+		});
+		
+		outputDB.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				outputPanel.putTextTxtArea(controller.outputDB());
+				
 			}
 		});
 		

@@ -126,11 +126,15 @@ public class NewCustomerFrame extends JFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					FormEvent fevent;
 					if (!inputForm.getInitialDeposit()){
-						FormEvent fevent = new FormEvent(e.getSource(), inputForm.getFirstName(), inputForm.getLastName(), inputForm.getPersNumber(), 0, "newCustomer");
+						fevent = new FormEvent(e.getSource(), inputForm.getFirstName(), inputForm.getLastName(), inputForm.getPersNumber(), 0, "newCustomer");
 					} else {
-						FormEvent fevent = new FormEvent(e.getSource(), inputForm.getFirstName(), inputForm.getLastName(), inputForm.getPersNumber(), inputForm.getInitialDepositAmount(), "newCustomer");
+						fevent = new FormEvent(e.getSource(), inputForm.getFirstName(), inputForm.getLastName(), inputForm.getPersNumber(), inputForm.getInitialDepositAmount(), "newCustomer");
 					}
+					formListener.formEventOccured(fevent);
+					inputForm.clearFields();
+					newCustomerFrame.dispose();
 				}
 			});
 			
