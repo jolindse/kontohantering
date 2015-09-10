@@ -30,6 +30,10 @@ public class Customer {
 	private double mortgage;
 	private Bonds bonds;
 
+	public Customer() {
+		
+	}
+	
 	// Two constructors based on initial account setup
 	public Customer(String name, String lastName, long persNumber) {
 		this.name = name;
@@ -40,6 +44,7 @@ public class Customer {
 		numAccount++;
 		mortgage = 0;
 		bonds = new Bonds(0, 0, this);
+		this.customerRating = setCustRating();
 
 	}
 
@@ -52,6 +57,7 @@ public class Customer {
 		numAccount++;
 		mortgage = 0;
 		bonds = new Bonds(0, 0, this);
+		this.customerRating = setCustRating();
 	}
 
 	// GETTERS/SETTERS
@@ -100,21 +106,34 @@ public class Customer {
 		this.accountBalance = accountBalance;
 	}
 
-	public double getMortage() {
-		return mortgage;
-	}
-
-	public void setMortage(double amount) {
-		this.mortgage = amount;
-	}
-
 	public Bonds getBonds() {
 		return bonds;
 	}
-
+	
+	public double getBondsAmount() {
+		return bonds.getTotalBondsValue();
+	}
+	
 	public void setBonds(Bonds bonds) {
 		this.bonds = bonds;
 	}
+	
+	public double getMortgage() {
+		return mortgage;
+	}
+
+	public void setMortgage(double mortgage) {
+		this.mortgage = mortgage;
+	}
+
+	public void setPersNumber(long persNumber) {
+		this.persNumber = persNumber;
+	}
+
+	public void setAccountNumber(long accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+	
 
 	// METHODS
 
@@ -151,10 +170,14 @@ public class Customer {
 		return false;
 	}
 
+	private char setCustRating(){
+		return 'e';
+	}
+	
 	@Override
 	public String toString() {
-		String strReturn = name + " " + lastName + "\nPersonnummer: " + persNumber + "\nKontonummer: " + accountNumber
-				+ "\nSaldo: " + accountBalance;
+		String strReturn = name + " " + lastName + "\nPersonnummer:\t" + persNumber + "\nKontonummer:\t" + accountNumber
+				+ "\nSaldo:\t\t" + accountBalance +" SEK";
 		return strReturn;
 	}
 

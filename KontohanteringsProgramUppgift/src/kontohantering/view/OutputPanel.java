@@ -2,12 +2,16 @@ package kontohantering.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
+
+import kontohantering.data.Customer;
+import kontohantering.data.CustomerDB;
 
 /*
  * Class for output field
@@ -74,4 +78,7 @@ public class OutputPanel extends JPanel {
 		txtAOutput.setText(outputText);
 	}
 	
+	public void setTableDataModel(CustomerDB customerDB){
+		tblModel.setData(customerDB);
+	}
 }

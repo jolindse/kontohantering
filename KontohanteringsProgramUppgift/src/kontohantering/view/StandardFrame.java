@@ -11,6 +11,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
+import kontohantering.data.CustomerDB;
 import kontohantering.logic.Controller;
 
 /* Mainframe class
@@ -80,12 +81,22 @@ public class StandardFrame extends JFrame {
 		JCheckBoxMenuItem editMode = new JCheckBoxMenuItem("Visa redigeringsläge");
 		JCheckBoxMenuItem tableShow = new JCheckBoxMenuItem("Visa tabellvy");
 		JCheckBoxMenuItem bottomEnabled = new JCheckBoxMenuItem("Bottenpanel aktiverad");
+		JMenuItem saveDB = new JMenuItem("Spara DB");
+		JMenuItem loadDB = new JMenuItem("Ladda DB");
+		JMenuItem tableLoad = new JMenuItem("Starta tabell");
+		
 		tableShow.setSelected(false);
 		
 		testMenu.add(editFrame);
+		testMenu.addSeparator();
+		testMenu.add(loadDB);
+		testMenu.add(saveDB);
 		testMenu.add(outputDB);
+		testMenu.addSeparator();
 		testMenu.add(editMode);
 		testMenu.add(bottomEnabled);
+		testMenu.addSeparator();
+		testMenu.add(tableLoad);
 		testMenu.add(tableShow);
 		
 		menuBar.add(fileMenu);
@@ -157,6 +168,22 @@ public class StandardFrame extends JFrame {
 			}
 		});
 		
+		saveDB.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.saveDB();
+			}
+		});
+		
+		loadDB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.loadDB();
+			}
+		});
+		
+		
 		return menuBar;
 	}
 	
@@ -168,5 +195,11 @@ public class StandardFrame extends JFrame {
 
 	public static Controller getController() {
 		return controller;
+	}
+	
+	// METHODS TO AFFECT COMPONENTS
+	
+	public void setTableDataModel(CustomerDB customerDB){
+		outputPanel.setTableDataModel(customerDB);
 	}
 }

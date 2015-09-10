@@ -1,9 +1,11 @@
 package kontohantering.view;
 
-import kontohantering.data.Customer;
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
+
+import kontohantering.data.Customer;
+import kontohantering.data.CustomerDB;
 
 public class CustomerTableModel extends AbstractTableModel {
 
@@ -17,14 +19,15 @@ public class CustomerTableModel extends AbstractTableModel {
 			"Fonder",
 			"Kundklass" };
 	
-	private List<Customer> db;
+	private CustomerDB currDB;
+	private ArrayList<Customer> customerDB;
 
 	public CustomerTableModel() {
 
 	}
 
-	public void setData(List<Customer> db) {
-		this.db = db;
+	public void setData(CustomerDB customerDB) {
+		this.customerDB = customerDB.getArray();
 	}
 
 	@Override
@@ -34,15 +37,33 @@ public class CustomerTableModel extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		if (db.size() < 1 || db == null) {
+		if (customerDB.size() < 1 || customerDB == null) {
 			return 0;
 		}
-		return db.size();
+		return customerDB.size();
 	}
 
 	@Override
-	public Object getValueAt(int arg0, int arg1) {
-		// TODO Auto-generated method stub
+	public Object getValueAt(int row, int col) {
+		Customer currCustomer = customerDB.get(row);
+		switch(col) {
+		case 0:
+			return currCustomer.getName();
+		case 1:
+			return currCustomer.getLastName();
+		case 2:
+			return currCustomer.getPersNumber();
+		case 3:
+			return currCustomer.getAccountNumber();
+		case 4:
+			return currCustomer.getAccountBalance();
+		case 5:
+			return currCustomer.getMortgage();
+		case 6:
+			return currCustomer.getBondsAmount();
+		case 7:
+			return currCustomer.getCustomerRating();
+		}
 		return null;
 	}
 

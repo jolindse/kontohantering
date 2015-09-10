@@ -16,6 +16,10 @@ public class Bonds {
 	private int amount;
 	private int type;
 	private Customer currCustomer;
+	
+	public Bonds(){
+		bondsMap = new HashMap<Integer, Integer>();
+	}
 
 	public Bonds(int amount, int type, Customer currCustomer) {
 		bondsMap = new HashMap<Integer, Integer>();
@@ -24,6 +28,26 @@ public class Bonds {
 		this.type = type;
 	}
 
+	// GETTERS/SETTERS
+	
+	public int getAmount() {
+		return amount;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+	
+	// METHODS
+	
 	public void buyBonds(int amount, int type) {
 		if (type == this.type) {
 			int currentBonds = bondsMap.get(type) + amount;
@@ -32,7 +56,7 @@ public class Bonds {
 			bondsMap.put(type, amount);
 		}
 	}
-
+	
 	public double sellBonds(int amount, int type) {
 		int currentBonds = bondsMap.get(type) - amount;
 		if (currentBonds < 1){
@@ -51,6 +75,16 @@ public class Bonds {
 
 	public double totalValue(int amount, int type) {
 		return BONDS_VALUE[type] * amount;
+	}
+	
+	public double getTotalBondsValue() {
+		double totalValue = 0;
+		for (Map.Entry<Integer, Integer> current : bondsMap.entrySet()){
+			int key = current.getKey();
+			int value = current.getValue();
+			totalValue += totalValue(value, key);
+		}
+		return totalValue;
 	}
 	
 	public String getBondName(int type){

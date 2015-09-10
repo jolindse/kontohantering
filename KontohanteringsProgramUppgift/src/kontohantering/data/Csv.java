@@ -1,6 +1,9 @@
 package kontohantering.data;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Map;
@@ -24,6 +27,15 @@ import java.util.Map;
 public class Csv {
 	// Declare constants for file
 	private static final String COMMA_DELIMITER = ",";
+	// Set constant CSV indexes
+	private static final int ACCOUNT_NUMBER = 0;
+	private static final int FIRSTNAME = 1;
+	private static final int LASTNAME = 2;
+	private static final int PERSNUMBER = 3;
+	private static final int ACCOUNTBALANCE = 4;
+	private static final int MORTAGEAMOUNT = 5;
+	private static final int CUSTOMERRATING = 6;
+	private static final int NUMBEROFBONDTYPES = 7;
 
 	private String fileName;
 
@@ -31,10 +43,62 @@ public class Csv {
 		this.fileName = fileName;
 	}
 
-	public boolean readDB(ArrayList<Customer> customerDB) {
-		boolean readOK = false;
+	public ArrayList<Customer> readDB() {
+		BufferedReader br;
+		
+		// Init objects to populate with data
+		ArrayList<Customer> customerDB = new ArrayList<>();
+		
+		
+		try {
+			br = new BufferedReader(new FileReader(fileName));
+			String line = "";
 
-		return readOK;
+			while ((line = br.readLine()) != null) {
+				Customer currCustomer = new Customer();
+				Bonds currBonds = new Bonds();
+				// Split CSV into array that contains the values
+				String[] tokens = line.split(COMMA_DELIMITER);
+
+				if (tokens.length > 0){
+
+					// Populate the mandatory Customer fields
+					currCustomer.setAccountNumber(Long.parseLong(tokens[ACCOUNT_NUMBER]));
+					currCustomer.setName(tokens[FIRSTNAME]);
+					currCustomer.setLastName(tokens[LASTNAME]);
+					currCustomer.setPersNumber(Long.parseLong(tokens[PERSNUMBER]));
+					currCustomer.setAccountBalance(Double.parseDouble(tokens[ACCOUNTBALANCE]));
+					currCustomer.setMortgage(Double.parseDouble(tokens[MORTAGEAMOUNT]));
+
+					// Populate bonds instance for currCustomer
+					int numberOfBonds = Integer.parseInt(tokens[NUMBEROFBONDTYPES]);
+					int bondsCounter = NUMBEROFBONDTYPES + 1;
+					Map<Integer,Integer> bondsMap = currBonds.getBondMap();
+					for (int i = 0; i < numberOfBonds; i++ ){
+						int key = Integer.parseInt(tokens[bondsCounter]);
+						bondsCounter++;
+						int value = Integer.parseInt(tokens[bondsCounter]);
+						bondsCounter++;
+						bondsMap.put(key, value);
+					}
+					// Set populated bondsmap to currCustomer
+					currCustomer.setBonds(currBonds);
+					// Add currCustomer to the DB
+					customerDB.add(currCustomer);
+				}
+				
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("DB-file not found");
+		} catch (NumberFormatException e) {
+			System.out.println("Number problem!");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("I/O error");
+			e.printStackTrace();
+		}
+		return customerDB;
 	}
 
 	public boolean writeDB(ArrayList<Customer> customerDB) {
@@ -50,8 +114,9 @@ public class Csv {
 				String currLine = currCustomer.getAccountNumber() 
 						+ COMMA_DELIMITER + currCustomer.getName()
 						+ COMMA_DELIMITER + currCustomer.getLastName() 
+						+ COMMA_DELIMITER + currCustomer.getPersNumber()
 						+ COMMA_DELIMITER + currCustomer.getAccountBalance()
-						+ COMMA_DELIMITER + currCustomer.getMortage() 
+						+ COMMA_DELIMITER + currCustomer.getMortgage() 
 						+ COMMA_DELIMITER + currCustomer.getCustomerRating()
 						+ COMMA_DELIMITER + currBonds.getNumberOfBondTypes();
 				// Put optional bonds fields in output string
@@ -62,8 +127,9 @@ public class Csv {
 				}
 				// Put current customer to file
 				pw.println(currLine);
-				writeOK = true;
-			}
+				}
+			pw.close();
+			writeOK = true;
 		} catch (FileNotFoundException e) {
 				writeOK = false;
 				System.out.println("File not found");

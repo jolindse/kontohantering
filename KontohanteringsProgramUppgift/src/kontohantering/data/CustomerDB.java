@@ -17,6 +17,10 @@ public class CustomerDB {
 		this.customerBase = customerBase;
 	}
 	
+	public ArrayList<Customer> getArray() {
+		return customerBase;
+	}
+	
 	public void addToDB (Customer currCust) {
 		customerBase.add(currCust);
 	}
