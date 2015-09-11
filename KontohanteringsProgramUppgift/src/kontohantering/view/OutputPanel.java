@@ -16,16 +16,16 @@ import kontohantering.data.CustomerDB;
 /*
  * Class for output field
  * ----------------------
- * Default behaviour is a JTextArea for output.
- * Alternative behaviour is a JTable for presenting multiple accounts and allow for choice.
+ * Default behavior is a JTextArea for output.
+ * Alternative behavior is a JTable for presenting multiple accounts and allow for choice.
  */
 
 public class OutputPanel extends JPanel {
 
 	private JTextArea txtAOutput;
-	private JScrollPane scrPaneOut;
 	private JTable tblOutput;
 	private CustomerTableModel tblModel;
+	private JScrollPane scrPaneOut;
 	private boolean tableInit;
 
 	public OutputPanel() {
@@ -35,7 +35,7 @@ public class OutputPanel extends JPanel {
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(0, 20, 0, 20));
 
-		// Make sure tablemodell isn't initiated before data is available
+		// Make sure table model isn't initiated before data is available
 		tableInit = false;
 
 		// Init the text output area and set properties.
@@ -53,7 +53,7 @@ public class OutputPanel extends JPanel {
 
 		scrPaneOut.setVisible(true);
 
-		// Start with textview as default.
+		// Start with text view as default.
 		textAreaView();
 	}
 	
@@ -82,9 +82,7 @@ public class OutputPanel extends JPanel {
 	
 	public void showTableFull() {
 		tableView();
-		System.out.println("Sätter table view!");
 		tblModel.showFullCustBase();
-		System.out.println("Kallar på showFullCustBase!");
 		tblModel.fireTableDataChanged();
 	}
 }	

@@ -8,17 +8,28 @@ import kontohantering.view.CustomerTableModel;
 import kontohantering.view.FormEvent;
 import kontohantering.view.IFormListener;
 import kontohantering.view.StandardFrame;
+/*
+ *  Controller class
+ *  -------------------------
+ *  This will be started from mainloop and handles
+ *  all connections between GUI and user interface.
+ *  
+ *  It contains one static method to get a reference
+ *  to it from every class in order to maintain this
+ *  relationship.
+ */ 
 
 public class Controller implements IFormListener {
 
-	private static final int FULL = 0;
-	private static final int PART = 1;
+	private static final int ARRAYFULL = 0;
+	private static final int ARRAYPART = 1;
+	private static Controller controllerHandler;
 	
 	private String fileName = "test.csv";
 	private Customer currCustomer;
 	private StandardFrame view;
 	private CustomerDB customerDB;
-
+	
 	public Controller() {
 	}
 	
@@ -29,9 +40,21 @@ public class Controller implements IFormListener {
 	
 	public void initControllerView(StandardFrame view) {
 		this.view = view;
-		view.setController(this);
 	}
 
+	public void initControllerHandler(Controller controller) {
+		controllerHandler = controller;
+	}
+	
+	// METHOD
+	
+	public static Controller getController(){
+		/*
+		 *  Static method to return a handler to the controller.
+		 */
+		return controllerHandler;
+	}
+	
 	// METHODS FOR MODELINTERACTION
 
 	public void saveDB() {
@@ -49,9 +72,9 @@ public class Controller implements IFormListener {
 	
 	public ArrayList<Customer> getCurrentCustomerArray(int type){
 		switch(type){
-		case FULL:
+		case ARRAYFULL:
 			return customerDB.getArray();
-		case PART:
+		case ARRAYPART:
 			// do nothing until search is implemented
 			return null;
 		}

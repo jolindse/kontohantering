@@ -9,8 +9,8 @@ import kontohantering.logic.Controller;
 
 public class CustomerTableModel extends AbstractTableModel {
 
-	private static final int FULL = 0;
-	private static final int PART = 1;
+	private static final int ARRAYFULL = 0;
+	private static final int ARRAYPART = 1;
 	
 	private String[] colName = { 
 			"Förnamn", 
@@ -28,11 +28,11 @@ public class CustomerTableModel extends AbstractTableModel {
 	}
 
 	public void showFullCustBase() {
-		customerDB = StandardFrame.getController().getCurrentCustomerArray(FULL);
+		customerDB = Controller.getController().getCurrentCustomerArray(ARRAYFULL);
 	}
 	
 	public void showSelectedCustBase() {
-		customerDB = StandardFrame.getController().getCurrentCustomerArray(PART);
+		customerDB = Controller.getController().getCurrentCustomerArray(ARRAYPART);
 	}
 	
 	@Override

@@ -42,6 +42,7 @@ public class Application {
 
 		// Init controller
 		Controller controller = new Controller();
+		controller.initControllerHandler(controller);
 		// Init model		
 		CustomerDB customerDB = new CustomerDB();
 		controller.initControllerDB(customerDB);

@@ -23,6 +23,8 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
+import kontohantering.logic.Controller;
+
 /*
  * Add a new customer frame class
  * ------------------------------
@@ -49,7 +51,7 @@ public class NewCustomerFrame extends JFrame {
 			
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			// Set formlistener
-			formListener = StandardFrame.getController();
+			formListener = Controller.getController();
 			
 			
 			// Set native platform look And feel.

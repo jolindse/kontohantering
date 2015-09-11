@@ -21,8 +21,7 @@ import kontohantering.logic.Controller;
 
 public class StandardFrame extends JFrame {
 
-	private static Controller controller;
-	
+	private JMenuBar standardMenu;
 	private SideButtonPanel sideButtonPanel;
 	private BottomButtonPanel bottomButtonPanel;
 	private OutputPanel outputPanel;
@@ -46,8 +45,9 @@ public class StandardFrame extends JFrame {
 		bottomButtonPanel = new BottomButtonPanel();
 		outputPanel = new OutputPanel();
 		topLogoPanel = new TopLogoPanel();
+		standardMenu = new StandardMenu(bottomButtonPanel, sideButtonPanel, outputPanel).getMenu();
 		
-		setJMenuBar(createMenu());
+		setJMenuBar(standardMenu);
 		
 		getContentPane().add(sideButtonPanel, BorderLayout.WEST);
 		getContentPane().add(bottomButtonPanel, BorderLayout.SOUTH);
@@ -62,150 +62,6 @@ public class StandardFrame extends JFrame {
 
 	}
 	
-	private JMenuBar createMenu() {
-		JMenuBar menuBar = new JMenuBar();
-		
-		// File menu
-		
-		JMenu fileMenu = new JMenu("Arkiv");
-		JMenuItem exportCustomers = new JMenuItem("Exportera databas...");
-		JMenuItem exitProgram = new JMenuItem("Avsluta");
-		fileMenu.add(exportCustomers);
-		fileMenu.addSeparator();
-		fileMenu.add(exitProgram);
-		
-		// Test menu
-		
-		JMenu testMenu = new JMenu("Test");
-		JMenuItem editFrame = new JMenuItem("Visa redigerafönster");
-		JMenuItem outputDB = new JMenuItem("Skriv ut DB");
-		JCheckBoxMenuItem editMode = new JCheckBoxMenuItem("Visa redigeringsläge");
-		JCheckBoxMenuItem tableShow = new JCheckBoxMenuItem("Visa tabellvy");
-		JCheckBoxMenuItem bottomEnabled = new JCheckBoxMenuItem("Bottenpanel aktiverad");
-		JMenuItem saveDB = new JMenuItem("Spara DB");
-		JMenuItem loadDB = new JMenuItem("Ladda DB");
-		JMenuItem tableLoad = new JMenuItem("Starta tabell");
-		
-		tableShow.setSelected(false);
-		
-		testMenu.add(editFrame);
-		testMenu.addSeparator();
-		testMenu.add(loadDB);
-		testMenu.add(saveDB);
-		testMenu.add(outputDB);
-		testMenu.addSeparator();
-		testMenu.add(editMode);
-		testMenu.add(bottomEnabled);
-		testMenu.addSeparator();
-		testMenu.add(tableLoad);
-		testMenu.add(tableShow);
-		
-		menuBar.add(fileMenu);
-		menuBar.add(testMenu);
-		
-		// Actions for test menu
-		
-		
-		bottomEnabled.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JCheckBoxMenuItem chkbxBottomPanel = (JCheckBoxMenuItem) e.getSource();
-				if(chkbxBottomPanel.isSelected()){
-					bottomButtonPanel.setActive();;
-				} else {
-					bottomButtonPanel.setDisabled();
-				}
-				
-			}
-		});
-		
-		
-		editMode.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JCheckBoxMenuItem chkbxEditMode = (JCheckBoxMenuItem) e.getSource();
-				if(chkbxEditMode.isSelected()){
-					sideButtonPanel.setEditMode();
-				} else {
-					sideButtonPanel.setViewMode();
-				}
-				
-			}
-		});
-			
-			
-		
-		editFrame.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				EditCustomerFrame editCustomerFrame = new EditCustomerFrame();
-				
-			}
-		});
-		
-		tableShow.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JCheckBoxMenuItem showTableOnOff = (JCheckBoxMenuItem) e.getSource();
-				
-				if(showTableOnOff.isSelected()){
-					outputPanel.tableView();
-				} 
-				if(!showTableOnOff.isSelected()){
-					outputPanel.textAreaView();
-				}
-			}
-		});
-		
-		tableLoad.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Kallar på tableview StandardFrm");
-				outputPanel.showTableFull();
-		
-			}
-		});
-		
-		outputDB.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				outputPanel.putTextTxtArea(controller.outputDB());
-				
-			}
-		});
-		
-		saveDB.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.saveDB();
-			}
-		});
-		
-		loadDB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.loadDB();
-			}
-		});
-		
-		
-		return menuBar;
-	}
 	
-	// CONTROLLER GET AND SET
-	
-	public void setController(Controller controller){
-		this.controller = controller;
-	}
-
-	public static Controller getController() {
-		return controller;
-	}
 	
 }
