@@ -177,7 +177,7 @@ public class Customer {
 	@Override
 	public String toString() {
 		String strReturn = name + " " + lastName + "\nPersonnummer:\t" + persNumber + "\nKontonummer:\t" + accountNumber
-				+ "\nSaldo:\t\t" + accountBalance +" SEK";
+				+ "\nSaldo:\t\t" + accountBalance +" SEK" + "\nKundklass:\t" + customerRating;
 		return strReturn;
 	}
 

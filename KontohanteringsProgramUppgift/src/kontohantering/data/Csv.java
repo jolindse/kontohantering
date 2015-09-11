@@ -69,6 +69,7 @@ public class Csv {
 					currCustomer.setPersNumber(Long.parseLong(tokens[PERSNUMBER]));
 					currCustomer.setAccountBalance(Double.parseDouble(tokens[ACCOUNTBALANCE]));
 					currCustomer.setMortgage(Double.parseDouble(tokens[MORTAGEAMOUNT]));
+					currCustomer.setCustomerRating(tokens[CUSTOMERRATING].charAt(0));
 
 					// Populate bonds instance for currCustomer
 					int numberOfBonds = Integer.parseInt(tokens[NUMBEROFBONDTYPES]);
@@ -101,9 +102,7 @@ public class Csv {
 		return customerDB;
 	}
 
-	public boolean writeDB(ArrayList<Customer> customerDB) {
-
-		boolean writeOK = false;
+	public void writeDB(ArrayList<Customer> customerDB) {
 
 		PrintWriter pw;
 		try {
@@ -129,11 +128,8 @@ public class Csv {
 				pw.println(currLine);
 				}
 			pw.close();
-			writeOK = true;
 		} catch (FileNotFoundException e) {
-				writeOK = false;
 				System.out.println("File not found");
 		}
-		return writeOK;
-		}
+	}
 	}

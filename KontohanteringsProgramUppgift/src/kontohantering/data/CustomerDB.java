@@ -37,4 +37,16 @@ public class CustomerDB {
 		return strOut;
 	}
 
+	// Read and save from/to file methods using Csv-class for parsing
+	
+	public void saveDB (String fileName) {
+		Csv csv = new Csv(fileName);
+		csv.writeDB(customerBase);
+	}
+	
+	public void loadDB (String fileName) {
+		Csv csv = new Csv(fileName);
+		customerBase = csv.readDB();
+	}
+
 }

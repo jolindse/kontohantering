@@ -40,12 +40,17 @@ public class Application {
 
 	public static void runApplication() {
 
-		// Initialize view
-		StandardFrame view = new StandardFrame();
-		// Init model
-		CustomerDB customerDB = new CustomerDB();
 		// Init controller
-		Controller controller = new Controller(view, customerDB);
+		Controller controller = new Controller();
+		// Init model		
+		CustomerDB customerDB = new CustomerDB();
+		controller.initControllerDB(customerDB);
+		// Init view
+		StandardFrame view = new StandardFrame();
+		controller.initControllerView(view);
+
+		
+
 	}
 	
 }

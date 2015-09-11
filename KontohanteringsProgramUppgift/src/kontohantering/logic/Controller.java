@@ -1,39 +1,45 @@
 package kontohantering.logic;
 
-import kontohantering.data.Csv;
+import java.util.ArrayList;
+
 import kontohantering.data.Customer;
 import kontohantering.data.CustomerDB;
+import kontohantering.view.CustomerTableModel;
 import kontohantering.view.FormEvent;
 import kontohantering.view.IFormListener;
 import kontohantering.view.StandardFrame;
 
 public class Controller implements IFormListener {
 
+	private static final int FULL = 0;
+	private static final int PART = 1;
+	
 	private String fileName = "test.csv";
 	private Customer currCustomer;
 	private StandardFrame view;
 	private CustomerDB customerDB;
-	private Csv csv;
 
-	public Controller(StandardFrame view, CustomerDB customerDB) {
-		this.view = view;
+	public Controller() {
+	}
+	
+	public void initControllerDB(CustomerDB customerDB){
 		this.customerDB = customerDB;
-		csv = new Csv(fileName);
-		// Set reference to this controller in view for listeners
+		loadDB();
+	}
+	
+	public void initControllerView(StandardFrame view) {
+		this.view = view;
 		view.setController(this);
-
 	}
 
-	// METHODS
+	// METHODS FOR MODELINTERACTION
 
 	public void saveDB() {
-		if (csv.writeDB(customerDB.getArray())) {
-			System.out.println("Database written!");
-		}
+		customerDB.saveDB(fileName);
 	}
-
+	
 	public void loadDB() {
-		customerDB = new CustomerDB(csv.readDB());
+		customerDB.loadDB(fileName);
 
 	}
 
@@ -41,12 +47,17 @@ public class Controller implements IFormListener {
 		return customerDB.outputDB();
 	}
 	
-	/*
-	 public void tableInit () {
-		view.setTableDataModel(customerDB);
-		view.
+	public ArrayList<Customer> getCurrentCustomerArray(int type){
+		switch(type){
+		case FULL:
+			return customerDB.getArray();
+		case PART:
+			// do nothing until search is implemented
+			return null;
+		}
+		return null;
 	}
-	*/
+	
 
 	// EVENTOCCURED
 

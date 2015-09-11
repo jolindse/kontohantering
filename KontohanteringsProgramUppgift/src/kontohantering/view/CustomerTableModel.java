@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 import kontohantering.data.Customer;
-import kontohantering.data.CustomerDB;
+import kontohantering.logic.Controller;
 
 public class CustomerTableModel extends AbstractTableModel {
 
+	private static final int FULL = 0;
+	private static final int PART = 1;
+	
 	private String[] colName = { 
 			"Förnamn", 
 			"Efternamn", 
@@ -19,17 +22,19 @@ public class CustomerTableModel extends AbstractTableModel {
 			"Fonder",
 			"Kundklass" };
 	
-	private CustomerDB currDB;
 	private ArrayList<Customer> customerDB;
 
 	public CustomerTableModel() {
-
 	}
 
-	public void setData(CustomerDB customerDB) {
-		this.customerDB = customerDB.getArray();
+	public void showFullCustBase() {
+		customerDB = StandardFrame.getController().getCurrentCustomerArray(FULL);
 	}
-
+	
+	public void showSelectedCustBase() {
+		customerDB = StandardFrame.getController().getCurrentCustomerArray(PART);
+	}
+	
 	@Override
 	public int getColumnCount() {
 		return 8;
@@ -41,8 +46,16 @@ public class CustomerTableModel extends AbstractTableModel {
 			return 0;
 		}
 		return customerDB.size();
+		
 	}
 
+	@Override
+	public String getColumnName(int column) {
+		
+		return colName[column];
+	}
+
+	
 	@Override
 	public Object getValueAt(int row, int col) {
 		Customer currCustomer = customerDB.get(row);
@@ -66,5 +79,4 @@ public class CustomerTableModel extends AbstractTableModel {
 		}
 		return null;
 	}
-
 }

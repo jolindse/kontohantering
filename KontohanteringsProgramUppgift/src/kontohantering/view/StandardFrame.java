@@ -53,6 +53,7 @@ public class StandardFrame extends JFrame {
 		getContentPane().add(bottomButtonPanel, BorderLayout.SOUTH);
 		getContentPane().add(outputPanel, BorderLayout.EAST);
 		getContentPane().add(topLogoPanel, BorderLayout.NORTH);
+		
 		// Set size and closure behavior
 		setSize(900, 800);
 		setResizable(false);
@@ -159,6 +160,16 @@ public class StandardFrame extends JFrame {
 			}
 		});
 		
+		tableLoad.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Kallar på tableview StandardFrm");
+				outputPanel.showTableFull();
+		
+			}
+		});
+		
 		outputDB.addActionListener(new ActionListener() {
 			
 			@Override
@@ -197,9 +208,4 @@ public class StandardFrame extends JFrame {
 		return controller;
 	}
 	
-	// METHODS TO AFFECT COMPONENTS
-	
-	public void setTableDataModel(CustomerDB customerDB){
-		outputPanel.setTableDataModel(customerDB);
-	}
 }
