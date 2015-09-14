@@ -2,6 +2,8 @@ package kontohantering.logic;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import kontohantering.data.Customer;
 import kontohantering.data.CustomerDB;
 import kontohantering.view.CustomerTableModel;
@@ -55,7 +57,21 @@ public class Controller implements IFormListener {
 		return controllerHandler;
 	}
 	
-	// METHODS FOR MODELINTERACTION
+	// METHODS FOR MODEL INTERACTION
+	
+	public void setSelectedCustomer(Customer currCustomer) {
+		this.currCustomer = currCustomer;
+		view.setEditFrame();
+		view.customerToText(currCustomer);
+	}
+	
+	public Customer getCurrentCustomer(){
+		return currCustomer;
+	}
+	
+	public Customer getSelectedCustomer() {
+		return currCustomer;
+	}
 
 	public void saveDB() {
 		customerDB.saveDB(fileName);
@@ -83,7 +99,16 @@ public class Controller implements IFormListener {
 	
 
 	// EVENTOCCURED
-
+	
+	public void editCustomer() {
+		if (view.editCustomer(currCustomer)){
+			//
+		}else{
+			JOptionPane.showMessageDialog(view, "Ingen kund vald!");
+		}
+	}
+	
+	
 	@Override
 	public void formEventOccured(FormEvent e) {
 		switch (e.getFormType()) {
@@ -94,5 +119,7 @@ public class Controller implements IFormListener {
 		}
 
 	}
+	
+	
 
 }

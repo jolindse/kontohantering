@@ -1,18 +1,12 @@
 package kontohantering.view;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
-import kontohantering.data.CustomerDB;
-import kontohantering.logic.Controller;
+import kontohantering.data.Customer;
 
 /* Mainframe class
  * ----------------
@@ -45,7 +39,7 @@ public class StandardFrame extends JFrame {
 		bottomButtonPanel = new BottomButtonPanel();
 		outputPanel = new OutputPanel();
 		topLogoPanel = new TopLogoPanel();
-		standardMenu = new StandardMenu(bottomButtonPanel, sideButtonPanel, outputPanel).getMenu();
+		standardMenu = new StandardMenu(this, bottomButtonPanel, sideButtonPanel, outputPanel).getMenu();
 		
 		setJMenuBar(standardMenu);
 		
@@ -61,7 +55,25 @@ public class StandardFrame extends JFrame {
 		setVisible(true);
 
 	}
+
+	// METHODS TO CHANGE MODES
 	
+	public void setEditFrame() {
+		sideButtonPanel.setEditMode();
+		bottomButtonPanel.setActive();
+	}	
 	
+	public void customerToText(Customer currCustomer){
+		outputPanel.textAreaView();
+		outputPanel.putTextTxtArea(currCustomer.toString());		
+	}
 	
+	public boolean editCustomer(Customer currCustomer) {
+		if (outputPanel.setSelectedCustomer()){
+			EditCustomerFrame ed = new EditCustomerFrame(currCustomer);
+			return true;
+		}else{
+			return false;
+		}
+	}
 }

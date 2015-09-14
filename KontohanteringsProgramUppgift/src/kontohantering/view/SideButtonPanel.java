@@ -16,6 +16,9 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import kontohantering.logic.Controller;
+
 import static kontohantering.view.GuiConstants.*;
 
 /* JPanel class for the side panel.
@@ -29,10 +32,11 @@ public class SideButtonPanel extends JPanel {
 	private JButton btnSearchCustomer;
 	private JButton btnEditCustomer;
 	private JButton btnTerminateCustomer;
-	
+
 	private GridBagConstraints gc;
 
 	private String strSearch;
+	private Controller controller;
 	
 	public SideButtonPanel() {
 
@@ -40,6 +44,7 @@ public class SideButtonPanel extends JPanel {
 		this.setPreferredSize(new Dimension(130, 600));
 		SideButtonPanel currPanel = this;
 
+		controller = Controller.getController();
 		// Init buttons set properties
 		btnNewCustomer = new JButton("Ny kund");
 		btnSearchCustomer = new JButton("Sök");
@@ -75,6 +80,16 @@ public class SideButtonPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 			strSearch = (String)JOptionPane.showInputDialog(getRootPane(), "Sök på namn, personnummer\n eller kontonummer", "Sök kund", JOptionPane.PLAIN_MESSAGE, LOGOMINI, null, null);
+			}
+		});
+		
+		// Edit button
+		
+		btnEditCustomer.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.editCustomer();
 			}
 		});
 
@@ -159,6 +174,7 @@ public class SideButtonPanel extends JPanel {
 
 		btnEditCustomer.setVisible(false);
 		btnTerminateCustomer.setVisible(false);
+
 	}
 
 }

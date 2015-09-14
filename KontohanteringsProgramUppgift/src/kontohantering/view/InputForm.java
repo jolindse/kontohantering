@@ -20,12 +20,16 @@ import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 
 import kontohantering.data.Customer;
+import kontohantering.logic.Controller;
+
 /*
  *  Input form class 
  *  ---------------------
  *  Used in new customer and edit customer frame
  */
 public class InputForm extends JPanel {
+
+	// Customer currCustomer;
 
 	private GridBagConstraints gc;
 
@@ -50,13 +54,13 @@ public class InputForm extends JPanel {
 	private JTextField fieldLastName;
 	private JTextField fieldPersNumber;
 	private JTextField fieldIinitalDeposit;
-	
+
 	/*
 	 * Disabled due to JFormattedTextField trouble
 	 * 
-	private JFormattedTextField fieldPersNumber;
-	private JFormattedTextField fieldInitialDeposit;
-	*/
+	 * private JFormattedTextField fieldPersNumber; private JFormattedTextField
+	 * fieldInitialDeposit;
+	 */
 	public InputForm() {
 		/*
 		 * This constructor is used when a new account will be setup
@@ -70,7 +74,7 @@ public class InputForm extends JPanel {
 		newAccount();
 	}
 
-	public InputForm(int i) {
+	public InputForm(Customer currCustomer) {
 		// public InputForm(Customer currCustomer) {
 		/*
 		 * This constructor is used when a existing account is being edited.
@@ -81,7 +85,7 @@ public class InputForm extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		editAccount();
+		editAccount(currCustomer);
 	}
 
 	private void initialSetup() throws ParseException {
@@ -99,27 +103,27 @@ public class InputForm extends JPanel {
 
 		fieldName = new JTextField(20);
 		fieldLastName = new JTextField(20);
-		
+
 		fieldPersNumber = new JTextField(13);
 		fieldIinitalDeposit = new JTextField(20);
 
-		/* Second attempt
-		 * --------------
-		 * Code found after Googling - returns null
-		 * 
-		JFormattedTextField fieldPersNumber = new JFormattedTextField();
-		MaskFormatter fieldPersNumberMask;
-		fieldPersNumberMask = new MaskFormatter("########-####");
-		fieldPersNumberMask.setValueClass(String.class);
-		fieldPersNumberMask.setPlaceholderCharacter('*');
-		DefaultFormatterFactory persNumberFormater = new DefaultFormatterFactory(fieldPersNumberMask);
-		fieldPersNumber.setFormatterFactory(persNumberFormater);
-		*/
-		
 		/*
-		 * First attempt
-		 * -------------
-		 * Copied after a dummy from Netbeans GUI builder.
+		 * Second attempt -------------- Code found after Googling - returns
+		 * null
+		 * 
+		 * JFormattedTextField fieldPersNumber = new JFormattedTextField();
+		 * MaskFormatter fieldPersNumberMask; fieldPersNumberMask = new
+		 * MaskFormatter("########-####");
+		 * fieldPersNumberMask.setValueClass(String.class);
+		 * fieldPersNumberMask.setPlaceholderCharacter('*');
+		 * DefaultFormatterFactory persNumberFormater = new
+		 * DefaultFormatterFactory(fieldPersNumberMask);
+		 * fieldPersNumber.setFormatterFactory(persNumberFormater);
+		 */
+
+		/*
+		 * First attempt ------------- Copied after a dummy from Netbeans GUI
+		 * builder.
 		 * 
 		 * fieldPersNumber = new JFormattedTextField();
 		 * fieldPersNumber.setFormatterFactory( new DefaultFormatterFactory(new
@@ -188,19 +192,20 @@ public class InputForm extends JPanel {
 		 */
 
 		chkbxInitialDeposit = new JCheckBox("Initial insättning?");
-		
-		/*
-		 *  Disabled due to JFormattedTextField trouble
-		 * 
-		fieldIinitalDeposit = new JTextField();
 
-		fieldInitialDeposit = new JFormattedTextField();
-		fieldInitialDeposit.setFormatterFactory(
-				new DefaultFormatterFactory(new NumberFormatter(NumberFormat.getCurrencyInstance())));
-		fieldInitialDeposit.setColumns(20);
-		fieldInitialDeposit.setEnabled(false);
-		chkbxInitialDeposit.setFocusable(false);
-		*/
+		/*
+		 * Disabled due to JFormattedTextField trouble
+		 * 
+		 * fieldIinitalDeposit = new JTextField();
+		 * 
+		 * fieldInitialDeposit = new JFormattedTextField();
+		 * fieldInitialDeposit.setFormatterFactory( new
+		 * DefaultFormatterFactory(new
+		 * NumberFormatter(NumberFormat.getCurrencyInstance())));
+		 * fieldInitialDeposit.setColumns(20);
+		 * fieldInitialDeposit.setEnabled(false);
+		 * chkbxInitialDeposit.setFocusable(false);
+		 */
 
 		chkbxInitialDeposit.addActionListener(new ActionListener() {
 
@@ -241,7 +246,7 @@ public class InputForm extends JPanel {
 		add(fieldIinitalDeposit, gc);
 	}
 
-	private void editAccount() {
+	private void editAccount(Customer currCustomer) {
 		/*
 		 * Edit account elements
 		 */
@@ -257,6 +262,8 @@ public class InputForm extends JPanel {
 		lblCustomerRating = new JLabel("Kundklass");
 		lblCustomerRatingValue = new JLabel("");
 
+		populateFields(currCustomer);
+		
 		// Account number
 
 		gc.gridy++;
@@ -344,7 +351,7 @@ public class InputForm extends JPanel {
 	}
 
 	// GETTERS/SETTERS
-	
+
 	public String getFirstName() {
 		return fieldName.getText();
 	}
@@ -365,7 +372,7 @@ public class InputForm extends JPanel {
 	public double getInitialDepositAmount() {
 		return Double.parseDouble(fieldIinitalDeposit.getText());
 	}
-	
+
 	// METHODS
 	public void clearFields() {
 		fieldIinitalDeposit.setText("");
@@ -373,5 +380,18 @@ public class InputForm extends JPanel {
 		fieldName.setText("");
 		fieldPersNumber.setText("");
 		chkbxInitialDeposit.setSelected(false);
+	}
+
+	public void populateFields(Customer currCustomer) {
+		fieldLastName.setText(currCustomer.getLastName());
+		fieldName.setText(currCustomer.getName());
+		fieldPersNumber.setText(Long.toString(currCustomer.getPersNumber()));
+		lblAssetsValue.setText(Double.toString(currCustomer.getAccountBalance()));
+		lblAccountNumber.setText(Long.toString(currCustomer.getAccountNumber()));
+		lblBondsValue.setText(Double.toString(currCustomer.getBondsAmount()));
+		lblDebtValue.setText(Double.toString(currCustomer.getMortgage()));
+		String custRating = "" + currCustomer.getCustomerRating();
+		lblCustomerRatingValue.setText(custRating);
+
 	}
 }

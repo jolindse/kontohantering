@@ -35,6 +35,10 @@ public class CustomerTableModel extends AbstractTableModel {
 		customerDB = Controller.getController().getCurrentCustomerArray(ARRAYPART);
 	}
 	
+	public Customer getSelectedCustomer (int row) {
+		return customerDB.get(row);
+	}
+	
 	@Override
 	public int getColumnCount() {
 		return 8;

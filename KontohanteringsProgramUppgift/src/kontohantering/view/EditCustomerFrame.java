@@ -9,19 +9,18 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
-import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
+
+import kontohantering.data.Customer;
+import kontohantering.logic.Controller;
 /*
  * Edit account info class
  * -----------------------
@@ -31,11 +30,18 @@ import javax.swing.border.EmptyBorder;
  */
 public class EditCustomerFrame extends JFrame {
 
-	public EditCustomerFrame() {
+	private Customer currCustomer;
+	private Controller controller;
+	
+	public EditCustomerFrame(Customer currCustomer) {
 		super("Redigera kund");
 		// Give a handler for closing
 		JFrame editFrame = this;
-
+		
+		controller = Controller.getController();
+		this.currCustomer = currCustomer;
+		
+		
 		setLayout(new BorderLayout());
 		setSize(600, 500);
 		setResizable(false);
@@ -72,7 +78,7 @@ public class EditCustomerFrame extends JFrame {
 
 		// Setup inputform panel
 
-		InputForm inputForm = new InputForm(1);
+		InputForm inputForm = new InputForm(currCustomer);
 
 		// Setup bottom panel and buttons that resides in it.
 
