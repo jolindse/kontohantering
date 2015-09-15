@@ -107,7 +107,7 @@ public class StandardMenu extends JMenuBar {
 				JCheckBoxMenuItem showTableOnOff = (JCheckBoxMenuItem) e.getSource();
 				
 				if(showTableOnOff.isSelected()){
-					outputPanel.showTableFull();
+					controller.tableFull();;
 					view.setEditFrame();
 					
 				} 
@@ -122,7 +122,7 @@ public class StandardMenu extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			
-				outputPanel.showTableFull();
+				controller.tableFull();
 				view.setEditFrame();
 			}
 		});

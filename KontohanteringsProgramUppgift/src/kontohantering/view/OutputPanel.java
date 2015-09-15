@@ -12,6 +12,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
+import kontohantering.data.Customer;
 import kontohantering.logic.Controller;
 
 /*
@@ -116,15 +117,15 @@ public class OutputPanel extends JPanel {
 		txtAOutput.setText(outputText);
 	}
 
-	public void showTableFull() {
+	public void showTableFull(ArrayList<Customer> customerArrayFull) {
 		tableView();
-		tblModel.showFullCustBase();
+		tblModel.setDB(customerArrayFull);
 		tblModel.fireTableDataChanged();
 	}
 	
-	public void showTablePart() {
+	public void showTablePart(ArrayList<Customer> customerArrayPart) {
 		tableView();
-		tblModel.showSelectedCustBase();
+		tblModel.setDB(customerArrayPart);
 		tblModel.fireTableDataChanged();
 	}
 	

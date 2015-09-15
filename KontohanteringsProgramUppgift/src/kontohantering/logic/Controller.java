@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 
 import kontohantering.data.Customer;
 import kontohantering.data.CustomerDB;
+import kontohantering.data.Search;
 import kontohantering.view.FormEvent;
 import kontohantering.view.IFormListener;
 import kontohantering.view.OutputPanel;
@@ -24,8 +25,7 @@ import kontohantering.view.StandardFrame;
 
 public class Controller implements IFormListener {
 
-	private static final int ARRAYFULL = 0;
-	private static final int ARRAYPART = 1;
+	
 	private static Controller controllerHandler;
 
 	private String fileName = "test.csv";
@@ -94,18 +94,18 @@ public class Controller implements IFormListener {
 	public String outputDB() {
 		return customerDB.outputDB();
 	}
-
-	public ArrayList<Customer> getCurrentCustomerArray(int type) {
-		switch (type) {
-		case ARRAYFULL:
-			return customerDB.getArray();
-		case ARRAYPART:
-			// do nothing until search is implemented
-			return null;
-		}
-		return null;
+	
+	public ArrayList<Customer> getCustomerArray() {
+		return customerDB.getArray();
+	}
+	
+	public void SearchDB (String strToMatch) {
+		Search currSearch = new Search();
+		ArrayList<Customer> currSearchArray = currSearch.getMatches(strToMatch);
+		tablePart(currSearchArray);
 	}
 
+	
 	// METHODS CALLED BY DIRECT USER ACTION
 
 	public void editCustomer() {
@@ -118,6 +118,11 @@ public class Controller implements IFormListener {
 		}
 	}
 
+	public void tableFull(){
+		tableHandler.showTableFull(customerDB.getArray());
+	}
+	
+	
 	public void updateOutput() {
 		if (tableHandler.isTabelMode()) {
 			tableHandler.dataChanged();
@@ -138,4 +143,10 @@ public class Controller implements IFormListener {
 
 	}
 
+	// PRIVATE METHODS
+	
+	private void tablePart(ArrayList<Customer> customerPartArray){
+		tableHandler.showTablePart(customerPartArray);
+	}
+	
 }

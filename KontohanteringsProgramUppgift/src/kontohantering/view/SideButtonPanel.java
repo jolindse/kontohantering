@@ -80,6 +80,8 @@ public class SideButtonPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 			strSearch = (String)JOptionPane.showInputDialog(getRootPane(), "Sök på namn, personnummer\n eller kontonummer", "Sök kund", JOptionPane.PLAIN_MESSAGE, LOGOMINI, null, null);
+			System.out.println(strSearch);
+			controller.SearchDB(strSearch);
 			}
 		});
 		

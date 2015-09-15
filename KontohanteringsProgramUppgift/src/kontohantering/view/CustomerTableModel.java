@@ -27,14 +27,10 @@ public class CustomerTableModel extends AbstractTableModel {
 	public CustomerTableModel() {
 	}
 
-	public void showFullCustBase() {
-		customerDB = Controller.getController().getCurrentCustomerArray(ARRAYFULL);
+	public void setDB(ArrayList<Customer> customerDB) {
+		this.customerDB = customerDB;
 	}
-	
-	public void showSelectedCustBase() {
-		customerDB = Controller.getController().getCurrentCustomerArray(ARRAYPART);
-	}
-	
+		
 	public Customer getSelectedCustomer (int row) {
 		return customerDB.get(row);
 	}
