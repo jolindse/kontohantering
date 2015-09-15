@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -11,7 +12,6 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import kontohantering.data.Customer;
 import kontohantering.logic.Controller;
 
 /*
@@ -21,7 +21,7 @@ import kontohantering.logic.Controller;
  * Alternative behavior is a JTable for presenting multiple accounts and allow for choice.
  */
 
-public class OutputPanel extends JPanel{
+public class OutputPanel extends JPanel {
 
 	private JTextArea txtAOutput;
 	private JTable tblOutput;
@@ -33,14 +33,15 @@ public class OutputPanel extends JPanel{
 	private String buttonAction;
 
 	public OutputPanel() {
-				
+
 		// Set size panel and add some padding
 		setPreferredSize(new Dimension(770, 600));
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(0, 20, 0, 20));
 
-		// Get controller handler for events
+		// Get controller handler for events and send handler for currCustomer actions
 		controller = Controller.getController();
+		controller.setTable(this);
 		
 		// Make sure table model isn't initiated before data is available
 		tableInit = false;
@@ -51,12 +52,12 @@ public class OutputPanel extends JPanel{
 		txtAOutput.setEditable(false);
 		add(txtAOutput, BorderLayout.SOUTH);
 		txtAOutput.setVisible(true);
-		
+
 		scrPaneOut = new JScrollPane();
-		scrPaneOut.setPreferredSize(new Dimension(700,560));
+		scrPaneOut.setPreferredSize(new Dimension(700, 560));
 		scrPaneOut.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrPaneOut.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
+
 		add(scrPaneOut);
 
 		scrPaneOut.setVisible(true);
@@ -64,10 +65,10 @@ public class OutputPanel extends JPanel{
 		// Start with text view as default.
 		textAreaView();
 	}
-	
-	public void tableView(){
-		if (tableInit){
-		scrPaneOut.setViewportView(tblOutput);
+
+	private void tableView() {
+		if (tableInit) {
+			scrPaneOut.setViewportView(tblOutput);
 		} else {
 			// Init the table output for search queries
 			tblModel = new CustomerTableModel();
@@ -79,13 +80,21 @@ public class OutputPanel extends JPanel{
 			tableInit = true;
 			tblOutput.addMouseListener(new MouseListener() {
 				@Override
-				public void mouseReleased(MouseEvent e) {}
+				public void mouseReleased(MouseEvent e) {
+				}
+
 				@Override
-				public void mousePressed(MouseEvent e) {}
+				public void mousePressed(MouseEvent e) {
+				}
+
 				@Override
-				public void mouseExited(MouseEvent e) {}
+				public void mouseExited(MouseEvent e) {
+				}
+
 				@Override
-				public void mouseEntered(MouseEvent e) {}
+				public void mouseEntered(MouseEvent e) {
+				}
+
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					if (e.getClickCount() == 2) {
@@ -102,26 +111,39 @@ public class OutputPanel extends JPanel{
 		scrPaneOut.setViewportView(txtAOutput);
 		tableMode = false;
 	}
-	
-	public void putTextTxtArea(String outputText){
+
+	public void putTextTxtArea(String outputText) {
 		txtAOutput.setText(outputText);
 	}
-	
+
 	public void showTableFull() {
 		tableView();
 		tblModel.showFullCustBase();
 		tblModel.fireTableDataChanged();
 	}
 	
+	public void showTablePart() {
+		tableView();
+		tblModel.showSelectedCustBase();
+		tblModel.fireTableDataChanged();
+	}
+	
+	public void dataChanged() {
+		tblModel.fireTableDataChanged();
+	}
+	
+	public boolean isTabelMode() {
+		return tableMode;
+	}
+
 	public boolean setSelectedCustomer() {
-		if(tableMode){
-		int row = tblOutput.getSelectedRow();
-		controller.setSelectedCustomer(tblModel.getSelectedCustomer(row));
-		return true;
-		}else{
+		if (tableMode && tblOutput.getSelectedRow() >= 0) {
+			int row = tblOutput.getSelectedRow();
+			controller.setSelectedCustomer(tblModel.getSelectedCustomer(row));
+			return true;
+		} else {
 			return false;
 		}
 	}
-	
-}	
 
+}

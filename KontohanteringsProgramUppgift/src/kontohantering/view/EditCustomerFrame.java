@@ -33,14 +33,13 @@ public class EditCustomerFrame extends JFrame {
 	private Customer currCustomer;
 	private Controller controller;
 	
-	public EditCustomerFrame(Customer currCustomer) {
+	public EditCustomerFrame() {
 		super("Redigera kund");
 		// Give a handler for closing
 		JFrame editFrame = this;
 		
 		controller = Controller.getController();
-		this.currCustomer = currCustomer;
-		
+		currCustomer = controller.getCurrentCustomer();
 		
 		setLayout(new BorderLayout());
 		setSize(600, 500);
@@ -86,20 +85,20 @@ public class EditCustomerFrame extends JFrame {
 		buttonPanel.setPreferredSize(new Dimension(500, 100));
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 
-		JButton btnAddCustomer = new JButton("Spara");
+		JButton btnSaveCustomer = new JButton("Spara");
 		JButton btnCancel = new JButton("Avbryt");
 
-		btnAddCustomer.setPreferredSize(BUTTONDIM);
-		btnAddCustomer.setMaximumSize(BUTTONDIM);
-		btnAddCustomer.setMinimumSize(BUTTONDIM);
+		btnSaveCustomer.setPreferredSize(BUTTONDIM);
+		btnSaveCustomer.setMaximumSize(BUTTONDIM);
+		btnSaveCustomer.setMinimumSize(BUTTONDIM);
 		btnCancel.setPreferredSize(BUTTONDIM);
 		btnCancel.setMaximumSize(BUTTONDIM);
 		btnCancel.setMinimumSize(BUTTONDIM);
-		btnAddCustomer.setFocusable(false);
+		btnSaveCustomer.setFocusable(false);
 		btnCancel.setFocusable(false);
 
 		buttonPanel.add(Box.createGlue());
-		buttonPanel.add(btnAddCustomer);
+		buttonPanel.add(btnSaveCustomer);
 		buttonPanel.add(Box.createRigidArea(new Dimension(50, 40)));
 		buttonPanel.add(btnCancel);
 		buttonPanel.add(Box.createGlue());
@@ -123,6 +122,19 @@ public class EditCustomerFrame extends JFrame {
 				
 			}
 		});
+		
+		btnSaveCustomer.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				currCustomer.setLastName(inputForm.getLastName());
+				currCustomer.setName(inputForm.getFirstName());
+				currCustomer.setPersNumber(inputForm.getPersNumber());
+				controller.updateOutput();
+				editFrame.dispose();
+			}
+		});
+	
 	}
 	
 }

@@ -68,12 +68,7 @@ public class StandardFrame extends JFrame {
 		outputPanel.putTextTxtArea(currCustomer.toString());		
 	}
 	
-	public boolean editCustomer(Customer currCustomer) {
-		if (outputPanel.setSelectedCustomer()){
-			EditCustomerFrame ed = new EditCustomerFrame(currCustomer);
-			return true;
-		}else{
-			return false;
-		}
+	public void editCustomer() {
+		EditCustomerFrame ed = new EditCustomerFrame();
 	}
 }

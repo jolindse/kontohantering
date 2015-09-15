@@ -45,7 +45,6 @@ public class StandardMenu extends JMenuBar {
 		// Test menu
 		
 		JMenu testMenu = new JMenu("Test");
-		JMenuItem editFrame = new JMenuItem("Visa redigerafönster");
 		JMenuItem outputDB = new JMenuItem("Skriv ut DB");
 		JCheckBoxMenuItem editMode = new JCheckBoxMenuItem("Visa redigeringsläge");
 		JCheckBoxMenuItem tableShow = new JCheckBoxMenuItem("Visa tabellvy");
@@ -56,8 +55,6 @@ public class StandardMenu extends JMenuBar {
 		
 		tableShow.setSelected(false);
 		
-		testMenu.add(editFrame);
-		testMenu.addSeparator();
 		testMenu.add(loadDB);
 		testMenu.add(saveDB);
 		testMenu.add(outputDB);
@@ -103,15 +100,6 @@ public class StandardMenu extends JMenuBar {
 			}
 		});
 			
-			
-		
-		editFrame.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//EditCustomerFrame editCustomerFrame = new EditCustomerFrame(controller.getCurrentCustomer());
-			}
-		});
 		
 		tableShow.addActionListener(new ActionListener() {
 			@Override
@@ -119,8 +107,9 @@ public class StandardMenu extends JMenuBar {
 				JCheckBoxMenuItem showTableOnOff = (JCheckBoxMenuItem) e.getSource();
 				
 				if(showTableOnOff.isSelected()){
+					outputPanel.showTableFull();
 					view.setEditFrame();
-					outputPanel.tableView();
+					
 				} 
 				if(!showTableOnOff.isSelected()){
 					outputPanel.textAreaView();

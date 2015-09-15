@@ -29,7 +29,7 @@ import kontohantering.logic.Controller;
  */
 public class InputForm extends JPanel {
 
-	// Customer currCustomer;
+	Customer currCustomer;
 
 	private GridBagConstraints gc;
 
@@ -85,7 +85,8 @@ public class InputForm extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		editAccount(currCustomer);
+		this.currCustomer = currCustomer;
+		editAccount();
 	}
 
 	private void initialSetup() throws ParseException {
@@ -246,7 +247,7 @@ public class InputForm extends JPanel {
 		add(fieldIinitalDeposit, gc);
 	}
 
-	private void editAccount(Customer currCustomer) {
+	private void editAccount() {
 		/*
 		 * Edit account elements
 		 */
@@ -262,7 +263,7 @@ public class InputForm extends JPanel {
 		lblCustomerRating = new JLabel("Kundklass");
 		lblCustomerRatingValue = new JLabel("");
 
-		populateFields(currCustomer);
+		populateFields();
 		
 		// Account number
 
@@ -382,12 +383,12 @@ public class InputForm extends JPanel {
 		chkbxInitialDeposit.setSelected(false);
 	}
 
-	public void populateFields(Customer currCustomer) {
+	public void populateFields() {
 		fieldLastName.setText(currCustomer.getLastName());
 		fieldName.setText(currCustomer.getName());
 		fieldPersNumber.setText(Long.toString(currCustomer.getPersNumber()));
 		lblAssetsValue.setText(Double.toString(currCustomer.getAccountBalance()));
-		lblAccountNumber.setText(Long.toString(currCustomer.getAccountNumber()));
+		lblAccountNumberValue.setText(Long.toString(currCustomer.getAccountNumber()));
 		lblBondsValue.setText(Double.toString(currCustomer.getBondsAmount()));
 		lblDebtValue.setText(Double.toString(currCustomer.getMortgage()));
 		String custRating = "" + currCustomer.getCustomerRating();
