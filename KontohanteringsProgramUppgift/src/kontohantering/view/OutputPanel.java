@@ -98,6 +98,10 @@ public class OutputPanel extends JPanel {
 
 				@Override
 				public void mouseClicked(MouseEvent e) {
+					if (e.getClickCount() == 1) {
+						controller.setEditMode();
+					}
+					
 					if (e.getClickCount() == 2) {
 						int row = tblOutput.getSelectedRow();
 						controller.setSelectedCustomer(tblModel.getSelectedCustomer(row));

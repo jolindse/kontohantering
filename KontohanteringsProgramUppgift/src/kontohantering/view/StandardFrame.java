@@ -61,7 +61,12 @@ public class StandardFrame extends JFrame {
 	public void setEditFrame() {
 		sideButtonPanel.setEditMode();
 		bottomButtonPanel.setActive();
-	}	
+	}
+	
+	public void setViewFrame() {
+		sideButtonPanel.setViewMode();
+		bottomButtonPanel.setDisabled();
+	}
 	
 	public void customerToText(Customer currCustomer){
 		outputPanel.textAreaView();

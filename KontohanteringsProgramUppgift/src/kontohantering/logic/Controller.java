@@ -101,6 +101,7 @@ public class Controller implements IFormListener {
 	
 	public void SearchDB (String strToMatch) {
 		Search currSearch = new Search();
+		view.setViewFrame();
 		ArrayList<Customer> currSearchArray = currSearch.getMatches(strToMatch);
 		tablePart(currSearchArray);
 	}
@@ -116,6 +117,10 @@ public class Controller implements IFormListener {
 		} else {
 			JOptionPane.showMessageDialog(view, "Ingen kund vald!");
 		}
+	}
+	
+	public void setEditMode() {
+		view.setEditFrame();
 	}
 
 	public void tableFull(){

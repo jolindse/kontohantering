@@ -24,6 +24,7 @@ public class Search {
 	}
 	
 	public ArrayList<Customer> getMatches(String strToMatch){
+		strToMatch = ".*"+strToMatch+".*";
 		searchTerms(strToMatch);
 		returnList = new ArrayList<>(customerSet);
 		return returnList;	
