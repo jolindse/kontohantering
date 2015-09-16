@@ -42,18 +42,17 @@ public class NewCustomerFrame extends JFrame {
 
 		if (!isActive) {
 			isActive = true;
-			// Add handler for close 
+			// Add handler for close
 			JFrame newCustomerFrame = this;
-			
+
 			setLayout(new BorderLayout());
 			setSize(600, 500);
 			setResizable(false);
-			
+
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			// Set formlistener
 			formListener = Controller.getController();
-			
-			
+
 			// Set native platform look And feel.
 			try {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -64,27 +63,26 @@ public class NewCustomerFrame extends JFrame {
 			// Setup top panel
 
 			JPanel topPanel = new JPanel();
-			topPanel.setPreferredSize(new Dimension(500,50));
+			topPanel.setPreferredSize(new Dimension(500, 50));
 			topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
 			topPanel.setBorder(new EmptyBorder(0, 0, 0, 20));
-			
+
 			JLabel lblTopName = new JLabel("Ny kund");
 			lblTopName.setForeground(BANKBLUE);
 			lblTopName.setFont(FONTMEDIUM);
-			
+
 			topPanel.add(Box.createGlue());
 			topPanel.add(lblTopName);
-			
+
 			// Setup side panel
-			
+
 			JPanel sidePanel = new JPanel();
-			sidePanel.setPreferredSize(new Dimension(76,200));
+			sidePanel.setPreferredSize(new Dimension(76, 200));
 			sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
 			JLabel lblLogo = new JLabel();
 			lblLogo.setIcon(LOGOSMALL);
 			sidePanel.add(lblLogo);
-			
-			
+
 			// Setup inputform panel
 
 			InputForm inputForm = new InputForm();
@@ -92,7 +90,7 @@ public class NewCustomerFrame extends JFrame {
 			// Setup bottom panel and buttons that resides in it.
 
 			JPanel buttonPanel = new JPanel();
-			buttonPanel.setPreferredSize(new Dimension(500,100));
+			buttonPanel.setPreferredSize(new Dimension(500, 100));
 			buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 
 			JButton btnAddCustomer = new JButton("Lägg till kund");
@@ -121,64 +119,72 @@ public class NewCustomerFrame extends JFrame {
 			add(buttonPanel, BorderLayout.SOUTH);
 
 			setVisible(true);
-			
+
 			// ACTIONLISTENERS
-			
+
 			btnAddCustomer.addActionListener(new ActionListener() {
-				
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					FormEvent fevent;
-					if (!inputForm.getInitialDeposit()){
-						fevent = new FormEvent(e.getSource(), inputForm.getFirstName(), inputForm.getLastName(), inputForm.getPersNumber(), 0, "newCustomer");
-					} else {
-						fevent = new FormEvent(e.getSource(), inputForm.getFirstName(), inputForm.getLastName(), inputForm.getPersNumber(), inputForm.getInitialDepositAmount(), "newCustomer");
+					if (inputForm.newUserInputOK()) {
+						FormEvent fevent;
+						if (!inputForm.getInitialDeposit()) {
+							fevent = new FormEvent(e.getSource(), inputForm.getFirstName(), inputForm.getLastName(),
+									inputForm.getPersNumber(), 0, "newCustomer");
+						} else {
+							fevent = new FormEvent(e.getSource(), inputForm.getFirstName(), inputForm.getLastName(),
+									inputForm.getPersNumber(), inputForm.getInitialDepositAmount(), "newCustomer");
+						}
+						formListener.formEventOccured(fevent);
+						inputForm.clearFields();
+						newCustomerFrame.dispose();
 					}
-					formListener.formEventOccured(fevent);
-					inputForm.clearFields();
-					newCustomerFrame.dispose();
 				}
 			});
-			
+
 			btnCancel.addActionListener(new ActionListener() {
-				
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					newCustomerFrame.dispose();
-					
+
 				}
 			});
-			
-			
+
 			// Make sure we set isActive to false when closing window.
-			
+
 			this.addWindowListener(new WindowListener() {
-							
+
 				@Override
 				public void windowClosed(WindowEvent e) {
 					isActive = false;
 				}
 
 				@Override
-				public void windowActivated(WindowEvent e){}
-
-				@Override
-				public void windowClosing(WindowEvent e) {}
-
-				@Override
-				public void windowDeactivated(WindowEvent e) {}
-
-				@Override
-				public void windowDeiconified(WindowEvent e) {}
-
-				@Override
-				public void windowIconified(WindowEvent e) {}
-
-				@Override
-				public void windowOpened(WindowEvent e) {}
+				public void windowActivated(WindowEvent e) {
 				}
-			);
-			
+
+				@Override
+				public void windowClosing(WindowEvent e) {
+				}
+
+				@Override
+				public void windowDeactivated(WindowEvent e) {
+				}
+
+				@Override
+				public void windowDeiconified(WindowEvent e) {
+				}
+
+				@Override
+				public void windowIconified(WindowEvent e) {
+				}
+
+				@Override
+				public void windowOpened(WindowEvent e) {
+				}
+			});
+
 		} else {
 			JOptionPane.showMessageDialog(null,
 					"En kund håller redan på att läggas till. Endast en sådan operation åt gången är tillåten");

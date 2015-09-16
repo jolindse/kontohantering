@@ -24,7 +24,7 @@ public class StandardFrame extends JFrame {
 	public StandardFrame() {
 
 		// Set displayed name of windows and layout
-		super("[b]ank kontohantering v0.07");
+		super("[b]ank kontohantering v0.3");
 		setLayout(new BorderLayout());
 		// Set native platform look And feel.
 		try {

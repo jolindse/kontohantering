@@ -1,32 +1,31 @@
 package kontohantering.view;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Calendar;
+import java.util.regex.Pattern;
 
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
-import javax.swing.text.NumberFormatter;
 
 import kontohantering.data.Customer;
-import kontohantering.logic.Controller;
 
 /*
  *  Input form class 
  *  ---------------------
  *  Used in new customer and edit customer frame
  */
+
 public class InputForm extends JPanel {
 
 	Customer currCustomer;
@@ -52,15 +51,11 @@ public class InputForm extends JPanel {
 
 	private JTextField fieldName;
 	private JTextField fieldLastName;
-	private JTextField fieldPersNumber;
-	private JTextField fieldIinitalDeposit;
+	private JTextField fieldInitialDeposit;
 
-	/*
-	 * Disabled due to JFormattedTextField trouble
-	 * 
-	 * private JFormattedTextField fieldPersNumber; private JFormattedTextField
-	 * fieldInitialDeposit;
-	 */
+	private JFormattedTextField fieldPersNumber;
+	
+
 	public InputForm() {
 		/*
 		 * This constructor is used when a new account will be setup
@@ -105,33 +100,18 @@ public class InputForm extends JPanel {
 		fieldName = new JTextField(20);
 		fieldLastName = new JTextField(20);
 
-		fieldPersNumber = new JTextField(13);
-		fieldIinitalDeposit = new JTextField(20);
-
 		/*
-		 * Second attempt -------------- Code found after Googling - returns
-		 * null
-		 * 
-		 * JFormattedTextField fieldPersNumber = new JFormattedTextField();
-		 * MaskFormatter fieldPersNumberMask; fieldPersNumberMask = new
-		 * MaskFormatter("########-####");
-		 * fieldPersNumberMask.setValueClass(String.class);
-		 * fieldPersNumberMask.setPlaceholderCharacter('*');
-		 * DefaultFormatterFactory persNumberFormater = new
-		 * DefaultFormatterFactory(fieldPersNumberMask);
-		 * fieldPersNumber.setFormatterFactory(persNumberFormater);
+		 * Second attempt
 		 */
 
-		/*
-		 * First attempt ------------- Copied after a dummy from Netbeans GUI
-		 * builder.
-		 * 
-		 * fieldPersNumber = new JFormattedTextField();
-		 * fieldPersNumber.setFormatterFactory( new DefaultFormatterFactory(new
-		 * NumberFormatter(new DecimalFormat("########-####"))));
-		 * fieldPersNumber.setColumns(11);
-		 */
-
+		fieldPersNumber = new JFormattedTextField();
+		MaskFormatter fieldPersNumberMask;
+		fieldPersNumberMask = new MaskFormatter("########-####");
+		fieldPersNumberMask.setValueClass(String.class);
+		fieldPersNumberMask.setPlaceholderCharacter('*');
+		DefaultFormatterFactory persNumberFormater = new DefaultFormatterFactory(fieldPersNumberMask);
+		fieldPersNumber.setFormatterFactory(persNumberFormater);
+		
 		// First row
 
 		gc.gridy = 0;
@@ -192,30 +172,16 @@ public class InputForm extends JPanel {
 		 * New account elements
 		 */
 
+		fieldInitialDeposit = new JTextField(20);
+
 		chkbxInitialDeposit = new JCheckBox("Initial insättning?");
-
-		/*
-		 * Disabled due to JFormattedTextField trouble
-		 * 
-		 * fieldIinitalDeposit = new JTextField();
-		 * 
-		 * fieldInitialDeposit = new JFormattedTextField();
-		 * fieldInitialDeposit.setFormatterFactory( new
-		 * DefaultFormatterFactory(new
-		 * NumberFormatter(NumberFormat.getCurrencyInstance())));
-		 * fieldInitialDeposit.setColumns(20);
-		 * fieldInitialDeposit.setEnabled(false);
-		 * chkbxInitialDeposit.setFocusable(false);
-		 */
-
+		chkbxInitialDeposit.setFocusable(false);
 		chkbxInitialDeposit.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				boolean deposit = chkbxInitialDeposit.isSelected();
-				fieldIinitalDeposit.setEnabled(deposit);
+				fieldInitialDeposit.setEnabled(deposit);
 				lblInitialDeposit.setEnabled(deposit);
-
 			}
 		});
 
@@ -244,7 +210,7 @@ public class InputForm extends JPanel {
 		gc.weighty = 0;
 		gc.fill = GridBagConstraints.CENTER;
 		gc.anchor = GridBagConstraints.LINE_START;
-		add(fieldIinitalDeposit, gc);
+		add(fieldInitialDeposit, gc);
 	}
 
 	private void editAccount() {
@@ -264,7 +230,7 @@ public class InputForm extends JPanel {
 		lblCustomerRatingValue = new JLabel("");
 
 		populateFields();
-		
+
 		// Account number
 
 		gc.gridy++;
@@ -362,8 +328,15 @@ public class InputForm extends JPanel {
 	}
 
 	public long getPersNumber() {
-		long persNr = Long.parseLong(fieldPersNumber.getText());
-		return persNr;
+		try {
+			fieldPersNumber.commitEdit();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String strPersNr = ((String) fieldPersNumber.getValue()).replaceAll("[-]", "");
+		
+		return Long.parseLong(strPersNr);
 	}
 
 	public boolean getInitialDeposit() {
@@ -371,12 +344,12 @@ public class InputForm extends JPanel {
 	}
 
 	public double getInitialDepositAmount() {
-		return Double.parseDouble(fieldIinitalDeposit.getText());
+		return Double.parseDouble(fieldInitialDeposit.getText());
 	}
 
 	// METHODS
 	public void clearFields() {
-		fieldIinitalDeposit.setText("");
+		fieldInitialDeposit.setText("");
 		fieldLastName.setText("");
 		fieldName.setText("");
 		fieldPersNumber.setText("");
@@ -394,5 +367,157 @@ public class InputForm extends JPanel {
 		String custRating = "" + currCustomer.getCustomerRating();
 		lblCustomerRatingValue.setText(custRating);
 
+	}
+	
+	public boolean userInputOk() {
+		
+		if(checkNameFields() && checkNumFields()){
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+	
+	public boolean newUserInputOK() {
+		if (checkNameFields() && checkNumFields() && checkInitDeposit() ){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private boolean checkNameFields() {
+		boolean nameOK = false;
+		
+		if (fieldName.getText().length() > 0){
+			fieldName.setBackground(Color.WHITE);
+			nameOK = true;
+		} else {
+			fieldName.setBackground(Color.RED);
+			return false;
+		}
+		
+		if (fieldLastName.getText().length() > 0){
+			fieldLastName.setBackground(Color.WHITE);
+			nameOK = true;
+		} else {
+			fieldLastName.setBackground(Color.RED);
+			return false;
+		}
+		
+		return nameOK;
+	}
+
+	private boolean checkNumFields() {
+		
+		boolean numOK = false;
+		
+		try {
+			fieldPersNumber.commitEdit();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String strPersNr = ((String) fieldPersNumber.getValue()).replaceAll("[-]", "");
+	
+		if (checkPersNr(strPersNr)) {
+			fieldPersNumber.setBackground(Color.WHITE);
+			numOK = true;
+		}else{
+			System.out.println("Retunerar kasst personnummer");
+			fieldPersNumber.setBackground(Color.RED);
+			numOK = false;
+		}
+		
+		
+		return numOK;
+		
+	}
+
+	private boolean checkInitDeposit() {
+		boolean depOK = true;
+		
+		if (chkbxInitialDeposit.isSelected()){
+			String strInitDeposit = fieldInitialDeposit.getText();
+			if(Pattern.matches("[a-zA-Z]+", strInitDeposit) == false && fieldInitialDeposit.getText().length() > 0){
+				fieldInitialDeposit.setBackground(Color.WHITE);
+				depOK = true;
+			} else {
+				fieldInitialDeposit.setBackground(Color.RED);
+				depOK = false;
+			}
+		}
+		
+		return depOK;
+	}
+	
+	private boolean checkPersNr(String strIn) {
+
+		String strYear = strIn.substring(0, 4);
+		String strMonth = strIn.substring(4, 6);
+		String strDay = strIn.substring(6, 8);
+		String number = strIn.substring(8, 12);
+		String returnStr = "";
+
+		int year = Integer.parseInt(strYear);
+		int month = Integer.parseInt(strMonth);
+		int day = Integer.parseInt(strDay);
+
+		
+		if (year > 1890 && year <= Calendar.getInstance().get(Calendar.YEAR)) {
+			returnStr += strYear;
+		}
+
+		if (month > 0 && month < 13) {
+			returnStr += strMonth;
+		}
+		
+		if (day > 0 && day <= returnMonthDays(year, month)) {
+			returnStr += strDay;
+		}
+
+		returnStr += number;
+
+		if (returnStr.length() == 12) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	private int returnMonthDays(int year, int month) {
+		int returnValue = 0;
+		int[] longMonths = { 1, 3, 5, 7, 8, 10, 12 };
+		int[] shortMonths = { 4, 6, 9, 11 };
+
+		if (month == 2) {
+			if (year % 4 != 0) {
+				returnValue = 27;
+			}
+
+			if (year % 4 == 0 && year % 100 == 0 && year % 400 == 0) {
+				returnValue = 28;
+			}else{
+				returnValue = 27;
+			}
+			
+		}else{
+
+		for (int checkMonthL : longMonths) {
+			if (month == checkMonthL) {
+				returnValue = 31;
+			}
+		}
+
+		for (int checkMonthS : shortMonths) {
+			if (month == checkMonthS && month != 2) {
+				returnValue = 30;
+			}
+
+		}
+		}
+		return returnValue;
 	}
 }

@@ -127,11 +127,13 @@ public class EditCustomerFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(inputForm.userInputOk()){
 				currCustomer.setLastName(inputForm.getLastName());
 				currCustomer.setName(inputForm.getFirstName());
 				currCustomer.setPersNumber(inputForm.getPersNumber());
 				controller.updateOutput();
 				editFrame.dispose();
+				}
 			}
 		});
 	
