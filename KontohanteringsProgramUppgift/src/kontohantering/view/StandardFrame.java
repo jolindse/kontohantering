@@ -1,11 +1,13 @@
 package kontohantering.view;
 
 import java.awt.BorderLayout;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.UIManager;
-
+import javax.swing.text.StyleContext.SmallAttributeSet;
+import static kontohantering.view.GuiConstants.*;
 import kontohantering.data.Customer;
 
 /* Mainframe class
@@ -25,6 +27,7 @@ public class StandardFrame extends JFrame {
 
 		// Set displayed name of windows and layout
 		super("[b]ank kontohantering v0.3");
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("prgresources/bankLogoSymbolSmall.png"));
 		setLayout(new BorderLayout());
 		// Set native platform look And feel.
 		try {
@@ -68,9 +71,9 @@ public class StandardFrame extends JFrame {
 		bottomButtonPanel.setDisabled();
 	}
 	
-	public void customerToText(Customer currCustomer){
+	public void setText(String strOutput){
 		outputPanel.textAreaView();
-		outputPanel.putTextTxtArea(currCustomer.toString());		
+		outputPanel.putTextTxtArea(strOutput);		
 	}
 	
 	public void editCustomer() {

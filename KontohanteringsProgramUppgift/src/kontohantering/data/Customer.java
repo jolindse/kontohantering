@@ -29,7 +29,8 @@ public class Customer {
 	private double accountBalance;
 	private double mortgage;
 	private Bonds bonds;
-
+	private int indexNr;
+	
 	public Customer() {
 		
 	}
@@ -170,6 +171,14 @@ public class Customer {
 		return false;
 	}
 
+	public void setIndex(int i){
+		indexNr = i;
+	}
+	
+	public int getIndex(){
+		return indexNr;
+	}
+	
 	private char setCustRating(){
 		return 'e';
 	}

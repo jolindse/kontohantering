@@ -45,7 +45,7 @@ public class Csv {
 
 	public ArrayList<Customer> readDB() {
 		BufferedReader br;
-		
+		int indexNr = 0;
 		// Init objects to populate with data
 		ArrayList<Customer> customerDB = new ArrayList<>();
 		
@@ -82,10 +82,12 @@ public class Csv {
 						bondsCounter++;
 						bondsMap.put(key, value);
 					}
+					currCustomer.setIndex(indexNr);
 					// Set populated bondsmap to currCustomer
 					currCustomer.setBonds(currBonds);
 					// Add currCustomer to the DB
 					customerDB.add(currCustomer);
+					indexNr++;
 				}
 				
 			}

@@ -105,6 +105,7 @@ public class OutputPanel extends JPanel {
 					if (e.getClickCount() == 2) {
 						int row = tblOutput.getSelectedRow();
 						controller.setSelectedCustomer(tblModel.getSelectedCustomer(row));
+						controller.setSelectedCustomerText();
 					}
 				}
 			});

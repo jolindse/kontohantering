@@ -7,6 +7,7 @@ import static kontohantering.view.GuiConstants.LOGOSMALL;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -35,9 +36,9 @@ public class EditCustomerFrame extends JFrame {
 	
 	public EditCustomerFrame() {
 		super("Redigera kund");
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("prgresources/bankLogoSymbolSmall.png"));
 		// Give a handler for closing
 		JFrame editFrame = this;
-		
 		controller = Controller.getController();
 		currCustomer = controller.getCurrentCustomer();
 		

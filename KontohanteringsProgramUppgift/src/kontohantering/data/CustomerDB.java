@@ -4,8 +4,9 @@ import java.util.ArrayList;
 /*
  * Class to handle the customer "database"
  */
+
 public class CustomerDB {
-	
+
 	
 	private ArrayList<Customer> customerBase;
 	
@@ -23,6 +24,10 @@ public class CustomerDB {
 	
 	public void addToDB (Customer currCust) {
 		customerBase.add(currCust);
+	}
+	
+	public void removeFromDB (int indexNr){
+		customerBase.remove(indexNr);
 	}
 	
 	public Customer getFromDB(int index){

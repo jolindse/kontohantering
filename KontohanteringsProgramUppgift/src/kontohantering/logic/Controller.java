@@ -1,6 +1,7 @@
 package kontohantering.logic;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
@@ -25,7 +26,6 @@ import kontohantering.view.StandardFrame;
 
 public class Controller implements IFormListener {
 
-	
 	private static Controller controllerHandler;
 
 	private String fileName = "test.csv";
@@ -71,17 +71,23 @@ public class Controller implements IFormListener {
 	public void setSelectedCustomer(Customer currCustomer) {
 		this.currCustomer = currCustomer;
 		view.setEditFrame();
-		view.customerToText(currCustomer);
+	}
+
+	public void setSelectedCustomerText() {
+		view.setText(currCustomer.toString());
 	}
 
 	public Customer getCurrentCustomer() {
 		return currCustomer;
 	}
 
-	public Customer getSelectedCustomer() {
+	/*
+	 *  Temp disabled - double function
+	 * 
+	 * public Customer getSelectedCustomer() {
 		return currCustomer;
 	}
-
+	 */
 	public void saveDB() {
 		customerDB.saveDB(fileName);
 	}
@@ -94,45 +100,53 @@ public class Controller implements IFormListener {
 	public String outputDB() {
 		return customerDB.outputDB();
 	}
-	
+
 	public ArrayList<Customer> getCustomerArray() {
 		return customerDB.getArray();
 	}
-	
-	public void SearchDB (String strToMatch) {
+
+	public void SearchDB(String strToMatch) {
 		Search currSearch = new Search();
 		view.setViewFrame();
 		ArrayList<Customer> currSearchArray = currSearch.getMatches(strToMatch);
 		tablePart(currSearchArray);
 	}
 
-	
 	// METHODS CALLED BY DIRECT USER ACTION
 
 	public void editCustomer() {
-		if (tableHandler.setSelectedCustomer()) {
-			view.editCustomer();
+		if (tableHandler.isTabelMode()) {
+			if(tableHandler.setSelectedCustomer()){
+				view.editCustomer();
+			}else{
+				JOptionPane.showMessageDialog(view, "Ingen kund vald!", "Välj kund",JOptionPane.ERROR_MESSAGE);
+			}
 		} else if (currCustomer != null) {
 			view.editCustomer();
 		} else {
-			JOptionPane.showMessageDialog(view, "Ingen kund vald!");
+			JOptionPane.showMessageDialog(view, "Ingen kund vald!", "Välj kund",JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
+
 	public void setEditMode() {
 		view.setEditFrame();
+		if (currCustomer == null) {
+			if (tableHandler.setSelectedCustomer()) {
+			} else {
+				// Do nothing - no customer selected
+			}
+		}
 	}
 
-	public void tableFull(){
+	public void tableFull() {
 		tableHandler.showTableFull(customerDB.getArray());
 	}
-	
-	
+
 	public void updateOutput() {
 		if (tableHandler.isTabelMode()) {
 			tableHandler.dataChanged();
 		} else {
-			view.customerToText(currCustomer);
+			view.setText(currCustomer.toString());
 		}
 	}
 
@@ -148,10 +162,56 @@ public class Controller implements IFormListener {
 
 	}
 
-	// PRIVATE METHODS
-	
-	private void tablePart(ArrayList<Customer> customerPartArray){
-		tableHandler.showTablePart(customerPartArray);
+	public void removeCustomer(){
+		int indexNr = 0;
+		if (tableHandler.isTabelMode()) {
+			if(tableHandler.setSelectedCustomer()){
+				int respons = JOptionPane.showConfirmDialog(view, "Vill du avsluta "+currCustomer.getName()+" "+currCustomer.getLastName()+"s konto?","Avsluta konto",JOptionPane.YES_NO_OPTION);
+				if (respons == JOptionPane.YES_OPTION){
+					indexNr = currCustomer.getIndex();
+					customerDB.removeFromDB(indexNr);
+				}
+			}else{
+				JOptionPane.showMessageDialog(view, "Ingen kund vald!", "Välj kund",JOptionPane.ERROR_MESSAGE);
+			}
+		} else if (currCustomer != null) {
+			int respons = JOptionPane.showConfirmDialog(view, "Vill du avsluta "+currCustomer.getName()+" "+currCustomer.getLastName()+"s konto?","Avsluta konto",JOptionPane.YES_NO_OPTION);
+			if (respons == JOptionPane.YES_OPTION){
+				indexNr = currCustomer.getIndex();
+				customerDB.removeFromDB(indexNr);
+			}
+		} else {
+			JOptionPane.showMessageDialog(view, "Ingen kund vald!", "Välj kund",JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
+	public void addFunds(String amount) {
+		if (Pattern.matches("[a-zA-Z]+", amount) == false) {
+			currCustomer.addFunds(Double.parseDouble(amount));
+			view.setText(currCustomer.toString());
+		} else {
+			JOptionPane.showMessageDialog(view, "Ickenumrerisk inmatning. Insättning ej utförd!", "Fel vid insättning",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	public void withdrawFunds(String amount) {
+		if (Pattern.matches("[a-zA-Z]+", amount) == false){
+			if (currCustomer.withdrawFunds(Double.parseDouble(amount))){
+				view.setText(currCustomer.toString());
+			} else {
+				JOptionPane.showMessageDialog(view, "Det saknas täckning för uttaget", "Saknas täckning", JOptionPane.ERROR_MESSAGE);
+		} 
+		}else{
+			JOptionPane.showMessageDialog(view, "Ickenumrerisk inmatning. Uttag ej utfört!", "Fel vid uttag",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	// PRIVATE METHODS
+
+	private void tablePart(ArrayList<Customer> customerPartArray) {
+		tableHandler.showTablePart(customerPartArray);
+	}
+
 }
