@@ -38,10 +38,10 @@ public class BottomButtonPanel extends JPanel {
 		controller = Controller.getController();
 
 		// Init button objects set properties
-		btnDeposit = new JButton("Sätt in");
+		btnDeposit = new JButton("Sï¿½tt in");
 		btnWithdraw = new JButton("Ta ut");
 		btnFunds = new JButton("Fonder");
-		btnMortage = new JButton("Lån");
+		btnMortage = new JButton("Lï¿½n");
 
 		btnDeposit.setFocusable(false);
 		btnWithdraw.setFocusable(false);
@@ -60,7 +60,7 @@ public class BottomButtonPanel extends JPanel {
 		btnDeposit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String amount = JOptionPane.showInputDialog("Ange belopp för insättning");
+				String amount = JOptionPane.showInputDialog("Ange belopp fï¿½r insï¿½ttning");
 				if (amount != null) {
 					controller.addFunds(amount);
 				}
@@ -81,6 +81,12 @@ public class BottomButtonPanel extends JPanel {
 		btnFunds.setPreferredSize(BUTTONDIM);
 		btnFunds.setMaximumSize(BUTTONDIM);
 		btnFunds.setMinimumSize(BUTTONDIM);
+		btnFunds.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				BondsFrame bondsFrame= new BondsFrame();
+			}
+		});
 		btnMortage.setPreferredSize(BUTTONDIM);
 		btnMortage.setMaximumSize(BUTTONDIM);
 		btnMortage.setMinimumSize(BUTTONDIM);
