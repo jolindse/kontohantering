@@ -1,4 +1,4 @@
-package kontohantering.view;
+package kontohantering.view.frames;
 
 import static kontohantering.view.GuiConstants.BANKBLUE;
 import static kontohantering.view.GuiConstants.BUTTONDIM;
@@ -7,7 +7,6 @@ import static kontohantering.view.GuiConstants.LOGOSMALL;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,11 +16,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import kontohantering.data.Customer;
 import kontohantering.logic.Controller;
+import kontohantering.view.formstables.InputForm;
 /*
  * Edit account info class
  * -----------------------
@@ -29,30 +28,18 @@ import kontohantering.logic.Controller;
  * that uses the second constructor of InputForm
  * for editing an existing account.
  */
-public class EditCustomerFrame extends JFrame {
+public class EditCustomerFrame extends KontoFrame {
 
 	private Customer currCustomer;
 	private Controller controller;
 	
 	public EditCustomerFrame() {
-		super("Redigera kund");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("prgresources/bankLogoSymbolSmall.png"));
-		// Give a handler for closing
+		super("Redigera kund",600, 500);
+		
 		JFrame editFrame = this;
 		controller = Controller.getController();
 		currCustomer = controller.getCurrentCustomer();
 		
-		setLayout(new BorderLayout());
-		setSize(600, 500);
-		setResizable(false);
-
-		// Set native platform look And feel.
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 		// Setup top panel
 
 		JPanel topPanel = new JPanel();
@@ -76,7 +63,7 @@ public class EditCustomerFrame extends JFrame {
 		lblLogo.setIcon(LOGOSMALL);
 		sidePanel.add(lblLogo);
 
-		// Setup inputform panel
+		// Setup input form panel
 
 		InputForm inputForm = new InputForm(currCustomer);
 
@@ -111,7 +98,6 @@ public class EditCustomerFrame extends JFrame {
 		add(inputForm, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
 
-		setVisible(true);
 
 		// ACTIONLISTENERS
 		

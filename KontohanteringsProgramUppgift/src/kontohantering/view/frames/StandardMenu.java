@@ -1,4 +1,4 @@
-package kontohantering.view;
+package kontohantering.view.frames;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +9,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import kontohantering.logic.Controller;
+import kontohantering.view.panels.BottomButtonPanel;
+import kontohantering.view.panels.OutputPanel;
+import kontohantering.view.panels.SideButtonPanel;
 
 /*
  *  Class for menubar in standard frame

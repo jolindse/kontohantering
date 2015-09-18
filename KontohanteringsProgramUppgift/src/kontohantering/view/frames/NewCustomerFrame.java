@@ -1,4 +1,4 @@
-package kontohantering.view;
+package kontohantering.view.frames;
 
 import static kontohantering.view.GuiConstants.BANKBLUE;
 import static kontohantering.view.GuiConstants.BUTTONDIM;
@@ -7,7 +7,6 @@ import static kontohantering.view.GuiConstants.LOGOSMALL;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -20,11 +19,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import kontohantering.logic.Controller;
+import kontohantering.view.eventlistners.FormEvent;
+import kontohantering.view.eventlistners.IFormListener;
+import kontohantering.view.formstables.InputForm;
 
 /*
  * Add a new customer frame class
@@ -32,15 +33,15 @@ import kontohantering.logic.Controller;
  * Window to pop up to put in user details adding a new customer.
  */
 
-public class NewCustomerFrame extends JFrame {
+public class NewCustomerFrame extends KontoFrame {
 
 	private static boolean isActive;
 	private IFormListener formListener;
 
 	public NewCustomerFrame() {
 
-		super("Lägg till ny kund");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("prgresources/bankLogoSymbolSmall.png"));
+		super("Lägg till ny kund",600, 500);
+		
 
 		if (!isActive) {
 			isActive = true;
@@ -48,20 +49,12 @@ public class NewCustomerFrame extends JFrame {
 			JFrame newCustomerFrame = this;
 
 			setLayout(new BorderLayout());
-			setSize(600, 500);
-			setResizable(false);
-
+		
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
 			// Set formlistener
 			formListener = Controller.getController();
-
-			// Set native platform look And feel.
-			try {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
+		
 			// Setup top panel
 
 			JPanel topPanel = new JPanel();
@@ -85,7 +78,7 @@ public class NewCustomerFrame extends JFrame {
 			lblLogo.setIcon(LOGOSMALL);
 			sidePanel.add(lblLogo);
 
-			// Setup inputform panel
+			// Setup input form panel
 
 			InputForm inputForm = new InputForm();
 
@@ -119,8 +112,6 @@ public class NewCustomerFrame extends JFrame {
 			add(sidePanel, BorderLayout.WEST);
 			add(inputForm, BorderLayout.CENTER);
 			add(buttonPanel, BorderLayout.SOUTH);
-
-			setVisible(true);
 
 			// ACTIONLISTENERS
 

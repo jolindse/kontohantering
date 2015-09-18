@@ -1,4 +1,4 @@
-package kontohantering.view;
+package kontohantering.view.panels;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import kontohantering.logic.Controller;
+import kontohantering.view.frames.NewCustomerFrame;
 
 import static kontohantering.view.GuiConstants.*;
 

@@ -1,4 +1,4 @@
-package kontohantering.view;
+package kontohantering.view.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -14,6 +14,7 @@ import javax.swing.border.EmptyBorder;
 
 import kontohantering.data.Customer;
 import kontohantering.logic.Controller;
+import kontohantering.view.formstables.CustomerTableModel;
 
 /*
  * Class for output field

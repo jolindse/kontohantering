@@ -1,4 +1,4 @@
-package kontohantering.view;
+package kontohantering.view.panels;
 
 import static kontohantering.view.GuiConstants.BUTTONDIM;
 
@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import kontohantering.logic.Controller;
+import kontohantering.view.frames.BondsFrame;
 
 /*
  * Class for lower button panel

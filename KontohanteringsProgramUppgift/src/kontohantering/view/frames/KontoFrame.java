@@ -1,4 +1,4 @@
-package kontohantering.view;
+package kontohantering.view.frames;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;

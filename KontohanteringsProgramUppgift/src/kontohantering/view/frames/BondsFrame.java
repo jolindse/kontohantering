@@ -1,4 +1,4 @@
-package kontohantering.view;
+package kontohantering.view.frames;
 
 public class BondsFrame extends KontoFrame {
 

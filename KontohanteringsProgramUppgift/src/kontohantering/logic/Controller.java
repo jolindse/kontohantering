@@ -8,10 +8,10 @@ import javax.swing.JOptionPane;
 import kontohantering.data.Customer;
 import kontohantering.data.CustomerDB;
 import kontohantering.data.Search;
-import kontohantering.view.FormEvent;
-import kontohantering.view.IFormListener;
-import kontohantering.view.OutputPanel;
-import kontohantering.view.StandardFrame;
+import kontohantering.view.eventlistners.FormEvent;
+import kontohantering.view.eventlistners.IFormListener;
+import kontohantering.view.frames.StandardFrame;
+import kontohantering.view.panels.OutputPanel;
 
 /*
  *  Controller class

@@ -1,21 +1,20 @@
-package kontohantering.view;
+package kontohantering.view.frames;
 
 import java.awt.BorderLayout;
-import java.awt.Toolkit;
 
-import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import javax.swing.UIManager;
-import javax.swing.text.StyleContext.SmallAttributeSet;
-import static kontohantering.view.GuiConstants.*;
-import kontohantering.data.Customer;
+
+import kontohantering.view.panels.BottomButtonPanel;
+import kontohantering.view.panels.OutputPanel;
+import kontohantering.view.panels.SideButtonPanel;
+import kontohantering.view.panels.TopLogoPanel;
 
 /* Mainframe class
  * ----------------
  * Set up the main JFrame thats the program hub
  */
 
-public class StandardFrame extends JFrame {
+public class StandardFrame extends KontoFrame {
 
 	private JMenuBar standardMenu;
 	private SideButtonPanel sideButtonPanel;
@@ -26,16 +25,9 @@ public class StandardFrame extends JFrame {
 	public StandardFrame() {
 
 		// Set displayed name of windows and layout
-		super("[b]ank kontohantering v0.3");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("prgresources/bankLogoSymbolSmall.png"));
+		super("[b]ank kontohantering v0.3",900, 800);
 		setLayout(new BorderLayout());
-		// Set native platform look And feel.
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+		
 		// Add elements to frame
 		
 		sideButtonPanel = new SideButtonPanel();
@@ -51,11 +43,6 @@ public class StandardFrame extends JFrame {
 		getContentPane().add(outputPanel, BorderLayout.EAST);
 		getContentPane().add(topLogoPanel, BorderLayout.NORTH);
 		
-		// Set size and closure behavior
-		setSize(900, 800);
-		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
 
 	}
 

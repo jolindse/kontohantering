@@ -10,7 +10,7 @@ import java.io.IOException;
 import javax.swing.SwingUtilities;
 
 import kontohantering.data.CustomerDB;
-import kontohantering.view.StandardFrame;
+import kontohantering.view.frames.StandardFrame;
 
 public class Application {
 	

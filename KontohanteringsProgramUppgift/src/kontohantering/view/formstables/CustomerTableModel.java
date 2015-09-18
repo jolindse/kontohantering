@@ -1,4 +1,4 @@
-package kontohantering.view;
+package kontohantering.view.formstables;
 
 import java.util.ArrayList;
 

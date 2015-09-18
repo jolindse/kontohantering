@@ -1,4 +1,4 @@
-package kontohantering.view;
+package kontohantering.view.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
