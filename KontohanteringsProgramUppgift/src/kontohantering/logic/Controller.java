@@ -10,13 +10,17 @@ import kontohantering.data.CustomerDB;
 import kontohantering.data.Search;
 import kontohantering.view.eventlistners.FormEvent;
 import kontohantering.view.eventlistners.IFormListener;
+import kontohantering.view.eventlistners.ITableListener;
+import kontohantering.view.eventlistners.IUpdateObserver;
+import kontohantering.view.eventlistners.IUpdateSub;
+import kontohantering.view.eventlistners.TableEvent;
 import kontohantering.view.frames.StandardFrame;
 import kontohantering.view.panels.OutputPanel;
 
 /*
  *  Controller class
  *  -------------------------
- *  This will be started from mainloop and handles
+ *  This will be started from application class and handles
  *  all connections between GUI and model.
  *  
  *  It contains one static method to get a reference
@@ -24,21 +28,33 @@ import kontohantering.view.panels.OutputPanel;
  *  relationship.
  */
 
-public class Controller implements IFormListener {
+public class Controller implements IFormListener, IUpdateSub, ITableListener {
 
 	private static Controller controllerHandler;
 
+	private ArrayList updateObservers;
 	private String fileName = "test.csv";
 	private Customer currCustomer;
 	private StandardFrame view;
 	private CustomerDB customerDB;
-	private OutputPanel tableHandler;
+	
+	private boolean tableMode;
+	private boolean customerSelected;
 
 	public Controller() {
-
+		updateObservers = new ArrayList<IUpdateObserver>();
+		tableMode = false;
+		customerSelected = false;
 	}
 
+	/*  The init methods
+	 *  -----------------
+	 *  Started from application class and exist to have starting of 
+	 *  different parts of MVC in order.
+	 */
+	
 	public void initControllerDB(CustomerDB customerDB) {
+
 		this.customerDB = customerDB;
 		loadDB();
 	}
@@ -51,8 +67,8 @@ public class Controller implements IFormListener {
 		controllerHandler = controller;
 	}
 
-	// METHOD
-
+	// METHODS TO GET AND RETURN HANDLES
+	
 	public static Controller getController() {
 		/*
 		 * Static method to return a handler to the controller.
@@ -60,34 +76,67 @@ public class Controller implements IFormListener {
 		return controllerHandler;
 	}
 
-	// Get handler for current customer selection
-
-	public void setTable(OutputPanel tableHandler) {
-		this.tableHandler = tableHandler;
+	// METHODS FROM GUI UPDATE INTERFACE
+	
+	@Override
+	public void registerObserver(IUpdateObserver o) {
+		updateObservers.add(o);
+		
 	}
 
+	@Override
+	public void removeObserver(IUpdateObserver o) {
+		int index = updateObservers.indexOf(o);
+			if (index >= 0){
+				updateObservers.remove(index);
+			}
+		
+	}
+
+	@Override
+	public void updateObservers() {
+		for (int i = 0; i < updateObservers.size(); i++) {
+			IUpdateObserver observer = (IUpdateObserver)updateObservers.get(i);
+				observer.updateGui();
+		}
+		
+	}
+
+	// METHODS FROM TABLE INTERFACE
+	
+	@Override
+	public void tableEventOccured(TableEvent t) {
+		
+		tableMode = t.isTableActive();
+		int clicks = t.getClicks();
+		
+		if (t.isCustomerSelected()){
+			Customer eventCustomer = t.getCurrCustomer();
+			currCustomer = eventCustomer;
+			customerSelected = true;
+		} else if (currCustomer != null) {
+			customerSelected = true;
+		} else {
+			customerSelected = false;
+		}
+		
+		if (customerSelected){
+		switch(clicks){
+		case 1:
+			view.editMode();
+			break;
+		case 2:
+			view.editMode();
+			view.textMode(currCustomer.toString());
+			break;
+		}
+		}
+		
+	}
+
+	
 	// METHODS FOR MODEL INTERACTION
 
-	public void setSelectedCustomer(Customer currCustomer) {
-		this.currCustomer = currCustomer;
-		view.setEditFrame();
-	}
-
-	public void setSelectedCustomerText() {
-		view.setText(currCustomer.toString());
-	}
-
-	public Customer getCurrentCustomer() {
-		return currCustomer;
-	}
-
-	/*
-	 *  Temp disabled - double function
-	 * 
-	 * public Customer getSelectedCustomer() {
-		return currCustomer;
-	}
-	 */
 	public void saveDB() {
 		customerDB.saveDB(fileName);
 	}
@@ -98,74 +147,66 @@ public class Controller implements IFormListener {
 	}
 
 	public String outputDB() {
+		// Depricated - still in for testing. To be removed
 		return customerDB.outputDB();
 	}
 
-	public ArrayList<Customer> getCustomerArray() {
+
+	private ArrayList<Customer> getCustomerArray() {
 		return customerDB.getArray();
 	}
 
+	// METHODS CALLED BY BUTTONS
+
+
 	public void SearchDB(String strToMatch) {
-		Search currSearch = new Search();
-		view.setViewFrame();
+		/*
+		 *  Called by Search button
+		 */
+		Search currSearch = new Search(getCustomerArray());
+		view.viewMode();
 		ArrayList<Customer> currSearchArray = currSearch.getMatches(strToMatch);
-		tablePart(currSearchArray);
+		setTableData(currSearchArray);
 	}
 
-	// METHODS CALLED BY DIRECT USER ACTION
-
+	
 	public void editCustomer() {
-		if (tableHandler.isTabelMode()) {
-			if(tableHandler.setSelectedCustomer()){
-				view.editCustomer();
+		/*
+		 *  Called by edit button
+		 */
+		if (tableMode) {
+			if(customerSelected){
+				view.editCustomerFrame(currCustomer);
 			}else{
 				JOptionPane.showMessageDialog(view, "Ingen kund vald!", "Välj kund",JOptionPane.ERROR_MESSAGE);
 			}
-		} else if (currCustomer != null) {
-			view.editCustomer();
+		} else if (customerSelected) {
+			view.editCustomerFrame(currCustomer);
 		} else {
 			JOptionPane.showMessageDialog(view, "Ingen kund vald!", "Välj kund",JOptionPane.ERROR_MESSAGE);
 		}
 	}
-
-	public void setEditMode() {
-		view.setEditFrame();
-		if (currCustomer == null) {
-			if (tableHandler.setSelectedCustomer()) {
-			} else {
-				// Do nothing - no customer selected
-			}
-		}
-	}
-
-	public void tableFull() {
-		tableHandler.showTableFull(customerDB.getArray());
-	}
-
-	public void updateOutput() {
-		if (tableHandler.isTabelMode()) {
-			tableHandler.dataChanged();
-		} else {
-			view.setText(currCustomer.toString());
-		}
-	}
-
+		
 	@Override
 	public void formEventOccured(FormEvent e) {
-		switch (e.getFormType()) {
-		case "newCustomer":
-			currCustomer = new Customer(e.getFirstName(), e.getLastName(), e.getPersNumber(), e.getDepositAmount());
+		/*
+		 *  Called by new account button
+		 */
+		
+		currCustomer = new Customer(e.getFirstName(), e.getLastName(), e.getPersNumber(), e.getDepositAmount());
 			customerDB.addToDB(currCustomer);
-			updateOutput();
-			break;
-		}
+			//updateOutput();
 
 	}
 
 	public void removeCustomer(){
+		/*
+		 *  Called by terminate account button
+		 */
+		
 		int indexNr = 0;
-		if (tableHandler.isTabelMode()) {
-			if(tableHandler.setSelectedCustomer()){
+		if (tableMode) {
+			if(customerSelected){
 				int respons = JOptionPane.showConfirmDialog(view, "Vill du avsluta "+currCustomer.getName()+" "+currCustomer.getLastName()+"s konto?","Avsluta konto",JOptionPane.YES_NO_OPTION);
 				if (respons == JOptionPane.YES_OPTION){
 					indexNr = currCustomer.getIndex();
@@ -186,9 +227,12 @@ public class Controller implements IFormListener {
 	}
 	
 	public void addFunds(String amount) {
+		/*
+		 *  Called by add funds button
+		 */
 		if (Pattern.matches("[a-zA-Z]+", amount) == false) {
 			currCustomer.addFunds(Double.parseDouble(amount));
-			view.setText(currCustomer.toString());
+			view.textMode(currCustomer.toString());
 		} else {
 			JOptionPane.showMessageDialog(view, "Ickenumrerisk inmatning. Insättning ej utförd!", "Fel vid insättning",
 					JOptionPane.ERROR_MESSAGE);
@@ -196,9 +240,13 @@ public class Controller implements IFormListener {
 	}
 
 	public void withdrawFunds(String amount) {
+		/*
+		 *  Called by withdraw funds button
+		 */
+		
 		if (Pattern.matches("[a-zA-Z]+", amount) == false){
 			if (currCustomer.withdrawFunds(Double.parseDouble(amount))){
-				view.setText(currCustomer.toString());
+				view.textMode(currCustomer.toString());
 			} else {
 				JOptionPane.showMessageDialog(view, "Det saknas täckning för uttaget", "Saknas täckning", JOptionPane.ERROR_MESSAGE);
 		} 
@@ -208,10 +256,20 @@ public class Controller implements IFormListener {
 		}
 	}
 
+	// OTHER METHODS CALLED BY USER
+	
+	public void tableFull() {
+		/*
+		 *  Show full db in table.
+		 */
+		setTableData(customerDB.getArray());
+	}
+	
+	
 	// PRIVATE METHODS
 
-	private void tablePart(ArrayList<Customer> customerPartArray) {
-		tableHandler.showTablePart(customerPartArray);
+	private void setTableData(ArrayList<Customer> customerArray) {
+		view.tableMode(customerArray);
 	}
 
 }

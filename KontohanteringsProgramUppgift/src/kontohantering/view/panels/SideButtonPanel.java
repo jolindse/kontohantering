@@ -44,8 +44,8 @@ public class SideButtonPanel extends JPanel {
 		// Set size
 		this.setPreferredSize(new Dimension(130, 600));
 		SideButtonPanel currPanel = this;
-
 		controller = Controller.getController();
+
 		// Init buttons set properties
 		btnNewCustomer = new JButton("Ny kund");
 		btnSearchCustomer = new JButton("Sök");

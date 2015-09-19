@@ -41,16 +41,8 @@ public class NewCustomerFrame extends KontoFrame {
 	public NewCustomerFrame() {
 
 		super("Lägg till ny kund",600, 500);
-		
-
-		if (!isActive) {
-			isActive = true;
-			// Add handler for close
-			JFrame newCustomerFrame = this;
-
+	
 			setLayout(new BorderLayout());
-		
-			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
 			// Set formlistener
 			formListener = Controller.getController();
@@ -130,7 +122,7 @@ public class NewCustomerFrame extends KontoFrame {
 						}
 						formListener.formEventOccured(fevent);
 						inputForm.clearFields();
-						newCustomerFrame.dispose();
+						closureBehaviour();
 					}
 				}
 			});
@@ -139,49 +131,16 @@ public class NewCustomerFrame extends KontoFrame {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					newCustomerFrame.dispose();
+					closureBehaviour();
 
 				}
 			});
 
-			// Make sure we set isActive to false when closing window.
+	}
 
-			this.addWindowListener(new WindowListener() {
-
-				@Override
-				public void windowClosed(WindowEvent e) {
-					isActive = false;
-				}
-
-				@Override
-				public void windowActivated(WindowEvent e) {
-				}
-
-				@Override
-				public void windowClosing(WindowEvent e) {
-				}
-
-				@Override
-				public void windowDeactivated(WindowEvent e) {
-				}
-
-				@Override
-				public void windowDeiconified(WindowEvent e) {
-				}
-
-				@Override
-				public void windowIconified(WindowEvent e) {
-				}
-
-				@Override
-				public void windowOpened(WindowEvent e) {
-				}
-			});
-
-		} else {
-			JOptionPane.showMessageDialog(null,
-					"En kund håller redan på att läggas till. Endast en sådan operation åt gången är tillåten");
-		}
+	@Override
+	void closureBehaviour() {
+		this.dispose();		
 	}
 
 }

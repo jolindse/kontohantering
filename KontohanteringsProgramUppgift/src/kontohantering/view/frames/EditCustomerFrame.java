@@ -30,15 +30,15 @@ import kontohantering.view.formstables.InputForm;
  */
 public class EditCustomerFrame extends KontoFrame {
 
-	private Customer currCustomer;
 	private Controller controller;
+	private Customer currCustomer;
 	
-	public EditCustomerFrame() {
+	public EditCustomerFrame(Customer currCustomer) {
 		super("Redigera kund",600, 500);
 		
 		JFrame editFrame = this;
 		controller = Controller.getController();
-		currCustomer = controller.getCurrentCustomer();
+		this.currCustomer = currCustomer;
 		
 		// Setup top panel
 
@@ -105,7 +105,7 @@ public class EditCustomerFrame extends KontoFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				editFrame.dispose();
+				closureBehaviour();
 				
 			}
 		});
@@ -118,12 +118,18 @@ public class EditCustomerFrame extends KontoFrame {
 				currCustomer.setLastName(inputForm.getLastName());
 				currCustomer.setName(inputForm.getFirstName());
 				currCustomer.setPersNumber(inputForm.getPersNumber());
-				controller.updateOutput();
-				editFrame.dispose();
+				//controller.updateOutput();
+				closureBehaviour();
 				}
 			}
 		});
 	
+	}
+
+	@Override
+	void closureBehaviour() {
+		this.dispose();
+		
 	}
 	
 }

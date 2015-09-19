@@ -111,7 +111,7 @@ public class StandardMenu extends JMenuBar {
 				
 				if(showTableOnOff.isSelected()){
 					controller.tableFull();;
-					view.setEditFrame();
+					view.editMode();
 					
 				} 
 				if(!showTableOnOff.isSelected()){
@@ -126,7 +126,7 @@ public class StandardMenu extends JMenuBar {
 			public void actionPerformed(ActionEvent e) {
 			
 				controller.tableFull();
-				view.setEditFrame();
+				view.editMode();
 			}
 		});
 		
@@ -134,7 +134,7 @@ public class StandardMenu extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				outputPanel.putTextTxtArea(controller.outputDB());
+				view.textMode(controller.outputDB());
 			}
 		});
 		

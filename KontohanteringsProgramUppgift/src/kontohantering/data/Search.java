@@ -15,10 +15,10 @@ public class Search {
 	private ArrayList<Customer> returnList;
 	
 	
-	public Search () {
+	public Search (ArrayList<Customer> customerDB) {
 		
 		controller = Controller.getController();
-		customerDB = controller.getCustomerArray();
+		this.customerDB = customerDB;
 		returnList = new ArrayList<>();
 		customerSet = new HashSet<>();
 	}

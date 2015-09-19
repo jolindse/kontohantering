@@ -6,4 +6,10 @@ public class BondsFrame extends KontoFrame {
 		super("Fonder",500,400);
 		
 	}
+
+	@Override
+	void closureBehaviour() {
+		this.dispose();
+		
+	}
 }

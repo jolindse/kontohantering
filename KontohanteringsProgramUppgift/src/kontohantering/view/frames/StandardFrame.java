@@ -1,9 +1,11 @@
 package kontohantering.view.frames;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
 
 import javax.swing.JMenuBar;
 
+import kontohantering.data.Customer;
 import kontohantering.view.panels.BottomButtonPanel;
 import kontohantering.view.panels.OutputPanel;
 import kontohantering.view.panels.SideButtonPanel;
@@ -46,24 +48,38 @@ public class StandardFrame extends KontoFrame {
 
 	}
 
-	// METHODS TO CHANGE MODES
+	// METHODS TO CHANGE BUTTON PANELS
 	
-	public void setEditFrame() {
+	public void editMode() {
 		sideButtonPanel.setEditMode();
 		bottomButtonPanel.setActive();
 	}
 	
-	public void setViewFrame() {
+	public void viewMode() {
 		sideButtonPanel.setViewMode();
 		bottomButtonPanel.setDisabled();
 	}
 	
-	public void setText(String strOutput){
+	// METHODS TO CHANGE OUTPUT PANEL
+	
+	public void textMode(String strOutput){
 		outputPanel.textAreaView();
-		outputPanel.putTextTxtArea(strOutput);		
+		outputPanel.setText(strOutput);		
 	}
 	
-	public void editCustomer() {
-		EditCustomerFrame ed = new EditCustomerFrame();
+	public void tableMode(ArrayList<Customer> currArray){
+		outputPanel.showTable(currArray);
+	}
+	
+	// OTHER METHODS
+	
+	public void editCustomerFrame(Customer currCustomer) {
+		EditCustomerFrame editFrame = new EditCustomerFrame(currCustomer);
+	}
+
+	@Override
+	void closureBehaviour() {
+		System.exit(0);
+		
 	}
 }

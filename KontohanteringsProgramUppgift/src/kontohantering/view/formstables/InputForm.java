@@ -70,7 +70,6 @@ public class InputForm extends JPanel {
 	}
 
 	public InputForm(Customer currCustomer) {
-		// public InputForm(Customer currCustomer) {
 		/*
 		 * This constructor is used when a existing account is being edited.
 		 */
@@ -99,10 +98,6 @@ public class InputForm extends JPanel {
 
 		fieldName = new JTextField(20);
 		fieldLastName = new JTextField(20);
-
-		/*
-		 * Second attempt
-		 */
 
 		fieldPersNumber = new JFormattedTextField();
 		MaskFormatter fieldPersNumberMask;
@@ -195,7 +190,7 @@ public class InputForm extends JPanel {
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(chkbxInitialDeposit, gc);
 
-		// Inputfield initial deposit
+		// Input field initial deposit
 
 		gc.gridy++;
 		gc.gridx = 0;
@@ -348,7 +343,11 @@ public class InputForm extends JPanel {
 	}
 
 	// METHODS
+	
 	public void clearFields() {
+	/* 
+	 *  Clears all input fields.
+	 */
 		fieldInitialDeposit.setText("");
 		fieldLastName.setText("");
 		fieldName.setText("");
@@ -357,6 +356,9 @@ public class InputForm extends JPanel {
 	}
 
 	public void populateFields() {
+		/*
+		 *  Populates fields in edit view with current customer data.
+		 */
 		fieldLastName.setText(currCustomer.getLastName());
 		fieldName.setText(currCustomer.getName());
 		fieldPersNumber.setText(Long.toString(currCustomer.getPersNumber()));
@@ -370,6 +372,9 @@ public class InputForm extends JPanel {
 	}
 	
 	public boolean userInputOk() {
+		/*
+		 *  Checks field input integrity
+		 */
 		
 		if(checkNameFields() && checkNumFields()){
 			return true;
@@ -380,6 +385,9 @@ public class InputForm extends JPanel {
 	}
 	
 	public boolean newUserInputOK() {
+		/*
+		 *  Checks new user field integrity
+		 */
 		if (checkNameFields() && checkNumFields() && checkInitDeposit() ){
 			return true;
 		} else {
@@ -388,6 +396,9 @@ public class InputForm extends JPanel {
 	}
 	
 	private boolean checkNameFields() {
+		/* 
+		 *  Validates name fields in form.
+		 */
 		boolean nameOK = false;
 		
 		if (fieldName.getText().length() > 0){
@@ -410,6 +421,9 @@ public class InputForm extends JPanel {
 	}
 
 	private boolean checkNumFields() {
+		/*
+		 *  Validates numbers fields in form.
+		 */
 		
 		boolean numOK = false;
 		
@@ -436,6 +450,9 @@ public class InputForm extends JPanel {
 	}
 
 	private boolean checkInitDeposit() {
+		/*
+		 *  Check the initial deposit portion of form for integrity.
+		 */
 		boolean depOK = true;
 		
 		if (chkbxInitialDeposit.isSelected()){
@@ -453,6 +470,9 @@ public class InputForm extends JPanel {
 	}
 	
 	private boolean checkPersNr(String strIn) {
+		/*
+		 *  Checks to see that person number is correctly filled in.
+		 */
 
 		String strYear = strIn.substring(0, 4);
 		String strMonth = strIn.substring(4, 6);
@@ -488,6 +508,9 @@ public class InputForm extends JPanel {
 	}
 
 	private int returnMonthDays(int year, int month) {
+		/*
+		 *  Return the number of days in each month for person number validation.
+		 */
 		int returnValue = 0;
 		int[] longMonths = { 1, 3, 5, 7, 8, 10, 12 };
 		int[] shortMonths = { 4, 6, 9, 11 };

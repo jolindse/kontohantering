@@ -14,6 +14,8 @@ import javax.swing.border.EmptyBorder;
 
 import kontohantering.data.Customer;
 import kontohantering.logic.Controller;
+import kontohantering.view.eventlistners.ITableListener;
+import kontohantering.view.eventlistners.TableEvent;
 import kontohantering.view.formstables.CustomerTableModel;
 
 /*
@@ -29,7 +31,7 @@ public class OutputPanel extends JPanel {
 	private JTable tblOutput;
 	private CustomerTableModel tblModel;
 	private JScrollPane scrPaneOut;
-	private Controller controller;
+	private ITableListener tableListener;
 	private boolean tableInit;
 	private boolean tableMode;
 	private String buttonAction;
@@ -41,10 +43,9 @@ public class OutputPanel extends JPanel {
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(0, 20, 0, 20));
 
-		// Get controller handler for events and send handler for currCustomer actions
-		controller = Controller.getController();
-		controller.setTable(this);
-		
+		// Set controller as listener
+		tableListener = Controller.getController();
+
 		// Make sure table model isn't initiated before data is available
 		tableInit = false;
 		tableMode = false;
@@ -73,13 +74,14 @@ public class OutputPanel extends JPanel {
 			scrPaneOut.setViewportView(tblOutput);
 		} else {
 			// Init the table output for search queries
+			tableMode = true;
+			tableInit = true;
 			tblModel = new CustomerTableModel();
 			tblOutput = new JTable(tblModel);
 			tblOutput.setPreferredSize(new Dimension(700, 560));
 			tblOutput.setVisible(true);
 			add(tblOutput, BorderLayout.SOUTH);
 			scrPaneOut.setViewportView(tblOutput);
-			tableInit = true;
 			tblOutput.addMouseListener(new MouseListener() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
@@ -99,18 +101,25 @@ public class OutputPanel extends JPanel {
 
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					if (e.getClickCount() == 1) {
-						controller.setEditMode();
+					boolean customerSelected = false;
+					int row = tblOutput.getSelectedRow();
+					TableEvent te = null;
+					if (row >= 0) {
+						customerSelected = true;
+						if (e.getClickCount() == 1) {
+							te = new TableEvent(e.getSource(), tblModel.getSelectedCustomer(row), tableMode, customerSelected, 1);
+						}
+						if (e.getClickCount() >= 2) {
+							te = new TableEvent(e.getSource(), tblModel.getSelectedCustomer(row), tableMode, customerSelected, 2);
+						}
+					} else {
+						te = new TableEvent(e.getSource(), null , tableMode, false , 0);
 					}
 					
-					if (e.getClickCount() == 2) {
-						int row = tblOutput.getSelectedRow();
-						controller.setSelectedCustomer(tblModel.getSelectedCustomer(row));
-						controller.setSelectedCustomerText();
-					}
+					tableListener.tableEventOccured(te);
 				}
 			});
-			tableMode = true;
+
 		}
 	}
 
@@ -119,31 +128,25 @@ public class OutputPanel extends JPanel {
 		tableMode = false;
 	}
 
-	public void putTextTxtArea(String outputText) {
+	public void setText(String outputText) {
 		txtAOutput.setText(outputText);
 	}
 
-	public void showTableFull(ArrayList<Customer> customerArrayFull) {
-		tableView();
-		tblModel.setDB(customerArrayFull);
-		tblModel.fireTableDataChanged();
-	}
-	
-	public void showTablePart(ArrayList<Customer> customerArrayPart) {
+	public void showTable(ArrayList<Customer> customerArrayPart) {
 		tableView();
 		tblModel.setDB(customerArrayPart);
 		tblModel.fireTableDataChanged();
 	}
-	
+
 	public void dataChanged() {
 		tblModel.fireTableDataChanged();
 	}
-	
-	public boolean isTabelMode() {
+
+/*	public boolean isTabelMode() {
 		return tableMode;
 	}
-
-	public boolean setSelectedCustomer() {
+*/
+/*	public boolean setSelectedCustomer() {
 		if (tableMode && tblOutput.getSelectedRow() >= 0) {
 			int row = tblOutput.getSelectedRow();
 			controller.setSelectedCustomer(tblModel.getSelectedCustomer(row));
@@ -152,5 +155,5 @@ public class OutputPanel extends JPanel {
 			return false;
 		}
 	}
-
+*/
 }

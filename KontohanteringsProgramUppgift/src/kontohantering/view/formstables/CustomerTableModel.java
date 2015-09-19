@@ -9,9 +9,6 @@ import kontohantering.logic.Controller;
 
 public class CustomerTableModel extends AbstractTableModel {
 
-	private static final int ARRAYFULL = 0;
-	private static final int ARRAYPART = 1;
-	
 	private String[] colName = { 
 			"Förnamn", 
 			"Efternamn", 
