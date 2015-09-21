@@ -20,6 +20,8 @@ import javax.swing.border.EmptyBorder;
 
 import kontohantering.data.Customer;
 import kontohantering.logic.Controller;
+import kontohantering.view.eventlistners.FormEvent;
+import kontohantering.view.eventlistners.IFormListener;
 import kontohantering.view.formstables.InputForm;
 /*
  * Edit account info class
@@ -32,12 +34,14 @@ public class EditCustomerFrame extends KontoFrame {
 
 	private Controller controller;
 	private Customer currCustomer;
+	private IFormListener formListener;
 	
 	public EditCustomerFrame(Customer currCustomer) {
 		super("Redigera kund",600, 500);
 		
 		JFrame editFrame = this;
 		controller = Controller.getController();
+		formListener = controller;
 		this.currCustomer = currCustomer;
 		
 		// Setup top panel
@@ -115,9 +119,13 @@ public class EditCustomerFrame extends KontoFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(inputForm.userInputOk()){
-				currCustomer.setLastName(inputForm.getLastName());
+				
+					FormEvent ev = new FormEvent(this, currCustomer, inputForm.getFirstName(), inputForm.getLastName(), inputForm.getPersNumber());
+					formListener.editUserFormEvent(ev);
+					
+				/*currCustomer.setLastName(inputForm.getLastName());
 				currCustomer.setName(inputForm.getFirstName());
-				currCustomer.setPersNumber(inputForm.getPersNumber());
+				currCustomer.setPersNumber(inputForm.getPersNumber());*/
 				//controller.updateOutput();
 				closureBehaviour();
 				}

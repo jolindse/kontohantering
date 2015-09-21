@@ -115,12 +115,12 @@ public class NewCustomerFrame extends KontoFrame {
 						FormEvent fevent;
 						if (!inputForm.getInitialDeposit()) {
 							fevent = new FormEvent(e.getSource(), inputForm.getFirstName(), inputForm.getLastName(),
-									inputForm.getPersNumber(), 0, "newCustomer");
+									inputForm.getPersNumber(), 0);
 						} else {
 							fevent = new FormEvent(e.getSource(), inputForm.getFirstName(), inputForm.getLastName(),
-									inputForm.getPersNumber(), inputForm.getInitialDepositAmount(), "newCustomer");
+									inputForm.getPersNumber(), inputForm.getInitialDepositAmount());
 						}
-						formListener.formEventOccured(fevent);
+						formListener.newUserFormEvent(fevent);
 						inputForm.clearFields();
 						closureBehaviour();
 					}

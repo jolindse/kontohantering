@@ -15,6 +15,8 @@ import javax.swing.border.EmptyBorder;
 import kontohantering.data.Customer;
 import kontohantering.logic.Controller;
 import kontohantering.view.eventlistners.ITableListener;
+import kontohantering.view.eventlistners.IUpdateObserver;
+import kontohantering.view.eventlistners.IUpdateSub;
 import kontohantering.view.eventlistners.TableEvent;
 import kontohantering.view.formstables.CustomerTableModel;
 
@@ -31,10 +33,10 @@ public class OutputPanel extends JPanel {
 	private JTable tblOutput;
 	private CustomerTableModel tblModel;
 	private JScrollPane scrPaneOut;
-	private ITableListener tableListener;
 	private boolean tableInit;
 	private boolean tableMode;
 	private String buttonAction;
+	private ITableListener tableListener;
 
 	public OutputPanel() {
 
@@ -45,7 +47,7 @@ public class OutputPanel extends JPanel {
 
 		// Set controller as listener
 		tableListener = Controller.getController();
-
+	
 		// Make sure table model isn't initiated before data is available
 		tableInit = false;
 		tableMode = false;
@@ -138,22 +140,13 @@ public class OutputPanel extends JPanel {
 		tblModel.fireTableDataChanged();
 	}
 
-	public void dataChanged() {
-		tblModel.fireTableDataChanged();
-	}
-
-/*	public boolean isTabelMode() {
-		return tableMode;
-	}
-*/
-/*	public boolean setSelectedCustomer() {
-		if (tableMode && tblOutput.getSelectedRow() >= 0) {
-			int row = tblOutput.getSelectedRow();
-			controller.setSelectedCustomer(tblModel.getSelectedCustomer(row));
-			return true;
+	public void updateInfo(String strText) {
+		if (tableMode) {
+			tblModel.fireTableDataChanged();
 		} else {
-			return false;
+			setText(strText);
 		}
 	}
-*/
+
+
 }

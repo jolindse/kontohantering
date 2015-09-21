@@ -44,7 +44,7 @@ public class Customer {
 		accountNumber = generateAccountNumber();
 		numAccount++;
 		mortgage = 0;
-		bonds = new Bonds(0, 0, this);
+		bonds = new Bonds(this);
 		this.customerRating = setCustRating();
 
 	}
@@ -57,7 +57,7 @@ public class Customer {
 		accountNumber = generateAccountNumber();
 		numAccount++;
 		mortgage = 0;
-		bonds = new Bonds(0, 0, this);
+		bonds = new Bonds(this);
 		this.customerRating = setCustRating();
 	}
 
@@ -186,7 +186,7 @@ public class Customer {
 	@Override
 	public String toString() {
 		String strReturn = name + " " + lastName + "\nPersonnummer:\t" + persNumber + "\nKontonummer:\t" + accountNumber
-				+ "\nSaldo:\t\t" + accountBalance +" SEK" + "\nKundklass:\t" + customerRating;
+				+ "\nSaldo:\t\t" + accountBalance +" SEK" + "\nKundklass:\t" + customerRating + "\n\nFonder:\n" + bonds.getBondsOwned();
 		return strReturn;
 	}
 

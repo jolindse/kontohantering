@@ -56,7 +56,7 @@ public class Csv {
 
 			while ((line = br.readLine()) != null) {
 				Customer currCustomer = new Customer();
-				Bonds currBonds = new Bonds();
+				Bonds currBonds = new Bonds(currCustomer);
 				// Split CSV into array that contains the values
 				String[] tokens = line.split(COMMA_DELIMITER);
 
@@ -74,9 +74,9 @@ public class Csv {
 					// Populate bonds instance for currCustomer
 					int numberOfBonds = Integer.parseInt(tokens[NUMBEROFBONDTYPES]);
 					int bondsCounter = NUMBEROFBONDTYPES + 1;
-					Map<Integer,Integer> bondsMap = currBonds.getBondMap();
+					Map<String,Integer> bondsMap = currBonds.getBondMap();
 					for (int i = 0; i < numberOfBonds; i++ ){
-						int key = Integer.parseInt(tokens[bondsCounter]);
+						String key = tokens[bondsCounter];
 						bondsCounter++;
 						int value = Integer.parseInt(tokens[bondsCounter]);
 						bondsCounter++;
@@ -121,7 +121,7 @@ public class Csv {
 						+ COMMA_DELIMITER + currCustomer.getCustomerRating()
 						+ COMMA_DELIMITER + currBonds.getNumberOfBondTypes();
 				// Put optional bonds fields in output string
-				for (Map.Entry<Integer, Integer> current : currBonds.getBondMap().entrySet()) {
+				for (Map.Entry<String, Integer> current : currBonds.getBondMap().entrySet()) {
 					currLine = currLine 
 							+ COMMA_DELIMITER + current.getKey() 
 							+ COMMA_DELIMITER + current.getValue();

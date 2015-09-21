@@ -12,83 +12,124 @@ import java.util.Map;
  * for Customer objects and methods
  */
 public class Bonds {
-	private Map<Integer, Integer> bondsMap;
+	private BondsDB bondsDB;
+	private Map<String, Integer> bondsMap;
 	private int amount;
-	private int type;
+	private String key;
 	private Customer currCustomer;
 	
-	public Bonds(){
-		bondsMap = new HashMap<Integer, Integer>();
-	}
-
-	public Bonds(int amount, int type, Customer currCustomer) {
-		bondsMap = new HashMap<Integer, Integer>();
+	public Bonds(Customer currCustomer){
 		this.currCustomer = currCustomer;
-		this.amount = amount;
-		this.type = type;
-	}
-
-	// GETTERS/SETTERS
-	
-	public int getAmount() {
-		return amount;
-	}
-
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
-
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
+		bondsDB = new BondsDB();
+		bondsMap = new HashMap<String, Integer>();
 	}
 	
 	// METHODS
 	
-	public void buyBonds(int amount, int type) {
-		if (type == this.type) {
-			int currentBonds = bondsMap.get(type) + amount;
-			bondsMap.put(type, currentBonds);
-		} else {
-			bondsMap.put(type, amount);
+	public boolean buyBonds(int amount, String key) {
+		/*
+		 *  Buy bonds method
+		 *  ----------------
+		 *  Updates the bondsMap and withdraws money from currCustomer.
+		 */
+		boolean buyOk = false;
+		double totalAmount = totalValue(amount, key);
+		if(totalAmount > 0 && totalAmount < currCustomer.getAccountBalance()){
+			if (bondsMap.containsKey(key)){
+				int previousAmount = bondsMap.get(key);
+				int newAmount = previousAmount + amount;
+				bondsMap.put(key, newAmount);
+				currCustomer.withdrawFunds(totalAmount);
+				buyOk = true;
+			} else {
+				bondsMap.put(key,amount);
+				currCustomer.withdrawFunds(totalAmount);
+				buyOk = true;
+			}
 		}
+		
+		return buyOk;
 	}
 	
-	public double sellBonds(int amount, int type) {
-		int currentBonds = bondsMap.get(type) - amount;
-		if (currentBonds < 1){
-			bondsMap.remove(type);
+	public boolean sellBonds(int amount, String key) {
+		/*
+		 *  Sell bonds method
+		 *  -----------------
+		 *  Updates the bondsMap and adds money to currCustomer.
+		 */
+		boolean sellOk = false;
+		int bondsOwned = bondsMap.get(key);
+		if (bondsOwned >= amount){
+			bondsOwned -= amount;
+			double totalAmount = totalValue(amount, key);
+			currCustomer.addFunds(totalAmount);
+			if (bondsOwned == 0){
+				bondsMap.remove(key);
+			} else {
+				bondsMap.put(key, bondsOwned);
+			}
+			sellOk = true;
 		}
-		return totalValue(amount, type);
+		return sellOk;
 	}
 	
-	public Map<Integer,Integer> getBondMap() {
+	public Map<String,Integer> getBondMap() {
 		return bondsMap;
 	}
 	
 	public int getNumberOfBondTypes(){
 		return bondsMap.size();
 	}
+	
+	public double getBondPrice(String key){
+		return bondsDB.getBondValue(key);
+	}
 
-	public double totalValue(int amount, int type) {
-		return BONDS_VALUE[type] * amount;
+	public int getBondsOwnedAmount(String key){
+		return bondsMap.get(key);
+	}
+	
+	public double totalValue(int amount, String key) {
+		return bondsDB.getBondValue(key) * amount;
 	}
 	
 	public double getTotalBondsValue() {
 		double totalValue = 0;
-		for (Map.Entry<Integer, Integer> current : bondsMap.entrySet()){
-			int key = current.getKey();
+		for (Map.Entry<String, Integer> current : bondsMap.entrySet()){
+			String key = current.getKey();
 			int value = current.getValue();
 			totalValue += totalValue(value, key);
 		}
 		return totalValue;
 	}
 	
-	public String getBondName(int type){
-		return BONDS_NAME[type];
+	// ONLY FOR TESTING PURPOSE TO BE REMOVED
+	
+	public String[] getBondsDBNames(){
+
+		String[] strReturn = bondsDB.getNames(); 
+		return strReturn;
+	}
+	
+	public String[] getOwnedBondsNames(){
+		String[] strReturn = new String[bondsMap.size()];
+		int index = 0;
+		for (Map.Entry<String, Integer> currentBond: bondsMap.entrySet()){
+			strReturn[index] = currentBond.getKey();
+			index++;
+		}
+		return strReturn;
+	}
+	
+	public String getBondsOwned(){
+		String strReturn = "";
+		for (Map.Entry<String, Integer> currentBond: bondsMap.entrySet()){
+			String currKey = currentBond.getKey();
+			int currNum = currentBond.getValue();
+			String totValue = Double.toString(totalValue(currNum, currKey));
+			strReturn += currKey + "\nAntal: " + currNum + "\nVärde" + totValue + "\n\n";
+		}
+		return strReturn;
 	}
 
 }

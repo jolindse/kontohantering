@@ -134,7 +134,8 @@ public class StandardMenu extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				view.textMode(controller.outputDB());
+				view.setCurrentString(controller.outputDB());
+				view.textMode();
 			}
 		});
 		

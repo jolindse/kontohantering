@@ -12,7 +12,6 @@ import kontohantering.data.Customer;
 
 public class FormEvent extends EventObject {
 	
-	private String formType;
 	private String firstName;
 	private String lastName;
 	private long persNumber;
@@ -22,30 +21,24 @@ public class FormEvent extends EventObject {
 	private Customer currCustomer;
 	
 	
-	public FormEvent (Object source,String firstName, String lastName, long persNumber, double depositAmount, String formType){
+	public FormEvent (Object source,String firstName, String lastName, long persNumber, double depositAmount){
 		super(source);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.persNumber = persNumber;
 		this.depositAmount = depositAmount;
-		this.formType = formType;
 	}
 	
-	public FormEvent (Object source, Customer currCustomer, String firstName, String lastName, long persNumber, String formType) {
+	public FormEvent (Object source, Customer currCustomer, String firstName, String lastName, long persNumber) {
 		super(source);
 		this.currCustomer = currCustomer;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.persNumber = persNumber;
-		this.formType = formType;
 	}
 
 	// GETTERS/SETTERS
 	
-	public String getFormType() {
-		return formType;
-	}
-
 	public String getFirstName() {
 		return firstName;
 	}
