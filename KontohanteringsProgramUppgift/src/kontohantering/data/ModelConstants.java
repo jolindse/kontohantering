@@ -16,6 +16,7 @@ public final class ModelConstants {
 	public static final double[] INTEREST_RATES = { 0.001, 0.01, 0.013, 0.015, 0.02 };
 	public static final char[] CUSTOMER_RATINGS = { 'e','d','c','b','a' };
 	public static final double[] LOAN_RATES = { 0.10, 0.08, 0.08, 0.06, 0.045 };
+	public static final double[] LOAN_RATIO = { 2, 2.5, 3, 4, 5 };
 	
 	// Bonds value per type
 	

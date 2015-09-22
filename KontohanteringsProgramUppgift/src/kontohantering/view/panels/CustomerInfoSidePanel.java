@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 import kontohantering.data.Customer;
 
-public class BondsCustomerInfoPanel extends JPanel {
+public class CustomerInfoSidePanel extends JPanel {
 
 	private JLabel lblFirstName;
 	private JLabel lblLastName;
@@ -22,7 +22,7 @@ public class BondsCustomerInfoPanel extends JPanel {
 	private JLabel lblEmpty;
 	
 	
-	public BondsCustomerInfoPanel(Customer currCustomer){
+	public CustomerInfoSidePanel(Customer currCustomer){
 		setMaximumSize(new Dimension(120,300));
 		setLayout(new GridBagLayout());
 		GridBagConstraints gc = new GridBagConstraints();

@@ -27,7 +27,7 @@ public class Customer {
 	private long persNumber;
 	private long accountNumber;
 	private double accountBalance;
-	private double mortgage;
+	private Mortgage mortgage;
 	private Bonds bonds;
 	private int indexNr;
 	
@@ -43,10 +43,9 @@ public class Customer {
 		accountBalance = 0.0;
 		accountNumber = generateAccountNumber();
 		numAccount++;
-		mortgage = 0;
 		bonds = new Bonds(this);
 		this.customerRating = setCustRating();
-
+		mortgage = new Mortgage(this);
 	}
 
 	public Customer(String name, String lastName, long persNumber, double accountBalance) {
@@ -56,9 +55,9 @@ public class Customer {
 		this.accountBalance = accountBalance;
 		accountNumber = generateAccountNumber();
 		numAccount++;
-		mortgage = 0;
 		bonds = new Bonds(this);
 		this.customerRating = setCustRating();
+		mortgage = new Mortgage(this);
 	}
 
 	// GETTERS/SETTERS
@@ -119,11 +118,11 @@ public class Customer {
 		this.bonds = bonds;
 	}
 	
-	public double getMortgage() {
+	public Mortgage getMortgage() {
 		return mortgage;
 	}
 
-	public void setMortgage(double mortgage) {
+	public void setMortgage(Mortgage mortgage) {
 		this.mortgage = mortgage;
 	}
 
@@ -170,7 +169,11 @@ public class Customer {
 		}
 		return false;
 	}
-
+	
+	public void updateCustRating(){
+		this.customerRating = setCustRating();
+	}
+	
 	public void setIndex(int i){
 		indexNr = i;
 	}
@@ -179,8 +182,28 @@ public class Customer {
 		return indexNr;
 	}
 	
+	public double getTotalBalance(){
+		return accountBalance + bonds.getTotalBondsValue();
+	}
+	
 	private char setCustRating(){
-		return 'e';
+		char chReturn = 'e';
+		double totalBalance = getTotalBalance();
+		if (totalBalance < 60001){
+		}
+		if (totalBalance > 60000 && totalBalance < 100001){
+			chReturn = 'd';
+		}
+		if (totalBalance > 100000 && totalBalance < 250001){
+			chReturn = 'c';
+		}
+		if (totalBalance > 250000 && totalBalance < 500001){
+			chReturn = 'b';
+		}
+		if (totalBalance > 500000){
+			chReturn = 'a';
+		}
+		return chReturn;
 	}
 	
 	@Override

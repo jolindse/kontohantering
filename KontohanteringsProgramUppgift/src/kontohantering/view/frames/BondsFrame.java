@@ -3,13 +3,17 @@ package kontohantering.view.frames;
 import static kontohantering.view.GuiConstants.BANKBLUE;
 import static kontohantering.view.GuiConstants.FONTMEDIUM;
 import static kontohantering.view.GuiConstants.LOGOMINI;
+import static kontohantering.view.GuiConstants.BUTTONDIM;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -22,7 +26,7 @@ import kontohantering.logic.Controller;
 import kontohantering.view.eventlistners.IUpdateObserver;
 import kontohantering.view.eventlistners.IUpdateSub;
 import kontohantering.view.panels.BondsBuyPanel;
-import kontohantering.view.panels.BondsCustomerInfoPanel;
+import kontohantering.view.panels.CustomerInfoSidePanel;
 import kontohantering.view.panels.BondsSellPanel;
 
 public class BondsFrame extends KontoFrame implements IUpdateObserver {
@@ -31,6 +35,7 @@ public class BondsFrame extends KontoFrame implements IUpdateObserver {
 	private JTabbedPane rightSidePanel;
 	private	BondsSellPanel sellBondsPanel;
 	private BondsBuyPanel buyBondsPanel;
+	private JButton btnDone;
 	private boolean hasBonds;
 	private boolean sellTabActive;
 	private IUpdateSub updateSubject;
@@ -38,7 +43,7 @@ public class BondsFrame extends KontoFrame implements IUpdateObserver {
 	
 	public BondsFrame (Customer currCustomer) {
 
-		super("Fonder",500,400);
+		super("Fonder",500,500);
 		this.currCustomer = currCustomer;
 		updateSubject = Controller.getController();
 		updateSubject.registerObserver(this);
@@ -62,10 +67,11 @@ public class BondsFrame extends KontoFrame implements IUpdateObserver {
 		
 		topPanel.add(Box.createGlue());
 		topPanel.add(lblTopName);
-
+		
+		
 		// LEFT SIDE PANEL - CUSTOMER INFO
 		
-		JPanel leftSidePanel = new BondsCustomerInfoPanel(currCustomer);
+		JPanel leftSidePanel = new CustomerInfoSidePanel(currCustomer);
 		
 		// RIGHT SIDE PANEL 
 		
@@ -87,10 +93,34 @@ public class BondsFrame extends KontoFrame implements IUpdateObserver {
 				System.out.println(tabIndex);
 			}
 		});
+
+		// BOTTOM PANEL
+		
+		JPanel bottomPanel = new JPanel();
+		bottomPanel.setPreferredSize(new Dimension(500, 80));
+		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
+		bottomPanel.setBorder(new EmptyBorder(0, 0, 0, 10));
+
+		btnDone = new JButton("Klar");
+		btnDone.setPreferredSize(BUTTONDIM);
+		btnDone.setMaximumSize(BUTTONDIM);
+		btnDone.setMinimumSize(BUTTONDIM);
+		btnDone.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				closureBehaviour();
+				
+			}
+		});
+		bottomPanel.add(Box.createGlue());
+		bottomPanel.add(btnDone);
+
 		
 		add(topPanel,BorderLayout.NORTH);
 		add(leftSidePanel,BorderLayout.CENTER);
 		add(rightSidePanel,BorderLayout.EAST);
+		add(bottomPanel,BorderLayout.SOUTH);
 	
 	}
 

@@ -1,4 +1,8 @@
 package kontohantering.data;
+import static kontohantering.data.ModelConstants.CUSTOMER_RATINGS;
+import static kontohantering.data.ModelConstants.LOAN_RATES;
+import static kontohantering.data.ModelConstants.LOAN_RATIO;
+
 /*
  * Mortage class
  * ---------------------
@@ -9,11 +13,73 @@ package kontohantering.data;
  */
 
 public class Mortgage {
-	private double amount;
-	private Customer currCustomer;
 	
-	public Mortgage (double amount){
-		this.amount = amount;
+	private boolean hasMortage;
+	private double amount;
+	private double maxAmount;
+	private Customer currCustomer;
+	private char custRating;
+	private int ratingIndex;
+	private int years;
+	
+	public Mortgage (Customer currCustomer){
+		this.currCustomer = currCustomer;
+		setIndex();
+		hasMortage = false;
 	}
 	
+	public Mortgage (Customer currCustomer, double amount, int years){
+		this.currCustomer = currCustomer;
+		this.amount = amount;
+		this.years = years;
+		setIndex();
+		if (amount < 1){
+			hasMortage = false;
+		} else {
+			hasMortage = true;
+		}
+	}
+	
+	private void setIndex(){
+		custRating = currCustomer.getCustomerRating();
+		ratingIndex = new String(CUSTOMER_RATINGS).indexOf(custRating);
+	}
+	
+	public double getInterest(){
+		return LOAN_RATES[ratingIndex];
+	}
+	
+	public double getAmount(){
+		return amount;
+	}
+	
+	public int getYears(){
+		return years;
+	}
+	
+	public boolean getHasMortgage(){
+		return hasMortage;
+	}
+	
+	public double calculateMonthlyPayments(int currYears, double currAmount){
+		int months = currYears * 12;
+		double monthlyInterest = getInterest() / 12;
+		return (currAmount/months)*monthlyInterest;
+	}
+	
+	public double calculateTotalCost(int currYears, double currAmount){
+		int months = currYears * 12;
+		double monthlyInterest = getInterest() / 12;
+		double monthlyPayment = (currAmount/months)*monthlyInterest;
+		return monthlyPayment * months;
+	}
+	
+	
+	public double getMaxAmount(){
+		double totalBalance = currCustomer.getTotalBalance();
+		double ratio = LOAN_RATIO[ratingIndex];
+		maxAmount = totalBalance * ratio;
+		return maxAmount;
+	}
+		
 }
