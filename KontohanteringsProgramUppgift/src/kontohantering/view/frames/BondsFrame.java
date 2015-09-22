@@ -119,7 +119,6 @@ public class BondsFrame extends KontoFrame implements IUpdateObserver {
 
 	@Override
 	public void updateGui() {
-		System.out.println("UpdateGUI - BondsFrame");
 		hasBonds = sellActivated();
 		if (hasBonds){
 			if (tabIndex == 0){
