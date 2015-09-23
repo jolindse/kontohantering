@@ -68,7 +68,7 @@ public class CustomerTableModel extends AbstractTableModel {
 		case 4:
 			return currCustomer.getAccountBalance();
 		case 5:
-			return currCustomer.getMortgage();
+			return currCustomer.getMortgage().getAmount();
 		case 6:
 			return currCustomer.getBondsAmount();
 		case 7:

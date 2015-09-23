@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
@@ -13,14 +15,18 @@ import java.awt.event.ItemListener;
 import java.util.regex.Pattern;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import kontohantering.data.Customer;
 import kontohantering.data.Mortgage;
+import kontohantering.logic.Controller;
+import kontohantering.view.eventlistners.IMortgageListener;
+import kontohantering.view.frames.KontoFrame;
+import kontohantering.view.frames.MortgageFrame;
 
 public class MortgagePanel extends JPanel {
 
@@ -45,12 +51,20 @@ public class MortgagePanel extends JPanel {
 	private JButton btnLoan;
 	private GridBagConstraints gc;
 	private String[] yearArray;
+	private IMortgageListener mortListener;
+	private MortgagePanel mortPanel;
+	private MortgageFrame parent;
 	
-	public MortgagePanel (Customer currCustomer, boolean hasMortgage){
+	public MortgagePanel (Customer currCustomer, boolean hasMortgage, MortgageFrame parent){
 		setPreferredSize(new Dimension(380,300));
 		
 		setLayout(new GridBagLayout());
 		gc = new GridBagConstraints();
+		
+		mortListener = Controller.getController();
+		mortPanel = this;
+		this.parent = parent;
+		
 		
 		// Get customerinfo
 		this.hasMortgage = hasMortgage;
@@ -65,7 +79,7 @@ public class MortgagePanel extends JPanel {
 		lblMaxAmmountInfo = new JLabel("Maximalt lånebelopp");
 		lblMaxAmmount = new JLabel(Double.toString(currMortgage.getMaxAmount()));
 		lblInterestInfo = new JLabel("Ränta");
-		lblInterest = new JLabel(Double.toString(currMortgage.getInterest()));
+		lblInterest = new JLabel(Double.toString(currMortgage.getInterest()*100)+" %");
 		lblTotalCostInfo = new JLabel("Total lånekostnad");
 		
 		yearArray = new String[12];
@@ -82,14 +96,26 @@ public class MortgagePanel extends JPanel {
 	
 	private void mortgageInfo(){
 		
-		lblAmount = new JLabel(Double.toString(currMortgage.getAmount()).format("%.2f"));
+		lblAmount = new JLabel(String.format("%.2f",currMortgage.getAmount()));
 		lblYears = new JLabel(Integer.toString(currMortgage.getYears()));
-		lblMonthPayment = new JLabel(Double.toString(currMortgage.calculateMonthlyPayments(currMortgage.getYears(), currMortgage.getAmount())));
-		lblTotalCost = new JLabel(Double.toString(currMortgage.calculateTotalCost(currMortgage.getYears(), currMortgage.getAmount())));
+		lblMonthPayment = new JLabel(String.format("%.2f",currMortgage.calculateMonthlyPayments(currMortgage.getYears(), currMortgage.getAmount())));
+		lblTotalCost = new JLabel(String.format("%.2f",currMortgage.calculateTotalCost(currMortgage.getYears(), currMortgage.getAmount())));
 		btnPay = new JButton("Slutbetala lån");
 		btnPay.setPreferredSize(BUTTONDIM);
 		btnPay.setMaximumSize(BUTTONDIM);
 		btnPay.setMinimumSize(BUTTONDIM);
+		btnPay.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (mortListener.payMortgage(currCustomer)){
+					closeFrame();
+				} else {
+					JOptionPane.showMessageDialog(mortPanel, "Det saknas täckning på kontot för att slutbetala lånet.");
+				}
+				
+			}
+		});
 		
 		// Amount row
 		gc.gridy = 0;
@@ -252,6 +278,20 @@ public class MortgagePanel extends JPanel {
 		btnLoan.setPreferredSize(BUTTONDIM);
 		btnLoan.setMaximumSize(BUTTONDIM);
 		btnLoan.setMinimumSize(BUTTONDIM);
+		btnLoan.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				double amount = Double.parseDouble(fieldAmount.getText());
+				int years = comboYears.getSelectedIndex()+1;
+				if(mortListener.applyForMortgage(amount, years, currCustomer)){
+					closeFrame();
+				} else {
+					JOptionPane.showMessageDialog(mortPanel, "Ansökan gick inte igenom. Kontrollera uppgifterna");
+				}
+				
+			}
+		});
 		
 		// Amount row
 		gc.gridy = 0;
@@ -393,10 +433,14 @@ public class MortgagePanel extends JPanel {
 		}
 		
 		if(allOk){
-			String currMonthPayment = Double.toString(currMortgage.calculateMonthlyPayments(currYears, currAmount));
-			String currTotalCost = Double.toString(currMortgage.calculateTotalCost(currYears, currAmount));
+			double currMonthPayment = currMortgage.calculateMonthlyPayments(currYears, currAmount);
+			double currTotalCost = currMortgage.calculateTotalCost(currYears, currAmount);
 			lblMonthPayment.setText(String.format("%.2f", currMonthPayment));
 			lblTotalCost.setText(String.format("%.2f", currTotalCost));
 		}
+	}
+
+	private void closeFrame(){
+		parent.operationFinished();
 	}
 }

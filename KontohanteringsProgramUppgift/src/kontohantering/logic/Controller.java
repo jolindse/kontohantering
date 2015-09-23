@@ -11,6 +11,7 @@ import kontohantering.data.Search;
 import kontohantering.view.eventlistners.FormEvent;
 import kontohantering.view.eventlistners.IBondsListener;
 import kontohantering.view.eventlistners.IFormListener;
+import kontohantering.view.eventlistners.IMortgageListener;
 import kontohantering.view.eventlistners.ITableListener;
 import kontohantering.view.eventlistners.IUpdateObserver;
 import kontohantering.view.eventlistners.IUpdateSub;
@@ -30,7 +31,7 @@ import kontohantering.view.frames.StandardFrame;
  *  relationship.
  */
 
-public class Controller implements IFormListener, IUpdateSub, ITableListener, IBondsListener {
+public class Controller implements IFormListener, IUpdateSub, ITableListener, IBondsListener, IMortgageListener {
 
 	private static Controller controllerHandler;
 
@@ -176,24 +177,48 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 	// METHODS FROM BONDS INTERFACE
 
 	@Override
-	public void bondBuyEventOccured(Customer bondsCustomer, int amount, String key) {
-		if (bondsCustomer.getBonds().buyBonds(amount, key)) {
-			JOptionPane.showMessageDialog(view, "Köp av " + amount + " stycken " + key + " utfört.");
-		} else {
-			JOptionPane.showMessageDialog(view, "Köp nekat. Saknas täckning för köpet.");
-		}
+	public boolean bondBuyEventOccured(Customer bondsCustomer, int amount, String key) {
+		boolean allOk = (bondsCustomer.getBonds().buyBonds(amount, key));
+			
 		updateObservers();
+		return allOk;
 	}
 
 	@Override
-	public void bondSellEventOccured(Customer bondsCustomer, int amount, String key) {
-		if (bondsCustomer.getBonds().sellBonds(amount, key)) {
-			JOptionPane.showMessageDialog(view, "Försäljning av " + amount + " stycken " + key + " utfört.");
-		} else {
-			JOptionPane.showMessageDialog(view, "Försäljning nekad - något gick fel");
-		}
+	public boolean bondSellEventOccured(Customer bondsCustomer, int amount, String key) {
+		boolean allOk = bondsCustomer.getBonds().sellBonds(amount, key);
 		updateObservers();
+		return allOk;
 	}
+
+	// METHODS FROM MORTGAGE INTERFACE
+	
+	@Override
+	public boolean applyForMortgage(double amount, int years, Customer mortCustomer) {
+		boolean allOk = false;
+			if (mortCustomer.getMortgage().applyForMortgage(years, amount)){
+				mortCustomer.addFunds(amount);
+				allOk = true;
+			}
+			
+		return allOk;
+	}
+
+	@Override
+	public boolean payMortgage(Customer mortCustomer) {
+		boolean allOk = false;
+		int years = mortCustomer.getMortgage().getYears();
+		double amount = mortCustomer.getMortgage().getAmount();
+		if (mortCustomer.getAccountBalance() >= mortCustomer.getMortgage().calculateTotalCost(years, amount)){
+			double totalAmount = mortCustomer.getMortgage().calculateTotalCost(years, amount);
+			mortCustomer.getMortgage().payOffMortgage();
+			mortCustomer.withdrawFunds(totalAmount);
+			allOk = true;
+		}
+		return allOk;
+	}
+
+
 
 	// METHODS FOR MODEL INTERACTION
 

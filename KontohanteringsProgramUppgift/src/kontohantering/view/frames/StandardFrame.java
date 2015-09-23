@@ -35,7 +35,7 @@ public class StandardFrame extends KontoFrame implements IUpdateObserver {
 	public StandardFrame() {
 
 		// Set displayed name of windows and layout
-		super("[b]ank kontohantering v0.7",900, 800);
+		super("[b]ank kontohantering v0.8",900, 800);
 		setLayout(new BorderLayout());
 		
 		// Set listener for GUI updates

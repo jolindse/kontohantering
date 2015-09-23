@@ -76,7 +76,7 @@ public class BondsFrame extends KontoFrame implements IUpdateObserver {
 		// RIGHT SIDE PANEL 
 		
 	
-		buyBondsPanel = new BondsBuyPanel(currCustomer);
+		buyBondsPanel = new BondsBuyPanel(currCustomer, this);
 		
 		
 		rightSidePanel = new JTabbedPane(JTabbedPane.TOP);
@@ -125,7 +125,7 @@ public class BondsFrame extends KontoFrame implements IUpdateObserver {
 	}
 
 	private void addSellTab() {
-		sellBondsPanel = new BondsSellPanel(currCustomer);
+		sellBondsPanel = new BondsSellPanel(currCustomer, this);
 		rightSidePanel.addTab("Sälj", sellBondsPanel);
 		sellTabActive = true;
 		

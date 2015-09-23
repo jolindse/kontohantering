@@ -53,7 +53,7 @@ public class MortgageFrame extends KontoFrame implements IUpdateObserver {
 				
 		// RIGHT SIDE PANEL - MORTGAGE INFO/SETUP
 		
-		MortgagePanel rightSidePanel = new MortgagePanel(currCustomer, currCustomer.getMortgage().getHasMortgage());
+		MortgagePanel rightSidePanel = new MortgagePanel(currCustomer, currCustomer.getMortgage().getHasMortgage(), this);
 		
 		// ADD PANELS TO FRAME
 		
@@ -61,6 +61,10 @@ public class MortgageFrame extends KontoFrame implements IUpdateObserver {
 		add(leftSidePanel,BorderLayout.CENTER);
 		add(rightSidePanel,BorderLayout.EAST);
 		
+	}
+	
+	public void operationFinished(){
+		closureBehaviour();
 	}
 
 	@Override

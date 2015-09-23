@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -25,6 +26,7 @@ import kontohantering.data.BondsDB;
 import kontohantering.data.Customer;
 import kontohantering.logic.Controller;
 import kontohantering.view.eventlistners.IBondsListener;
+import kontohantering.view.frames.BondsFrame;
 
 import static kontohantering.view.GuiConstants.BUTTONDIM;
 
@@ -40,15 +42,17 @@ public class BondsBuyPanel extends JPanel {
 	private JComboBox bondsBox;
 	private String currKey;
 	private Bonds currBonds;
+	private BondsFrame parent;
 	
 	private IBondsListener bondsListener;
 	
 
-	public BondsBuyPanel(Customer currCustomer) {
+	public BondsBuyPanel(Customer currCustomer, BondsFrame parent) {
 		setPreferredSize(new Dimension(380, 300));
 
 		currBonds = currCustomer.getBonds();
 		bondsListener = Controller.getController();
+		this.parent = parent;
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints gc = new GridBagConstraints();
@@ -106,7 +110,11 @@ public class BondsBuyPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int currAmount = (Integer)fieldAmount.getValue();
-				bondsListener.bondBuyEventOccured(currCustomer, currAmount, currKey);
+				if(bondsListener.bondBuyEventOccured(currCustomer, currAmount, currKey)){
+					JOptionPane.showMessageDialog(parent, "Köp av " + currAmount + " stycken " + currKey + " utfört.");
+				} else {
+					JOptionPane.showMessageDialog(parent, "Köp nekat. Saknas täckning för köpet.");
+				}
 			}
 		});
 

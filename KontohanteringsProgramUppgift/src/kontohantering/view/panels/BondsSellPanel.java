@@ -15,12 +15,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import kontohantering.data.Bonds;
 import kontohantering.data.Customer;
 import kontohantering.logic.Controller;
 import kontohantering.view.eventlistners.IBondsListener;
+import kontohantering.view.frames.BondsFrame;
 
 public class BondsSellPanel extends JPanel {
 
@@ -39,14 +41,16 @@ public class BondsSellPanel extends JPanel {
 	private String currKey;
 	private JButton btnSell;
 	private JFormattedTextField fieldAmount;
+	private BondsFrame parent;
 
-	public BondsSellPanel(Customer currCustomer) {
+	public BondsSellPanel(Customer currCustomer, BondsFrame parent) {
 
 		setPreferredSize(new Dimension(380, 300));
 
 		currBonds = currCustomer.getBonds();
 		bondsListener = Controller.getController();
-
+		this.parent = parent;
+		
 		setLayout(new GridBagLayout());
 		GridBagConstraints gc = new GridBagConstraints();
 
@@ -105,7 +109,12 @@ public class BondsSellPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int currAmount = (Integer) fieldAmount.getValue();
-				bondsListener.bondSellEventOccured(currCustomer, currAmount, currKey);
+				if(bondsListener.bondSellEventOccured(currCustomer, currAmount, currKey)){
+					JOptionPane.showMessageDialog(parent, "Försäljning av " + currAmount + " stycken " + currKey + " utfört.");
+				} else {
+					JOptionPane.showMessageDialog(parent, "Försäljning nekad. Kontrollera inmatning");
+				}
+				
 			}
 		});
 

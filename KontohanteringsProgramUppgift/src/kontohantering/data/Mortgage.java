@@ -52,6 +52,12 @@ public class Mortgage {
 		return mortOk;
 	}
 	
+	public void payOffMortgage(){
+		amount = 0;
+		years = 0;
+		hasMortage = false;
+	}
+	
 	private void setIndex(){
 		custRating = currCustomer.getCustomerRating();
 		ratingIndex = new String(CUSTOMER_RATINGS).indexOf(custRating);
