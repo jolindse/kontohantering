@@ -3,6 +3,7 @@ package kontohantering.view.frames;
 import static kontohantering.view.GuiConstants.BANKBLUE;
 import static kontohantering.view.GuiConstants.FONTMEDIUM;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.Box;
@@ -16,6 +17,7 @@ import kontohantering.logic.Controller;
 import kontohantering.view.eventlistners.IUpdateObserver;
 import kontohantering.view.eventlistners.IUpdateSub;
 import kontohantering.view.panels.CustomerInfoSidePanel;
+import kontohantering.view.panels.MortgagePanel;
 
 public class MortgageFrame extends KontoFrame implements IUpdateObserver {
 	
@@ -51,6 +53,13 @@ public class MortgageFrame extends KontoFrame implements IUpdateObserver {
 				
 		// RIGHT SIDE PANEL - MORTGAGE INFO/SETUP
 		
+		MortgagePanel rightSidePanel = new MortgagePanel(currCustomer, currCustomer.getMortgage().getHasMortgage());
+		
+		// ADD PANELS TO FRAME
+		
+		add(topPanel,BorderLayout.NORTH);
+		add(leftSidePanel,BorderLayout.CENTER);
+		add(rightSidePanel,BorderLayout.EAST);
 		
 	}
 

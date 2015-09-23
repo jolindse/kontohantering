@@ -1,14 +1,22 @@
 package kontohantering.view.panels;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import kontohantering.data.Customer;
 import kontohantering.data.Mortgage;
@@ -20,10 +28,10 @@ public class MortgagePanel extends JPanel {
 	private boolean hasMortgage;
 	private JLabel lblAmountInfo;
 	private JLabel lblAmount;
-	private JFormattedTextField fieldAmount;
+	private JTextField fieldAmount;
 	private JLabel lblYearsInfo;
 	private JLabel lblYears;
-	private JFormattedTextField fieldYears;
+	private JComboBox comboYears;
 	private JLabel lblMonthPaymentInfo;
 	private JLabel lblMonthPayment;
 	private JLabel lblMaxAmmountInfo;
@@ -35,6 +43,7 @@ public class MortgagePanel extends JPanel {
 	private JButton btnPay;
 	private JButton btnLoan;
 	private GridBagConstraints gc;
+	private String[] yearArray;
 	
 	public MortgagePanel (Customer currCustomer, boolean hasMortgage){
 		setPreferredSize(new Dimension(380,300));
@@ -53,9 +62,15 @@ public class MortgagePanel extends JPanel {
 		lblYearsInfo = new JLabel("Antal år");
 		lblMonthPaymentInfo = new JLabel("Månadskostnad");
 		lblMaxAmmountInfo = new JLabel("Maximalt lånebelopp");
+		lblMaxAmmount = new JLabel(Double.toString(currMortgage.getMaxAmount()));
 		lblInterestInfo = new JLabel("Ränta");
 		lblInterest = new JLabel(Double.toString(currMortgage.getInterest()));
 		lblTotalCostInfo = new JLabel("Total lånekostnad");
+		
+		yearArray = new String[12];
+		for (int i = 0; i < 12; i++){
+			yearArray[i] = i+1 + " år";
+		}
 		
 		if (hasMortgage){
 			mortgageInfo();
@@ -69,7 +84,6 @@ public class MortgagePanel extends JPanel {
 		lblAmount = new JLabel(Double.toString(currMortgage.getAmount()));
 		lblYears = new JLabel(Integer.toString(currMortgage.getYears()));
 		lblMonthPayment = new JLabel(Double.toString(currMortgage.calculateMonthlyPayments(currMortgage.getYears(), currMortgage.getAmount())));
-		lblMaxAmmount = new JLabel(Double.toString(currMortgage.getMaxAmount()));
 		lblTotalCost = new JLabel(Double.toString(currMortgage.calculateTotalCost(currMortgage.getYears(), currMortgage.getAmount())));
 		btnPay = new JButton("Slutbetala lån");
 		
@@ -192,11 +206,187 @@ public class MortgagePanel extends JPanel {
 		gc.anchor = GridBagConstraints.LINE_END;
 		gc.insets = new Insets(0, 20, 20, 0);
 		add(btnPay, gc);
-
 		
 	}
 	
 	private void mortgageMake(){
 		
+		fieldAmount = new JTextField(20);
+		fieldAmount.setText("0");
+		fieldAmount.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				checkInput();
+				
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		comboYears = new JComboBox(yearArray);
+		comboYears.setFocusable(false);
+		comboYears.setEditable(false);
+		comboYears.setSelectedIndex(0);
+		comboYears.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				checkInput();
+				
+			}
+		});
+		
+		lblMonthPayment = new JLabel("");
+		lblTotalCost = new JLabel("");
+		btnLoan = new JButton("Låna");
+		
+		// Amount row
+		gc.gridy = 0;
+		gc.gridx = 0;
+		gc.weightx = 0.1;
+		gc.weighty = 0;
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.LINE_END;
+		gc.insets = new Insets(0, 20, 20, 0);
+		add(lblAmountInfo, gc);
+		
+		gc.gridy = 0;
+		gc.gridx = 1;
+		gc.weightx = 0.1;
+		gc.weighty = 0;
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(fieldAmount, gc);
+		
+		// Max amount row
+		
+		gc.gridy++;
+		gc.gridx = 0;
+		gc.weightx = 0.1;
+		gc.weighty = 0;
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.LINE_END;
+		gc.insets = new Insets(0, 20, 20, 0);
+		add(lblMaxAmmountInfo, gc);
+
+		gc.gridx = 1;
+		gc.weightx = 0.1;
+		gc.weighty = 0;
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(lblMaxAmmount, gc);
+		
+		
+		// Interest row
+		
+		gc.gridy++;
+		gc.gridx = 0;
+		gc.weightx = 0.1;
+		gc.weighty = 0;
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.LINE_END;
+		gc.insets = new Insets(0, 20, 20, 0);
+		add(lblInterestInfo, gc);
+
+		gc.gridx = 1;
+		gc.weightx = 0.1;
+		gc.weighty = 0;
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(lblInterest, gc);
+		
+		// Year row
+		
+		gc.gridy++;
+		gc.gridx = 0;
+		gc.weightx = 0.1;
+		gc.weighty = 0;
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.LINE_END;
+		gc.insets = new Insets(0, 20, 20, 0);
+		add(lblYearsInfo, gc);
+
+		gc.gridx = 1;
+		gc.weightx = 0.1;
+		gc.weighty = 0;
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(comboYears, gc);
+		
+		// Monthly payment row
+		
+		gc.gridy++;
+		gc.gridx = 0;
+		gc.weightx = 0.1;
+		gc.weighty = 0;
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.LINE_END;
+		gc.insets = new Insets(0, 20, 20, 0);
+		add(lblMonthPaymentInfo, gc);
+
+		gc.gridx = 1;
+		gc.weightx = 0.1;
+		gc.weighty = 0;
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(lblMonthPayment, gc);
+		
+		// Total cost row
+		
+		gc.gridy++;
+		gc.gridx = 0;
+		gc.weightx = 0.1;
+		gc.weighty = 0;
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.LINE_END;
+		gc.insets = new Insets(0, 20, 20, 0);
+		add(lblTotalCostInfo, gc);
+
+		gc.gridx = 1;
+		gc.weightx = 0.1;
+		gc.weighty = 0;
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(lblTotalCost, gc);
+
+		// Pay button row
+		
+		gc.gridy++;
+		gc.gridx = 1;
+		gc.weightx = 0.1;
+		gc.weighty = 0;
+		gc.fill = GridBagConstraints.NONE;
+		gc.anchor = GridBagConstraints.LINE_END;
+		gc.insets = new Insets(0, 20, 20, 0);
+		add(btnLoan, gc);
+		
+	}
+	
+	private void checkInput(){
+		boolean allOk = false;
+		double currAmount = 0;
+		int currYears = 0;
+		
+		if (fieldAmount.getText() != null && Pattern.matches("[a-zA-Z]+", fieldAmount.getText()) == false){
+			currAmount = Double.parseDouble(fieldAmount.getText());
+			if (currAmount <= currMortgage.getMaxAmount()) {
+				currYears = comboYears.getSelectedIndex() + 1;
+				fieldAmount.setBackground(Color.RED);
+				allOk = true;
+			} else {
+				fieldAmount.setBackground(Color.RED);
+				allOk = false;
+			}
+		}
+		
+		if(allOk){
+			lblMonthPayment.setText(Double.toString(currMortgage.calculateMonthlyPayments(currYears, currAmount)));
+			lblTotalCost.setText(Double.toString(currMortgage.calculateTotalCost(currYears, currAmount)));
+		}
 	}
 }

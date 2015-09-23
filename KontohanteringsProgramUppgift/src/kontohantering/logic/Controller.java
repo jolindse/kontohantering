@@ -16,6 +16,7 @@ import kontohantering.view.eventlistners.IUpdateObserver;
 import kontohantering.view.eventlistners.IUpdateSub;
 import kontohantering.view.eventlistners.TableEvent;
 import kontohantering.view.frames.BondsFrame;
+import kontohantering.view.frames.MortgageFrame;
 import kontohantering.view.frames.StandardFrame;
 
 /*
@@ -317,6 +318,13 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 		 * Called by bonds button to start bonds frame
 		 */
 		BondsFrame bondsFrame = new BondsFrame(currCustomer);
+	}
+	
+	public void mortgageButton() {
+		/*
+		 *  Called by mortgage button to start mortgage frame
+		 */
+		MortgageFrame mortFrame = new MortgageFrame(currCustomer);
 	}
 
 	// OTHER METHODS CALLED BY USER

@@ -91,6 +91,12 @@ public class BottomButtonPanel extends JPanel {
 		btnMortage.setPreferredSize(BUTTONDIM);
 		btnMortage.setMaximumSize(BUTTONDIM);
 		btnMortage.setMinimumSize(BUTTONDIM);
+		btnMortage.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.mortgageButton();
+			}
+		});
 
 		add(Box.createRigidArea(new Dimension(142, 100)));
 		add(btnDeposit);

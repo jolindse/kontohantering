@@ -33,9 +33,10 @@ public class Csv {
 	private static final int LASTNAME = 2;
 	private static final int PERSNUMBER = 3;
 	private static final int ACCOUNTBALANCE = 4;
-	private static final int MORTAGEAMOUNT = 5;
-	private static final int CUSTOMERRATING = 6;
-	private static final int NUMBEROFBONDTYPES = 7;
+	private static final int MORTAGEYEARS = 5;
+	private static final int MORTAGEAMOUNT = 6;
+	private static final int CUSTOMERRATING = 7;
+	private static final int NUMBEROFBONDTYPES = 8;
 
 	private String fileName;
 
@@ -68,10 +69,7 @@ public class Csv {
 					currCustomer.setLastName(tokens[LASTNAME]);
 					currCustomer.setPersNumber(Long.parseLong(tokens[PERSNUMBER]));
 					currCustomer.setAccountBalance(Double.parseDouble(tokens[ACCOUNTBALANCE]));
-					currCustomer.setMortgage(Double.parseDouble(tokens[MORTAGEAMOUNT]));
-					currCustomer.setCustomerRating(tokens[CUSTOMERRATING].charAt(0));
 
-					// Populate bonds instance for currCustomer
 					int numberOfBonds = Integer.parseInt(tokens[NUMBEROFBONDTYPES]);
 					int bondsCounter = NUMBEROFBONDTYPES + 1;
 					Map<String,Integer> bondsMap = currBonds.getBondMap();
@@ -82,9 +80,17 @@ public class Csv {
 						bondsCounter++;
 						bondsMap.put(key, value);
 					}
-					currCustomer.setIndex(indexNr);
-					// Set populated bondsmap to currCustomer
+					// Set populated bonds  map to currCustomer
 					currCustomer.setBonds(currBonds);
+					
+					currCustomer.updateCustRating();
+					// Set mortgage info
+					double mortAmount = Double.parseDouble(tokens[MORTAGEAMOUNT]);
+					int mortYears = Integer.parseInt(tokens[MORTAGEYEARS]);
+					Mortgage currMortage = new Mortgage(currCustomer, mortAmount, mortYears);
+					currCustomer.setMortgage(currMortage);
+					currCustomer.setIndex(indexNr);
+
 					// Add currCustomer to the DB
 					customerDB.add(currCustomer);
 					indexNr++;
@@ -93,7 +99,7 @@ public class Csv {
 			}
 			br.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("DB-file not found");
+			//System.out.println("DB-file not found");
 		} catch (NumberFormatException e) {
 			System.out.println("Number problem!");
 			e.printStackTrace();
@@ -117,7 +123,8 @@ public class Csv {
 						+ COMMA_DELIMITER + currCustomer.getLastName() 
 						+ COMMA_DELIMITER + currCustomer.getPersNumber()
 						+ COMMA_DELIMITER + currCustomer.getAccountBalance()
-						+ COMMA_DELIMITER + currCustomer.getMortgage() 
+						+ COMMA_DELIMITER + currCustomer.getMortgage().getYears()
+						+ COMMA_DELIMITER + currCustomer.getMortgage().getAmount()
 						+ COMMA_DELIMITER + currCustomer.getCustomerRating()
 						+ COMMA_DELIMITER + currBonds.getNumberOfBondTypes();
 				// Put optional bonds fields in output string

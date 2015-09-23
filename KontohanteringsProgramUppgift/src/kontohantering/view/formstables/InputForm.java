@@ -365,7 +365,7 @@ public class InputForm extends JPanel {
 		lblAssetsValue.setText(Double.toString(currCustomer.getAccountBalance()));
 		lblAccountNumberValue.setText(Long.toString(currCustomer.getAccountNumber()));
 		lblBondsValue.setText(Double.toString(currCustomer.getBondsAmount()));
-		lblDebtValue.setText(Double.toString(currCustomer.getMortgage()));
+		lblDebtValue.setText(Double.toString(currCustomer.getMortgage().getAmount()));
 		String custRating = "" + currCustomer.getCustomerRating();
 		lblCustomerRatingValue.setText(custRating);
 

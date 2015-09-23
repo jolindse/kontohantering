@@ -40,6 +40,18 @@ public class Mortgage {
 		}
 	}
 	
+	public boolean applyForMortgage(int aYears, double aAmount){
+		boolean mortOk = false;
+		double maxAmount = getMaxAmount();
+		if (aAmount <= maxAmount && aYears < 13){
+			amount = aAmount;
+			years = aYears;
+			hasMortage = true;
+			mortOk = true;
+		} 
+		return mortOk;
+	}
+	
 	private void setIndex(){
 		custRating = currCustomer.getCustomerRating();
 		ratingIndex = new String(CUSTOMER_RATINGS).indexOf(custRating);
