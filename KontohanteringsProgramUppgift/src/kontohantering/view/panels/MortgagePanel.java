@@ -1,4 +1,5 @@
 package kontohantering.view.panels;
+import static kontohantering.view.GuiConstants.BUTTONDIM;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -81,11 +82,14 @@ public class MortgagePanel extends JPanel {
 	
 	private void mortgageInfo(){
 		
-		lblAmount = new JLabel(Double.toString(currMortgage.getAmount()));
+		lblAmount = new JLabel(Double.toString(currMortgage.getAmount()).format("%.2f"));
 		lblYears = new JLabel(Integer.toString(currMortgage.getYears()));
 		lblMonthPayment = new JLabel(Double.toString(currMortgage.calculateMonthlyPayments(currMortgage.getYears(), currMortgage.getAmount())));
 		lblTotalCost = new JLabel(Double.toString(currMortgage.calculateTotalCost(currMortgage.getYears(), currMortgage.getAmount())));
 		btnPay = new JButton("Slutbetala lån");
+		btnPay.setPreferredSize(BUTTONDIM);
+		btnPay.setMaximumSize(BUTTONDIM);
+		btnPay.setMinimumSize(BUTTONDIM);
 		
 		// Amount row
 		gc.gridy = 0;
@@ -212,7 +216,8 @@ public class MortgagePanel extends JPanel {
 	private void mortgageMake(){
 		
 		fieldAmount = new JTextField(20);
-		fieldAmount.setText("0");
+		fieldAmount.setColumns(10);
+		fieldAmount.setText("");
 		fieldAmount.addFocusListener(new FocusListener() {
 			
 			@Override
@@ -244,6 +249,9 @@ public class MortgagePanel extends JPanel {
 		lblMonthPayment = new JLabel("");
 		lblTotalCost = new JLabel("");
 		btnLoan = new JButton("Låna");
+		btnLoan.setPreferredSize(BUTTONDIM);
+		btnLoan.setMaximumSize(BUTTONDIM);
+		btnLoan.setMinimumSize(BUTTONDIM);
 		
 		// Amount row
 		gc.gridy = 0;
@@ -372,11 +380,11 @@ public class MortgagePanel extends JPanel {
 		double currAmount = 0;
 		int currYears = 0;
 		
-		if (fieldAmount.getText() != null && Pattern.matches("[a-zA-Z]+", fieldAmount.getText()) == false){
+		if (fieldAmount.getText().length() > 0 && Pattern.matches("[a-zA-Z]+", fieldAmount.getText()) == false){
 			currAmount = Double.parseDouble(fieldAmount.getText());
 			if (currAmount <= currMortgage.getMaxAmount()) {
 				currYears = comboYears.getSelectedIndex() + 1;
-				fieldAmount.setBackground(Color.RED);
+				fieldAmount.setBackground(Color.WHITE);
 				allOk = true;
 			} else {
 				fieldAmount.setBackground(Color.RED);
@@ -385,8 +393,10 @@ public class MortgagePanel extends JPanel {
 		}
 		
 		if(allOk){
-			lblMonthPayment.setText(Double.toString(currMortgage.calculateMonthlyPayments(currYears, currAmount)));
-			lblTotalCost.setText(Double.toString(currMortgage.calculateTotalCost(currYears, currAmount)));
+			String currMonthPayment = Double.toString(currMortgage.calculateMonthlyPayments(currYears, currAmount));
+			String currTotalCost = Double.toString(currMortgage.calculateTotalCost(currYears, currAmount));
+			lblMonthPayment.setText(String.format("%.2f", currMonthPayment));
+			lblTotalCost.setText(String.format("%.2f", currTotalCost));
 		}
 	}
 }

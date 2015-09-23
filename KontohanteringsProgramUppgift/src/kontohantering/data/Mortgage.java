@@ -75,22 +75,23 @@ public class Mortgage {
 	
 	public double calculateMonthlyPayments(int currYears, double currAmount){
 		int months = currYears * 12;
-		double monthlyInterest = getInterest() / 12;
-		return (currAmount/months)*monthlyInterest;
+		double totalCost = calculateTotalCost(currYears, currAmount);
+		double monthlyPayment = totalCost/months;
+		return monthlyPayment;
 	}
 	
 	public double calculateTotalCost(int currYears, double currAmount){
 		int months = currYears * 12;
-		double monthlyInterest = getInterest() / 12;
-		double monthlyPayment = (currAmount/months)*monthlyInterest;
-		return monthlyPayment * months;
+		double interest = getInterest() / 12;
+		double totalCost = (currAmount * (interest*Math.pow((1+interest),months))/((Math.pow(1+interest, months))-1))*months;
+		return totalCost;
 	}
 	
 	
 	public double getMaxAmount(){
 		double totalBalance = currCustomer.getTotalBalance();
 		double ratio = LOAN_RATIO[ratingIndex];
-		maxAmount = totalBalance * ratio;
+		maxAmount = totalBalance * (1+ratio);
 		return maxAmount;
 	}
 		
