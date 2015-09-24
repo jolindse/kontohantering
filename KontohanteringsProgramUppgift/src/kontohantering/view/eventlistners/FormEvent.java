@@ -5,9 +5,7 @@ import java.util.EventObject;
 import kontohantering.data.Customer;
 
 /*
- *  Bean for form events
- *  ---------------------------------------------------
- *  
+ *  Bean class for form events
  */
 
 public class FormEvent extends EventObject {

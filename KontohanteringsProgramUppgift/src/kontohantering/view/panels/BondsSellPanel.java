@@ -2,21 +2,24 @@ package kontohantering.view.panels;
 
 import static kontohantering.view.GuiConstants.BUTTONDIM;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import kontohantering.data.Bonds;
 import kontohantering.data.Customer;
@@ -26,6 +29,7 @@ import kontohantering.view.frames.BondsFrame;
 
 public class BondsSellPanel extends JPanel {
 
+	private Map<String,Integer> currBondMap;
 	private Bonds currBonds;
 	private IBondsListener bondsListener;
 	private JComboBox bondsBox;
@@ -40,7 +44,7 @@ public class BondsSellPanel extends JPanel {
 	private JLabel lblNumberToSellWorthInfo;
 	private String currKey;
 	private JButton btnSell;
-	private JFormattedTextField fieldAmount;
+	private JTextField fieldAmount;
 	private BondsFrame parent;
 
 	public BondsSellPanel(Customer currCustomer, BondsFrame parent) {
@@ -48,6 +52,8 @@ public class BondsSellPanel extends JPanel {
 		setPreferredSize(new Dimension(380, 300));
 
 		currBonds = currCustomer.getBonds();
+		currBondMap = currCustomer.getBonds().getBondMap();
+		
 		bondsListener = Controller.getController();
 		this.parent = parent;
 		
@@ -75,22 +81,23 @@ public class BondsSellPanel extends JPanel {
 
 		lblPrice = new JLabel();
 		updatePriceLabel(currKey);
-
-		fieldAmount = new JFormattedTextField(10);
-		fieldAmount.setValue(new Integer(0));
-		fieldAmount.setColumns(100);
-		fieldAmount.addPropertyChangeListener(new PropertyChangeListener() {
-
+		
+		fieldAmount = new JTextField();
+		fieldAmount.setColumns(10);
+		fieldAmount.addFocusListener(new FocusListener() {
+			
 			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (fieldAmount.getValue() != null) {
-					int number = (Integer) fieldAmount.getValue();
-					updateTotalWorth(number, currKey);
-				}
-
+			public void focusLost(FocusEvent e) {
+				checkAndUpdate();
+				
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
-
 		lblEmpty = new JLabel("");
 		lblOwned = new JLabel("");
 		lblOwnedInfo = new JLabel("Innehav");
@@ -108,13 +115,14 @@ public class BondsSellPanel extends JPanel {
 		btnSell.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int currAmount = (Integer) fieldAmount.getValue();
+				if (checkAndUpdate()){
+				int currAmount = Integer.parseInt(fieldAmount.getText());
 				if(bondsListener.bondSellEventOccured(currCustomer, currAmount, currKey)){
 					JOptionPane.showMessageDialog(parent, "Försäljning av " + currAmount + " stycken " + currKey + " utfört.");
 				} else {
 					JOptionPane.showMessageDialog(parent, "Försäljning nekad. Kontrollera inmatning");
 				}
-				
+				}
 			}
 		});
 
@@ -234,6 +242,27 @@ public class BondsSellPanel extends JPanel {
 		updateNumOwned(currKey);
 
 	}
+	
+	private boolean checkAndUpdate(){
+		boolean allOk = false;
+		if (fieldAmount.getText().length() > 0 && Pattern.matches("[0-9]+", fieldAmount.getText()) == true){
+			int currAmount = Integer.parseInt(fieldAmount.getText());
+			String currKey = (String) bondsBox.getSelectedItem();
+			if (currBondMap.containsKey(currKey) && currAmount <= currBonds.getBondsOwnedAmount(currKey)){
+				fieldAmount.setBackground(Color.WHITE);
+				updateTotalWorth(currAmount, currKey);
+				allOk = true;
+			} else {
+				fieldAmount.setBackground(Color.RED);
+				allOk = false;
+			}
+		} else {
+			fieldAmount.setBackground(Color.RED);
+		}
+		return allOk;
+	}
+	
+
 
 	private void updatePriceLabel(String key) {
 		String price = Double.toString(currBonds.getBondPrice(key));
@@ -255,7 +284,7 @@ public class BondsSellPanel extends JPanel {
 	}
 
 	public void updateInfo() {
-		fieldAmount.setValue(new Integer(0));
+		fieldAmount.setText("");;
 		updateTotalWorth(0, currKey);
 		updateNumOwned(currKey);
 	}

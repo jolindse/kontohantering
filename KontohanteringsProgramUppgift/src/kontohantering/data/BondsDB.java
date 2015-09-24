@@ -2,6 +2,13 @@ package kontohantering.data;
 
 import java.util.HashMap;
 import java.util.Map;
+
+/*
+ * Class to handle bonds sold and bought by bank
+ * 
+ */
+
+
 import static kontohantering.data.ModelConstants.*;
 
 public class BondsDB {
@@ -23,7 +30,7 @@ public class BondsDB {
 			bondsDB.put(BONDS_NAME[i],BONDS_VALUE[i]);
 		}
 	}
-	
+/*	
 	public String outPutBondsDB(){
 		String strOutput = "";
 		for (Map.Entry<String, Double> currentBond: bondsDB.entrySet()){
@@ -31,8 +38,11 @@ public class BondsDB {
 		}
 		return strOutput;
 	}
-	
+	*/
 	public String[] getNames(){
+		/*
+		 * Used to return bonds names in string array
+		 */
 		String[] returnArray = new String[bondsDB.size()];
 		int indexCounter = 0;
 		for (Map.Entry<String, Double> currentBond: bondsDB.entrySet()){
@@ -43,6 +53,9 @@ public class BondsDB {
 	}
 	
 	public double getBondValue(String key){
+		/*
+		 * Used to return value of specific bond
+		 */
 		return bondsDB.get(key);
 	}
 	

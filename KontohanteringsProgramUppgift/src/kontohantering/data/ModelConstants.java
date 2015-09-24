@@ -4,8 +4,6 @@ import java.util.HashMap;
 
 /*
  * Class with constants used in model
- * ----------------------------------
- * 
  */
 
 public final class ModelConstants {

@@ -18,8 +18,9 @@ package kontohantering.data;
 
 public class Customer {
 
-	// Class counter used for generating account number
+	
 	private static int CLEARINGNUMBER = 7777;
+	// Class counter used for generating account number
 	private static int numAccount = 0;
 
 	private String name, lastName;
@@ -40,24 +41,26 @@ public class Customer {
 		this.name = name;
 		this.lastName = lastName;
 		this.persNumber = persNumber;
+		mortgage = new Mortgage(this);
 		accountBalance = 0.0;
 		accountNumber = generateAccountNumber();
 		numAccount++;
 		bonds = new Bonds(this);
 		this.customerRating = setCustRating();
-		mortgage = new Mortgage(this);
+
 	}
 
 	public Customer(String name, String lastName, long persNumber, double accountBalance) {
 		this.name = name;
 		this.lastName = lastName;
 		this.persNumber = persNumber;
+		mortgage = new Mortgage(this);
 		this.accountBalance = accountBalance;
 		accountNumber = generateAccountNumber();
 		numAccount++;
 		bonds = new Bonds(this);
 		this.customerRating = setCustRating();
-		mortgage = new Mortgage(this);
+
 	}
 
 	// GETTERS/SETTERS
@@ -119,6 +122,9 @@ public class Customer {
 	}
 	
 	public Mortgage getMortgage() {
+		if (mortgage == null){
+			mortgage = new Mortgage(this);
+		}
 		return mortgage;
 	}
 
@@ -183,7 +189,7 @@ public class Customer {
 	}
 	
 	public double getTotalBalance(){
-		return accountBalance + bonds.getTotalBondsValue();
+		return accountBalance + bonds.getTotalBondsValue() - getMortgage().getAmount();
 	}
 	
 	private char setCustRating(){
@@ -206,10 +212,22 @@ public class Customer {
 		return chReturn;
 	}
 	
+	private String formatPersNr(long persNr){
+		String toFormat = Long.toString(persNr);
+		StringBuilder sb = new StringBuilder(toFormat);
+		return sb.insert(8, '-').toString();
+		
+	}
+	
 	@Override
 	public String toString() {
-		String strReturn = name + " " + lastName + "\nPersonnummer:\t" + persNumber + "\nKontonummer:\t" + accountNumber
-				+ "\nSaldo:\t\t" + accountBalance +" SEK" + "\nKundklass:\t" + customerRating + "\n\nFonder:\n" + bonds.getBondsOwned();
+		String strReturn = name + " " + lastName  
+				+ "\nPersonnummer:\t" + formatPersNr(persNumber)  
+				+ "\nKontonummer:\t" + accountNumber
+				+ "\nSaldo:\t\t" + accountBalance +" SEK" 
+				+"\nKundklass:\t" + Character.toUpperCase(customerRating)
+				+"\n\nLÅN:\n\n" + getMortgage()
+				+ "\n\nFONDER:\n\n" + bonds.getBondsOwned();
 		return strReturn;
 	}
 

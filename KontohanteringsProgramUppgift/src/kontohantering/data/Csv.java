@@ -17,6 +17,7 @@ import java.util.Map;
  *  LastName		String
  *  PersNumber		long
  *  AccountBalance	double
+ *  Mortage years	int
  *  Mortgage amount	double
  *  CustomerRating	char
 *   FOR EACH BOND TYPE:
@@ -45,6 +46,9 @@ public class Csv {
 	}
 
 	public ArrayList<Customer> readDB() {
+		/*
+		 *  Reads DB from file and populates the runtime DB
+		 */
 		BufferedReader br;
 		int indexNr = 0;
 		// Init objects to populate with data
@@ -111,7 +115,9 @@ public class Csv {
 	}
 
 	public void writeDB(ArrayList<Customer> customerDB) {
-
+		/*
+		 *  Writes the runtime DB to file
+		 */
 		PrintWriter pw;
 		try {
 			pw = new PrintWriter(fileName);

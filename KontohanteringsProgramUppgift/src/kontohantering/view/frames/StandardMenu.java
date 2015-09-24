@@ -2,6 +2,7 @@ package kontohantering.view.frames;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
@@ -15,7 +16,6 @@ import kontohantering.view.panels.SideButtonPanel;
 
 /*
  *  Class for menubar in standard frame
- *  -----------------------------------
  */
 
 public class StandardMenu extends JMenuBar {
@@ -24,139 +24,58 @@ public class StandardMenu extends JMenuBar {
 	private SideButtonPanel sideButtonPanel;
 	private BottomButtonPanel bottomButtonPanel;
 	private OutputPanel outputPanel;
-	private Controller controller;	
-	
-	public StandardMenu (StandardFrame view, BottomButtonPanel bottomButtonPanel, SideButtonPanel sideButtonPanel, OutputPanel outputPanel ) {
-		
+	private Controller controller;
+
+	public StandardMenu(StandardFrame view, BottomButtonPanel bottomButtonPanel, SideButtonPanel sideButtonPanel,
+			OutputPanel outputPanel) {
+
 		this.view = view;
 		this.bottomButtonPanel = bottomButtonPanel;
 		this.sideButtonPanel = sideButtonPanel;
 		this.outputPanel = outputPanel;
 		controller = Controller.getController();
-		
+
 		JMenuBar menuBar = this;
-		
+
 		// File menu
-		
+
 		JMenu fileMenu = new JMenu("Arkiv");
-		JMenuItem exportCustomers = new JMenuItem("Exportera databas...");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		JMenuItem exportCustomers = new JMenuItem("Exportera databas");
+		JMenuItem saveDB = new JMenuItem("Spara databas");
 		JMenuItem exitProgram = new JMenuItem("Avsluta");
-		fileMenu.add(exportCustomers);
-		fileMenu.addSeparator();
-		fileMenu.add(exitProgram);
-		
-		// Test menu
-		
-		JMenu testMenu = new JMenu("Test");
-		JMenuItem outputDB = new JMenuItem("Skriv ut DB");
-		JCheckBoxMenuItem editMode = new JCheckBoxMenuItem("Visa redigeringsläge");
-		JCheckBoxMenuItem tableShow = new JCheckBoxMenuItem("Visa tabellvy");
-		JCheckBoxMenuItem bottomEnabled = new JCheckBoxMenuItem("Bottenpanel aktiverad");
-		JMenuItem saveDB = new JMenuItem("Spara DB");
-		JMenuItem loadDB = new JMenuItem("Ladda DB");
-		JMenuItem tableLoad = new JMenuItem("Starta tabell");
-		
-		tableShow.setSelected(false);
-		
-		testMenu.add(loadDB);
-		testMenu.add(saveDB);
-		testMenu.add(outputDB);
-		testMenu.addSeparator();
-		testMenu.add(editMode);
-		testMenu.add(bottomEnabled);
-		testMenu.addSeparator();
-		testMenu.add(tableLoad);
-		testMenu.add(tableShow);
-		
-		menuBar.add(fileMenu);
-		menuBar.add(testMenu);
-		
-		// Actions for test menu
-		
-		
-		bottomEnabled.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JCheckBoxMenuItem chkbxBottomPanel = (JCheckBoxMenuItem) e.getSource();
-				if(chkbxBottomPanel.isSelected()){
-					bottomButtonPanel.setActive();;
-				} else {
-					bottomButtonPanel.setDisabled();
-				}
-				
-			}
-		});
-		
-		
-		editMode.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JCheckBoxMenuItem chkbxEditMode = (JCheckBoxMenuItem) e.getSource();
-				if(chkbxEditMode.isSelected()){
-					sideButtonPanel.setEditMode();
-				} else {
-					sideButtonPanel.setViewMode();
-				}
-				
-			}
-		});
-			
-		
-		tableShow.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JCheckBoxMenuItem showTableOnOff = (JCheckBoxMenuItem) e.getSource();
-				
-				if(showTableOnOff.isSelected()){
-					controller.tableFull();;
-					view.editMode();
-					
-				} 
-				if(!showTableOnOff.isSelected()){
-					outputPanel.textAreaView();
-				}
-			}
-		});
-		
-		tableLoad.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			
-				controller.tableFull();
-				view.editMode();
-			}
-		});
-		
-		outputDB.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				view.setCurrentString(controller.outputDB());
-				view.textMode();
-			}
-		});
+
+		exportCustomers.setMnemonic(KeyEvent.VK_E);
+		saveDB.setMnemonic(KeyEvent.VK_S);
+		exitProgram.setMnemonic(KeyEvent.VK_Q);
 		
 		saveDB.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.saveDB();
 			}
 		});
 		
-		loadDB.addActionListener(new ActionListener() {
+		exitProgram.addActionListener(new ActionListener() {
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.loadDB();
+				controller.exitProgram();
+				
 			}
 		});
+
+		fileMenu.add(exportCustomers);
+		fileMenu.add(saveDB);
+		fileMenu.addSeparator();
+		fileMenu.add(exitProgram);
 		
+		menuBar.add(fileMenu);
+
 	}
-	
-	public JMenuBar getMenu(){
+
+	public JMenuBar getMenu() {
 		return this;
 	}
 }

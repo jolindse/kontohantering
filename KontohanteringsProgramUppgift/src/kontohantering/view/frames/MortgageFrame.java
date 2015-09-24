@@ -18,7 +18,9 @@ import kontohantering.view.eventlistners.IUpdateObserver;
 import kontohantering.view.eventlistners.IUpdateSub;
 import kontohantering.view.panels.CustomerInfoSidePanel;
 import kontohantering.view.panels.MortgagePanel;
-
+/*
+ * Frame to handle mortgage actions
+ */
 public class MortgageFrame extends KontoFrame implements IUpdateObserver {
 	
 	private Customer currCustomer;
@@ -64,6 +66,9 @@ public class MortgageFrame extends KontoFrame implements IUpdateObserver {
 	}
 	
 	public void operationFinished(){
+		/*
+		 * Method called by buttons in panels to close frame when operation is submitted
+		 */
 		closureBehaviour();
 	}
 

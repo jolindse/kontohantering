@@ -6,7 +6,9 @@ import javax.swing.table.AbstractTableModel;
 
 import kontohantering.data.Customer;
 import kontohantering.logic.Controller;
-
+/*
+ * The model for use with JTable in OutputPanel
+ */
 public class CustomerTableModel extends AbstractTableModel {
 
 	private String[] colName = { 
@@ -30,6 +32,16 @@ public class CustomerTableModel extends AbstractTableModel {
 		
 	public Customer getSelectedCustomer (int row) {
 		return customerDB.get(row);
+	}
+	
+	private String formatPersNr(long persNr){
+		/*
+		 * Class to format person nummer to a more readable version
+		 */
+		String toFormat = Long.toString(persNr);
+		StringBuilder sb = new StringBuilder(toFormat);
+		return sb.insert(8, '-').toString();
+		
 	}
 	
 	@Override
@@ -62,7 +74,7 @@ public class CustomerTableModel extends AbstractTableModel {
 		case 1:
 			return currCustomer.getLastName();
 		case 2:
-			return currCustomer.getPersNumber();
+			return formatPersNr(currCustomer.getPersNumber());
 		case 3:
 			return currCustomer.getAccountNumber();
 		case 4:

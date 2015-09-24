@@ -7,7 +7,11 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
-
+/*
+ * Abstract class that all frames in program inherits from.
+ * --------------------------------------------------------
+ * Used to set a few common values and add the abstract method of closureBehavoir.
+ */
 public abstract class KontoFrame extends JFrame {
 
 	public KontoFrame (String frameName, int width, int height) {

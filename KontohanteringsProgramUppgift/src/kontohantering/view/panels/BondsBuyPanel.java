@@ -42,7 +42,6 @@ public class BondsBuyPanel extends JPanel {
 	private JLabel lblNumber;
 	private JLabel lblTotPriceInfo;
 	private JLabel lblTotPrice;
-	//private JFormattedTextField fieldAmount;
 	private JTextField fieldAmount;
 	private JButton btnBuy;
 	private JComboBox bondsBox;
@@ -87,23 +86,6 @@ public class BondsBuyPanel extends JPanel {
 		lblTotPriceInfo = new JLabel("Total kostnad");
 		lblPrice = new JLabel();
 		updatePriceLabel(currKey);
-		
-		/*
-		fieldAmount = new JFormattedTextField(10);
-		fieldAmount.setValue(new Integer(0));
-		fieldAmount.setColumns(100);
-		fieldAmount.addPropertyChangeListener(new PropertyChangeListener() {
-			
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (fieldAmount.getValue() != null){
-					int number = (Integer)fieldAmount.getValue();
-					updateTotalPrice(number, currKey);
-				}
-				
-			}
-		});
-		*/
 		
 		fieldAmount = new JTextField();
 		fieldAmount.setColumns(10);

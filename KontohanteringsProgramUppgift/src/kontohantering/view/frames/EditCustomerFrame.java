@@ -119,14 +119,8 @@ public class EditCustomerFrame extends KontoFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(inputForm.userInputOk()){
-				
 					FormEvent ev = new FormEvent(this, currCustomer, inputForm.getFirstName(), inputForm.getLastName(), inputForm.getPersNumber());
 					formListener.editUserFormEvent(ev);
-					
-				/*currCustomer.setLastName(inputForm.getLastName());
-				currCustomer.setName(inputForm.getFirstName());
-				currCustomer.setPersNumber(inputForm.getPersNumber());*/
-				//controller.updateOutput();
 				closureBehaviour();
 				}
 			}

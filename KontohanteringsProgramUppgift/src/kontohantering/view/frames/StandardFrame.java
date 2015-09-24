@@ -3,6 +3,7 @@ package kontohantering.view.frames;
 import java.awt.BorderLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
+import java.nio.file.CopyOption;
 import java.util.ArrayList;
 
 import javax.swing.JMenuBar;
@@ -31,6 +32,7 @@ public class StandardFrame extends KontoFrame implements IUpdateObserver {
 	private IUpdateSub updateListener;
 	private StandardFrame frameHandler;
 	private String currentString;
+	private Controller controller;
 	
 	public StandardFrame() {
 
@@ -40,6 +42,7 @@ public class StandardFrame extends KontoFrame implements IUpdateObserver {
 		
 		// Set listener for GUI updates
 		
+		controller = Controller.getController();
 		updateListener = Controller.getController();
 		updateListener.registerObserver(this);
 		frameHandler = this;
@@ -103,16 +106,19 @@ public class StandardFrame extends KontoFrame implements IUpdateObserver {
 	// OTHER METHODS
 	
 	public void editCustomerFrame(Customer currCustomer) {
+		/*
+		 * Edit customer frame start called from controller
+		 */
 		EditCustomerFrame editFrame = new EditCustomerFrame(currCustomer);
 	}
-	
+
 	public void setCurrentString(String newString){
 		currentString = newString;
 	}
 
 	@Override
 	void closureBehaviour() {
-		System.exit(0);
+		controller.exitProgram();;
 		
 	}
 

@@ -51,7 +51,9 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 	}
 
 	/*
-	 * The init methods ----------------- Started from application class and
+	 * The init methods 
+	 * ----------------- 
+	 * Started from application class and
 	 * exist to have starting of different parts of MVC in order.
 	 */
 
@@ -82,12 +84,18 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 
 	@Override
 	public void registerObserver(IUpdateObserver o) {
+		/*
+		 * Adds an observer to the list
+		 */
 		updateObservers.add(o);
 
 	}
 
 	@Override
 	public void removeObserver(IUpdateObserver o) {
+		/*
+		 * Removes an observer
+		 */
 		int index = updateObservers.indexOf(o);
 		if (index >= 0) {
 			updateObservers.remove(index);
@@ -97,6 +105,9 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 
 	@Override
 	public void updateObservers() {
+		/*
+		 * Function call to update the observers GUI.
+		 */
 		if (currCustomer != null){
 			view.setCurrentString(currCustomer.toString());
 		} else {
@@ -114,7 +125,10 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 
 	@Override
 	public void tableEventOccured(TableEvent t) {
-
+		/*
+		 * Sets the current user based on selection in table
+		 * in OutputPanel.
+		 */
 		tableMode = t.isTableActive();
 		int clicks = t.getClicks();
 
@@ -151,6 +165,9 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 	
 	@Override
 	public void editUserFormEvent(FormEvent e) {
+		/*
+		 *  Called by the edit account button
+		 */
 		currCustomer = e.getCurrCustomer();
 		currCustomer.setName(e.getFirstName());
 		currCustomer.setLastName(e.getLastName());
@@ -178,14 +195,19 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 
 	@Override
 	public boolean bondBuyEventOccured(Customer bondsCustomer, int amount, String key) {
+		/*
+		 * Method for bond purchase
+		 */
 		boolean allOk = (bondsCustomer.getBonds().buyBonds(amount, key));
-			
 		updateObservers();
 		return allOk;
 	}
 
 	@Override
 	public boolean bondSellEventOccured(Customer bondsCustomer, int amount, String key) {
+		/*
+		 * Method for bond sell
+		 */
 		boolean allOk = bondsCustomer.getBonds().sellBonds(amount, key);
 		updateObservers();
 		return allOk;
@@ -195,6 +217,9 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 	
 	@Override
 	public boolean applyForMortgage(double amount, int years, Customer mortCustomer) {
+		/*
+		 * Method for taking a loan
+		 */
 		boolean allOk = false;
 			if (mortCustomer.getMortgage().applyForMortgage(years, amount)){
 				mortCustomer.addFunds(amount);
@@ -206,6 +231,9 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 
 	@Override
 	public boolean payMortgage(Customer mortCustomer) {
+		/*
+		 * Method for paying off debt
+		 */
 		boolean allOk = false;
 		int years = mortCustomer.getMortgage().getYears();
 		double amount = mortCustomer.getMortgage().getAmount();
@@ -229,11 +257,6 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 	public void loadDB() {
 		customerDB.loadDB(fileName);
 
-	}
-
-	public String outputDB() {
-		// Depricated - still in for testing. To be removed
-		return customerDB.outputDB();
 	}
 
 	private ArrayList<Customer> getCustomerArray() {
@@ -352,6 +375,7 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 		MortgageFrame mortFrame = new MortgageFrame(currCustomer);
 	}
 
+
 	// OTHER METHODS CALLED BY USER
 
 	public void tableFull() {
@@ -360,10 +384,23 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 		 */
 		setTableData(customerDB.getArray());
 	}
+	
+	public void exitProgram() {
+		/*
+		 * Saves database and exits application
+		 * ------------------------------------
+		 * Called by StandardFrame and StandardMenu
+		 */
+		saveDB();
+		System.exit(0);
+	}
 
 	// PRIVATE METHODS
 
 	private void setTableData(ArrayList<Customer> customerArray) {
+		/*
+		 * Sets the table with data called from search
+		 */
 		view.tableMode(customerArray);
 	}
 

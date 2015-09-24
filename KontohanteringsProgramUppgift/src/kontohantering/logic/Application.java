@@ -14,6 +14,10 @@ import kontohantering.view.frames.StandardFrame;
 
 public class Application {
 	
+	/*
+	 *  Main class that executes the swing application
+	 */
+	
 	public static void main (String[] args) {
 	
 		// Load custom font

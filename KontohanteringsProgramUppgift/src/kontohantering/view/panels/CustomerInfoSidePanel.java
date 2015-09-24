@@ -30,10 +30,9 @@ public class CustomerInfoSidePanel extends JPanel {
 		JLabel lblLogo = new JLabel();
 		lblLogo.setIcon(LOGOSMALL);
 		
-		
 		lblFirstName = new JLabel(currCustomer.getName());
 		lblLastName = new JLabel(currCustomer.getLastName());
-		lblPersNumber = new JLabel(Long.toString(currCustomer.getPersNumber()));
+		lblPersNumber = new JLabel(formatPersNr(currCustomer.getPersNumber()));
 		lblAccountNumber = new JLabel(Long.toString(currCustomer.getAccountNumber()));
 		lblEmpty = new JLabel("");
 		
@@ -99,4 +98,11 @@ public class CustomerInfoSidePanel extends JPanel {
 		add(lblEmpty, gc);
 	}
 
+	private String formatPersNr(long persNr){
+		String toFormat = Long.toString(persNr);
+		StringBuilder sb = new StringBuilder(toFormat);
+		return sb.insert(8, '-').toString();
+		
+	}
+	
 }

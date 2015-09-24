@@ -1,6 +1,9 @@
 package kontohantering.view.eventlistners;
 
 import kontohantering.data.Customer;
+/*
+ * Interface for use between controller and bonds actions.
+ */
 
 public interface IBondsListener {
 

@@ -3,7 +3,9 @@ package kontohantering.view.eventlistners;
 import java.util.EventObject;
 
 import kontohantering.data.Customer;
-
+/*
+ * Bean class for the table events
+ */
 public class TableEvent extends EventObject {
 
 	private boolean tableActive;

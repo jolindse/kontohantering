@@ -10,14 +10,14 @@ import kontohantering.logic.Controller;
 public class Search {
 
 	private ArrayList<Customer> customerDB;
-	private Controller controller;
+	//private Controller controller;
 	private Set<Customer> customerSet;
 	private ArrayList<Customer> returnList;
 	
 	
 	public Search (ArrayList<Customer> customerDB) {
 		
-		controller = Controller.getController();
+		//controller = Controller.getController();
 		this.customerDB = customerDB;
 		returnList = new ArrayList<>();
 		customerSet = new HashSet<>();

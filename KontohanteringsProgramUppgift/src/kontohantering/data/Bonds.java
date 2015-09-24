@@ -74,26 +74,44 @@ public class Bonds {
 	}
 	
 	public Map<String,Integer> getBondMap() {
+		/*
+		 * Returns the map of bonds owned
+		 */
 		return bondsMap;
 	}
 	
 	public int getNumberOfBondTypes(){
+		/*
+		 * Returns the total number of bond types owned
+		 */
 		return bondsMap.size();
 	}
 	
 	public double getBondPrice(String key){
+		/*
+		 *  Returns the value of specified bond 
+		 */
 		return bondsDB.getBondValue(key);
 	}
 
 	public int getBondsOwnedAmount(String key){
+		/*
+		 *  Returns the number of bonds owned of specified type
+		 */
 		return bondsMap.get(key);
 	}
 	
 	public double totalValue(int amount, String key) {
+		/*
+		 *  Used to calculate the total value of specific bonds and amount
+		 */
 		return bondsDB.getBondValue(key) * amount;
 	}
 	
 	public double getTotalBondsValue() {
+		/*
+		 *  Returns the total value of owned bonds
+		 */
 		double totalValue = 0;
 		for (Map.Entry<String, Integer> current : bondsMap.entrySet()){
 			String key = current.getKey();
@@ -103,15 +121,18 @@ public class Bonds {
 		return totalValue;
 	}
 	
-	// ONLY FOR TESTING PURPOSE TO BE REMOVED
-	
 	public String[] getBondsDBNames(){
-
+		/*
+		 *  Used to feed combobox in bonds buy panel
+		 */
 		String[] strReturn = bondsDB.getNames(); 
 		return strReturn;
 	}
 	
 	public String[] getOwnedBondsNames(){
+		/*
+		 *  Used to feed combobox in bonds sell panel
+		 */
 		String[] strReturn = new String[bondsMap.size()];
 		int index = 0;
 		for (Map.Entry<String, Integer> currentBond: bondsMap.entrySet()){
@@ -122,12 +143,16 @@ public class Bonds {
 	}
 	
 	public String getBondsOwned(){
+		/* 
+		 *  Used in customer toString method to display owned bonds
+		 */
 		String strReturn = "";
 		for (Map.Entry<String, Integer> currentBond: bondsMap.entrySet()){
 			String currKey = currentBond.getKey();
 			int currNum = currentBond.getValue();
-			String totValue = Double.toString(totalValue(currNum, currKey));
-			strReturn += currKey + "\nAntal: " + currNum + "\nVärde" + totValue + "\n\n";
+			double totValue = totalValue(currNum, currKey);
+			double bondValue = getBondPrice(currKey);
+			strReturn += String.format(currKey + "\n\n"+currNum+" stycken a' %.2f SEK/st.\nTotalt värde:\t%.2f SEK\n\n", bondValue,totValue);
 		}
 		return strReturn;
 	}

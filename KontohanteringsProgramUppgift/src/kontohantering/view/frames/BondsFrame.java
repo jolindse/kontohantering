@@ -28,7 +28,12 @@ import kontohantering.view.eventlistners.IUpdateSub;
 import kontohantering.view.panels.BondsBuyPanel;
 import kontohantering.view.panels.CustomerInfoSidePanel;
 import kontohantering.view.panels.BondsSellPanel;
-
+/*
+ * Frame class for bonds actions
+ * -----------------------------
+ * Uses tabs view if current customer is a previous bond owner.
+ * Otherwise shows only buy tab.
+ */
 public class BondsFrame extends KontoFrame implements IUpdateObserver {
 
 	private Customer currCustomer;
@@ -75,9 +80,7 @@ public class BondsFrame extends KontoFrame implements IUpdateObserver {
 		
 		// RIGHT SIDE PANEL 
 		
-	
 		buyBondsPanel = new BondsBuyPanel(currCustomer, this);
-		
 		
 		rightSidePanel = new JTabbedPane(JTabbedPane.TOP);
 		rightSidePanel.setPreferredSize(new Dimension(380,300));
@@ -125,6 +128,9 @@ public class BondsFrame extends KontoFrame implements IUpdateObserver {
 	}
 
 	private void addSellTab() {
+		/*
+		 * Method to add the sell tab to frame
+		 */
 		sellBondsPanel = new BondsSellPanel(currCustomer, this);
 		rightSidePanel.addTab("Sälj", sellBondsPanel);
 		sellTabActive = true;
@@ -132,6 +138,9 @@ public class BondsFrame extends KontoFrame implements IUpdateObserver {
 	}
 	
 	private boolean sellActivated(){
+		/*
+		 * Check if sell tab is needed
+		 */
 		boolean sell = false;
 		if (currCustomer.getBonds().getNumberOfBondTypes() > 0){
 			sell = true;
@@ -169,6 +178,5 @@ public class BondsFrame extends KontoFrame implements IUpdateObserver {
 			}
 		}
 	}
-	
 	
 }
