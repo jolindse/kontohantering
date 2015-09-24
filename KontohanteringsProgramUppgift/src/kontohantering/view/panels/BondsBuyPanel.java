@@ -1,15 +1,20 @@
 package kontohantering.view.panels;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.beans.FeatureDescriptor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.regex.Pattern;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -37,7 +42,8 @@ public class BondsBuyPanel extends JPanel {
 	private JLabel lblNumber;
 	private JLabel lblTotPriceInfo;
 	private JLabel lblTotPrice;
-	private JFormattedTextField fieldAmount;
+	//private JFormattedTextField fieldAmount;
+	private JTextField fieldAmount;
 	private JButton btnBuy;
 	private JComboBox bondsBox;
 	private String currKey;
@@ -81,10 +87,11 @@ public class BondsBuyPanel extends JPanel {
 		lblTotPriceInfo = new JLabel("Total kostnad");
 		lblPrice = new JLabel();
 		updatePriceLabel(currKey);
-	
-		fieldAmount = new JFormattedTextField();
+		
+		/*
+		fieldAmount = new JFormattedTextField(10);
 		fieldAmount.setValue(new Integer(0));
-		fieldAmount.setColumns(10);
+		fieldAmount.setColumns(100);
 		fieldAmount.addPropertyChangeListener(new PropertyChangeListener() {
 			
 			@Override
@@ -96,7 +103,24 @@ public class BondsBuyPanel extends JPanel {
 				
 			}
 		});
+		*/
 		
+		fieldAmount = new JTextField();
+		fieldAmount.setColumns(10);
+		fieldAmount.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				checkAndUpdate();
+				
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		lblEmpty = new JLabel("");
 		
@@ -109,11 +133,13 @@ public class BondsBuyPanel extends JPanel {
 		btnBuy.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int currAmount = (Integer)fieldAmount.getValue();
+				if(checkAndUpdate()){
+				int currAmount = Integer.parseInt(fieldAmount.getText());
 				if(bondsListener.bondBuyEventOccured(currCustomer, currAmount, currKey)){
 					JOptionPane.showMessageDialog(parent, "Köp av " + currAmount + " stycken " + currKey + " utfört.");
 				} else {
 					JOptionPane.showMessageDialog(parent, "Köp nekat. Saknas täckning för köpet.");
+				}
 				}
 			}
 		});
@@ -197,6 +223,21 @@ public class BondsBuyPanel extends JPanel {
 		
 
 	}
+	
+	private boolean checkAndUpdate(){
+		boolean allOk = false;
+		if (fieldAmount.getText().length() > 0 && Pattern.matches("[0-9]+", fieldAmount.getText()) == true){
+			fieldAmount.setBackground(Color.WHITE);
+			int currAmount = Integer.parseInt(fieldAmount.getText());
+			String currKey = (String) bondsBox.getSelectedItem();
+			updateTotalPrice(currAmount, currKey);
+			allOk = true;
+		} else {
+			fieldAmount.setBackground(Color.RED);
+		}
+		return allOk;
+	}
+	
 
 	private void updatePriceLabel(String key) {
 		String price = Double.toString(currBonds.getBondPrice(key));
@@ -211,7 +252,7 @@ public class BondsBuyPanel extends JPanel {
 	}
 	
 	public void updateInfo(){
-		fieldAmount.setValue(new Integer(0));
+		fieldAmount.setText("");;
 		updateTotalPrice(0, currKey);
 	}
 }

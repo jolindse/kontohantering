@@ -76,9 +76,9 @@ public class BondsSellPanel extends JPanel {
 		lblPrice = new JLabel();
 		updatePriceLabel(currKey);
 
-		fieldAmount = new JFormattedTextField();
+		fieldAmount = new JFormattedTextField(10);
 		fieldAmount.setValue(new Integer(0));
-		fieldAmount.setColumns(10);
+		fieldAmount.setColumns(100);
 		fieldAmount.addPropertyChangeListener(new PropertyChangeListener() {
 
 			@Override
