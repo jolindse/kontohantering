@@ -28,6 +28,7 @@ import kontohantering.view.eventlistners.IUpdateSub;
 import kontohantering.view.panels.BondsBuyPanel;
 import kontohantering.view.panels.CustomerInfoSidePanel;
 import kontohantering.view.panels.BondsSellPanel;
+
 /*
  * Frame class for bonds actions
  * -----------------------------
@@ -38,29 +39,28 @@ public class BondsFrame extends KontoFrame implements IUpdateObserver {
 
 	private Customer currCustomer;
 	private JTabbedPane rightSidePanel;
-	private	BondsSellPanel sellBondsPanel;
+	private BondsSellPanel sellBondsPanel;
 	private BondsBuyPanel buyBondsPanel;
 	private JButton btnDone;
 	private boolean hasBonds;
 	private boolean sellTabActive;
 	private IUpdateSub updateSubject;
 	private int tabIndex;
-	
-	public BondsFrame (Customer currCustomer) {
 
-		super("Fonder",500,500);
+	public BondsFrame(Customer currCustomer) {
+
+		super("Fonder", 500, 500);
 		this.currCustomer = currCustomer;
 		updateSubject = Controller.getController();
 		updateSubject.registerObserver(this);
 
 		sellTabActive = false;
 		hasBonds = sellActivated();
-				
+
 		setLayout(new BorderLayout());
-		
-		
+
 		// TOP LOGO PANEL
-		
+
 		JPanel topPanel = new JPanel();
 		topPanel.setPreferredSize(new Dimension(500, 50));
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
@@ -69,23 +69,22 @@ public class BondsFrame extends KontoFrame implements IUpdateObserver {
 		JLabel lblTopName = new JLabel("Fonder");
 		lblTopName.setForeground(BANKBLUE);
 		lblTopName.setFont(FONTMEDIUM);
-		
+
 		topPanel.add(Box.createGlue());
 		topPanel.add(lblTopName);
-		
-		
+
 		// LEFT SIDE PANEL - CUSTOMER INFO
-		
+
 		JPanel leftSidePanel = new CustomerInfoSidePanel(currCustomer);
-		
-		// RIGHT SIDE PANEL 
-		
+
+		// RIGHT SIDE PANEL
+
 		buyBondsPanel = new BondsBuyPanel(currCustomer, this);
-		
+
 		rightSidePanel = new JTabbedPane(JTabbedPane.TOP);
-		rightSidePanel.setPreferredSize(new Dimension(380,300));
+		rightSidePanel.setPreferredSize(new Dimension(380, 300));
 		rightSidePanel.addTab("Köp", buyBondsPanel);
-		if (hasBonds){
+		if (hasBonds) {
 			addSellTab();
 		}
 		rightSidePanel.setFocusable(false);
@@ -93,12 +92,11 @@ public class BondsFrame extends KontoFrame implements IUpdateObserver {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				tabIndex = rightSidePanel.getSelectedIndex();
-				System.out.println(tabIndex);
 			}
 		});
 
 		// BOTTOM PANEL
-		
+
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setPreferredSize(new Dimension(500, 80));
 		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
@@ -109,74 +107,81 @@ public class BondsFrame extends KontoFrame implements IUpdateObserver {
 		btnDone.setMaximumSize(BUTTONDIM);
 		btnDone.setMinimumSize(BUTTONDIM);
 		btnDone.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				closureBehaviour();
-				
+
 			}
 		});
 		bottomPanel.add(Box.createGlue());
 		bottomPanel.add(btnDone);
 
-		
-		add(topPanel,BorderLayout.NORTH);
-		add(leftSidePanel,BorderLayout.CENTER);
-		add(rightSidePanel,BorderLayout.EAST);
-		add(bottomPanel,BorderLayout.SOUTH);
-	
+		add(topPanel, BorderLayout.NORTH);
+		add(leftSidePanel, BorderLayout.CENTER);
+		add(rightSidePanel, BorderLayout.EAST);
+		add(bottomPanel, BorderLayout.SOUTH);
+
 	}
 
 	private void addSellTab() {
 		/*
 		 * Method to add the sell tab to frame
 		 */
+		// TESTING
+		System.out.println("Sell tab skall addas!");
+		// TESTING
 		sellBondsPanel = new BondsSellPanel(currCustomer, this);
 		rightSidePanel.addTab("Sälj", sellBondsPanel);
 		sellTabActive = true;
 		
 	}
-	
-	private boolean sellActivated(){
+
+	private boolean sellActivated() {
 		/*
 		 * Check if sell tab is needed
 		 */
 		boolean sell = false;
-		if (currCustomer.getBonds().getNumberOfBondTypes() > 0){
+		if (currCustomer.getBonds().getNumberOfBondTypes() > 0) {
 			sell = true;
 		} else {
 			sell = false;
 		}
 		return sell;
 	}
-	
+
 	@Override
 	void closureBehaviour() {
-		updateSubject.removeObserver(this);		
+		updateSubject.removeObserver(this);
 		this.dispose();
 	}
 
 	@Override
 	public void updateGui() {
+		/*
+		 *  Checks if user has bonds and activates or deactivates tabs in panel according to result
+		 */
 		hasBonds = sellActivated();
-		if (hasBonds){
-			if (tabIndex == 0){
+		if (hasBonds) {
+			if (!sellTabActive) {
+				addSellTab();
+				rightSidePanel.setSelectedIndex(0);
 				buyBondsPanel.updateInfo();
-				if (!sellTabActive){
-					addSellTab();
-					rightSidePanel.setSelectedIndex(0);
-				}
 			}
-			if (tabIndex == 1){
-			sellBondsPanel.updateInfo();
+			if (sellTabActive && tabIndex == 0) {
+				buyBondsPanel.updateInfo();
+			}
+			if (sellTabActive && tabIndex == 1) {
+				sellBondsPanel.updateInfo();
 			}
 		} else {
 			rightSidePanel.setSelectedIndex(0);
 			buyBondsPanel.updateInfo();
-			if (sellTabActive){
-			rightSidePanel.removeTabAt(1);
+			if (sellTabActive) {
+				rightSidePanel.removeTabAt(1);
+				sellTabActive = false;
 			}
 		}
 	}
-	
+
 }

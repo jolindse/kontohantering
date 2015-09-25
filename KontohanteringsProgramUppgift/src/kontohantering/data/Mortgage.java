@@ -125,6 +125,9 @@ public class Mortgage {
 		/*
 		 * Returns nicely formatted string for output of mortgage
 		 */
+		if (!hasMortage){
+			return "Inget lÂn.";
+		} else {
 		double monthPayment = 0;
 		double unusedMaxAmount = getMaxAmount() - amount;
 		if (years > 0 && amount > 0){
@@ -136,7 +139,7 @@ public class Mortgage {
 				+ "\n\nMÂnatlig betalning:\t%.2f SEK"
 				+ "\n≈r:\t\t\t"+years
 				+ "\n",amount,unusedMaxAmount,getMaxAmount(),monthPayment);
-		
+		}
 	}
 	
 	

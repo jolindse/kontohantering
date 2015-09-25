@@ -40,6 +40,8 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 	private Customer currCustomer;
 	private StandardFrame view;
 	private CustomerDB customerDB;
+	
+	private ArrayList<Customer> tableArray;
 
 	private boolean tableMode;
 	private boolean customerSelected;
@@ -60,6 +62,7 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 	public void initControllerDB(CustomerDB customerDB) {
 
 		this.customerDB = customerDB;
+		tableArray = customerDB.getArray();
 		loadDB();
 	}
 
@@ -157,8 +160,6 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 				break;
 			}
 		}
-		//updateObservers();
-
 	}
 	
 	// METHODS FROM FORMINTERFACE - NEW USER AND EDIT USER
@@ -225,7 +226,7 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 				mortCustomer.addFunds(amount);
 				allOk = true;
 			}
-			
+		updateObservers();
 		return allOk;
 	}
 
@@ -243,6 +244,7 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 			mortCustomer.withdrawFunds(totalAmount);
 			allOk = true;
 		}
+		updateObservers();
 		return allOk;
 	}
 
@@ -271,8 +273,8 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 		 */
 		Search currSearch = new Search(getCustomerArray());
 		view.viewMode();
-		ArrayList<Customer> currSearchArray = currSearch.getMatches(strToMatch);
-		setTableData(currSearchArray);
+		tableArray = currSearch.getMatches(strToMatch);
+		setTableData(tableArray);
 	}
 
 	public void editCustomer() {
@@ -298,12 +300,15 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 		 */
 
 		int indexNr = 0;
+		int tableIndex = 0;
 		if (tableMode) {
 			if (customerSelected) {
 				int respons = JOptionPane.showConfirmDialog(view,
 						"Vill du avsluta " + currCustomer.getName() + " " + currCustomer.getLastName() + "s konto?",
 						"Avsluta konto", JOptionPane.YES_NO_OPTION);
 				if (respons == JOptionPane.YES_OPTION) {
+					tableIndex = tableArray.indexOf(currCustomer);
+					tableArray.remove(tableIndex);
 					indexNr = currCustomer.getIndex();
 					customerDB.removeFromDB(indexNr);
 					view.setCurrentString("Ingen kund vald.");
@@ -316,6 +321,8 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 					"Vill du avsluta " + currCustomer.getName() + " " + currCustomer.getLastName() + "s konto?",
 					"Avsluta konto", JOptionPane.YES_NO_OPTION);
 			if (respons == JOptionPane.YES_OPTION) {
+				tableIndex = tableArray.indexOf(currCustomer);
+				tableArray.remove(tableIndex);
 				indexNr = currCustomer.getIndex();
 				customerDB.removeFromDB(indexNr);
 				view.setCurrentString("Ingen kund vald.");

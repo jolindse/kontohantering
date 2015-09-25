@@ -37,7 +37,7 @@ public class StandardFrame extends KontoFrame implements IUpdateObserver {
 	public StandardFrame() {
 
 		// Set displayed name of windows and layout
-		super("[b]ank kontohantering v0.8",900, 800);
+		super("[b]ank kontohantering v0.9",900, 800);
 		setLayout(new BorderLayout());
 		
 		// Set listener for GUI updates
@@ -67,7 +67,6 @@ public class StandardFrame extends KontoFrame implements IUpdateObserver {
 			@Override
 			public void windowLostFocus(WindowEvent e) {
 				updateListener.removeObserver(frameHandler);
-				
 			}
 			
 			@Override
@@ -118,7 +117,7 @@ public class StandardFrame extends KontoFrame implements IUpdateObserver {
 
 	@Override
 	void closureBehaviour() {
-		controller.exitProgram();;
+		controller.exitProgram();
 		
 	}
 

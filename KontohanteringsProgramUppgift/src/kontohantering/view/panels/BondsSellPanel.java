@@ -27,6 +27,13 @@ import kontohantering.logic.Controller;
 import kontohantering.view.eventlistners.IBondsListener;
 import kontohantering.view.frames.BondsFrame;
 
+/*
+ *  Bonds sell panel
+ *  -----------------
+ *  Displays if current customer owns bonds and allows him to 
+ *  sell them.
+ */
+
 public class BondsSellPanel extends JPanel {
 
 	private Map<String,Integer> currBondMap;
@@ -244,6 +251,9 @@ public class BondsSellPanel extends JPanel {
 	}
 	
 	private boolean checkAndUpdate(){
+		/*
+		 *  Checks that all fields are correctly filled and marks if not.
+		 */
 		boolean allOk = false;
 		if (fieldAmount.getText().length() > 0 && Pattern.matches("[0-9]+", fieldAmount.getText()) == true){
 			int currAmount = Integer.parseInt(fieldAmount.getText());
@@ -265,18 +275,27 @@ public class BondsSellPanel extends JPanel {
 
 
 	private void updatePriceLabel(String key) {
+		/*
+		 * Gets and displays current bond price
+		 */
 		String price = Double.toString(currBonds.getBondPrice(key));
 		String outPut = "a' " + price + " SEK";
 		lblPrice.setText(outPut);
 	}
 
 	private void updateTotalWorth(int amount, String key) {
+		/*
+		 * Gets and displays total worth of number of bonds
+		 */
 		double bondPrice = currBonds.getBondPrice(key);
 		double totPrice = bondPrice * amount;
 		lblNumberToSellWorth.setText(Double.toString(totPrice) + " SEK");
 	}
 	
 	private void updateNumOwned(String key) {
+		/*
+		 * Gets and displays number of bonds owned
+		 */
 		int numOwned = currBonds.getBondsOwnedAmount(key);
 		double totWorth = currBonds.getBondPrice(key) * numOwned;
 		lblOwned.setText(Integer.toString(numOwned));
@@ -284,7 +303,11 @@ public class BondsSellPanel extends JPanel {
 	}
 
 	public void updateInfo() {
-		fieldAmount.setText("");;
+		/*
+		 * Resets field 
+		 */
+		fieldAmount.setText("");
+		fieldAmount.setBackground(Color.WHITE);
 		updateTotalWorth(0, currKey);
 		updateNumOwned(currKey);
 	}

@@ -35,6 +35,12 @@ import kontohantering.view.frames.BondsFrame;
 
 import static kontohantering.view.GuiConstants.BUTTONDIM;
 
+/*
+ * Bonds buy panel
+ * ----------------
+ * Placed to the right on bonds frame and handles buying of all bonds.
+ */
+
 public class BondsBuyPanel extends JPanel {
 
 	private JLabel lblPrice;
@@ -207,6 +213,9 @@ public class BondsBuyPanel extends JPanel {
 	}
 	
 	private boolean checkAndUpdate(){
+		/*
+		 *  Checks that all fields are correctly filled and marks if not.
+		 */
 		boolean allOk = false;
 		if (fieldAmount.getText().length() > 0 && Pattern.matches("[0-9]+", fieldAmount.getText()) == true){
 			fieldAmount.setBackground(Color.WHITE);
@@ -222,19 +231,29 @@ public class BondsBuyPanel extends JPanel {
 	
 
 	private void updatePriceLabel(String key) {
+		/*
+		 * Gets and displays current bond price
+		 */
 		String price = Double.toString(currBonds.getBondPrice(key));
 		String outPut = "a' " + price + " SEK";
 		lblPrice.setText(outPut);
 	}
 	
 	private void updateTotalPrice(int amount, String key){
+		/*
+		 * Gets and displays total price for number of current bonds
+		 */
 		double bondPrice = currBonds.getBondPrice(key);
 		double totPrice = bondPrice * amount;
 		lblTotPrice.setText(Double.toString(totPrice) + " SEK");
 	}
 	
 	public void updateInfo(){
-		fieldAmount.setText("");;
+		/*
+		 *  Resets fields
+		 */
+		fieldAmount.setText("");
+		fieldAmount.setBackground(Color.WHITE);
 		updateTotalPrice(0, currKey);
 	}
 }

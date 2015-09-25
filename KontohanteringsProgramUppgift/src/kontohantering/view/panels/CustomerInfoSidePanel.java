@@ -12,7 +12,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import kontohantering.data.Customer;
-
+/*
+ *  Customer info panel
+ *  -------------------
+ *  Used in bonds frame to display logo and simple customer data
+ */
 public class CustomerInfoSidePanel extends JPanel {
 
 	private JLabel lblFirstName;
@@ -99,6 +103,9 @@ public class CustomerInfoSidePanel extends JPanel {
 	}
 
 	private String formatPersNr(long persNr){
+		/*
+		 * Method to make displayed person number standardized
+		 */
 		String toFormat = Long.toString(persNr);
 		StringBuilder sb = new StringBuilder(toFormat);
 		return sb.insert(8, '-').toString();

@@ -189,7 +189,13 @@ public class Customer {
 	}
 	
 	public double getTotalBalance(){
-		return accountBalance + bonds.getTotalBondsValue() - getMortgage().getAmount();
+		double result = 0;
+		if (!getMortgage().getHasMortgage()){
+			result = accountBalance + bonds.getTotalBondsValue();
+		} else {
+		result = accountBalance + bonds.getTotalBondsValue() - getMortgage().getAmount();
+		}
+		return result;
 	}
 	
 	private char setCustRating(){

@@ -27,7 +27,11 @@ import kontohantering.logic.Controller;
 import kontohantering.view.eventlistners.IMortgageListener;
 import kontohantering.view.frames.KontoFrame;
 import kontohantering.view.frames.MortgageFrame;
-
+/*
+ *  Mortgage panel
+ *  --------------
+ *  Used in mortgage frame for input or display of current user mortgages
+ */
 public class MortgagePanel extends JPanel {
 
 	private Customer currCustomer;
@@ -95,6 +99,9 @@ public class MortgagePanel extends JPanel {
 	}
 	
 	private void mortgageInfo(){
+		/*
+		 *  Method used if customer allready has a mortgage
+		 */
 		
 		lblAmount = new JLabel(String.format("%.2f",currMortgage.getAmount()));
 		lblYears = new JLabel(Integer.toString(currMortgage.getYears()));
@@ -240,6 +247,9 @@ public class MortgagePanel extends JPanel {
 	}
 	
 	private void mortgageMake(){
+		/*
+		 * Used if customer doesn't have a mortgage
+		 */
 		
 		fieldAmount = new JTextField(20);
 		fieldAmount.setColumns(10);
@@ -416,6 +426,9 @@ public class MortgagePanel extends JPanel {
 	}
 	
 	private void checkInput(){
+		/* 
+		 *  Checks that input is ok and marks if not
+		 */
 		boolean allOk = false;
 		double currAmount = 0;
 		int currYears = 0;

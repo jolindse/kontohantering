@@ -439,7 +439,6 @@ public class InputForm extends JPanel {
 			fieldPersNumber.setBackground(Color.WHITE);
 			numOK = true;
 		}else{
-			System.out.println("Retunerar kasst personnummer");
 			fieldPersNumber.setBackground(Color.RED);
 			numOK = false;
 		}

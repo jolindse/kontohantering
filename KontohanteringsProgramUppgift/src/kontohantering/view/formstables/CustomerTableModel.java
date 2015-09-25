@@ -44,6 +44,11 @@ public class CustomerTableModel extends AbstractTableModel {
 		
 	}
 	
+	private String formatAmount(double currAmount){
+		String toFormat = String.format("%.2f", currAmount);
+		return toFormat;
+	}
+	
 	@Override
 	public int getColumnCount() {
 		return 8;
@@ -78,11 +83,11 @@ public class CustomerTableModel extends AbstractTableModel {
 		case 3:
 			return currCustomer.getAccountNumber();
 		case 4:
-			return currCustomer.getAccountBalance();
+			return formatAmount(currCustomer.getAccountBalance());
 		case 5:
-			return currCustomer.getMortgage().getAmount();
+			return formatAmount(currCustomer.getMortgage().getAmount());
 		case 6:
-			return currCustomer.getBondsAmount();
+			return formatAmount(currCustomer.getBondsAmount());
 		case 7:
 			return currCustomer.getCustomerRating();
 		}
