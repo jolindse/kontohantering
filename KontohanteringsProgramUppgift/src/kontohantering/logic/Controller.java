@@ -19,6 +19,7 @@ import kontohantering.view.eventlistners.TableEvent;
 import kontohantering.view.frames.BondsFrame;
 import kontohantering.view.frames.MortgageFrame;
 import kontohantering.view.frames.StandardFrame;
+import static kontohantering.view.GuiConstants.SOFTWARE_VERSION;
 
 /*
  *  Controller class
@@ -45,7 +46,8 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 
 	private boolean tableMode;
 	private boolean customerSelected;
-
+	private Log eventLog;
+	
 	public Controller() {
 		updateObservers = new ArrayList<IUpdateObserver>();
 		tableMode = false;
@@ -64,10 +66,15 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 		this.customerDB = customerDB;
 		tableArray = customerDB.getArray();
 		loadDB();
+		eventLog = new Log();
+		addLogEntry("Program startat.");
+		addLogEntry("Databas laddad med "+customerDB.getNumberOfEntries()+" stycken poster.");
 	}
 
 	public void initControllerView(StandardFrame view) {
 		this.view = view;
+		addLogEntry("GUI startat.");
+		welcomeMsg();
 	}
 
 	public void initControllerHandler(Controller controller) {
@@ -174,6 +181,7 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 		currCustomer.setLastName(e.getLastName());
 		currCustomer.setPersNumber(e.getPersNumber());
 		view.setCurrentString(currCustomer.toString());
+		addLogEntry(currCustomer.getName()+" "+currCustomer.getLastName()+" fick sina uppgifter redigerade.");
 		updateObservers();
 		
 	}
@@ -187,7 +195,9 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 
 		currCustomer = new Customer(e.getFirstName(), e.getLastName(), e.getPersNumber(), e.getDepositAmount());
 		customerDB.addToDB(currCustomer);
+		tableArray.add(currCustomer);
 		view.setCurrentString(currCustomer.toString());
+		addLogEntry("Ny kund: "+currCustomer.getName()+" "+currCustomer.getLastName()+" tillagd med kontonummer: "+currCustomer.getAccountNumber()+".");
 		updateObservers();
 
 	}
@@ -200,6 +210,7 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 		 * Method for bond purchase
 		 */
 		boolean allOk = (bondsCustomer.getBonds().buyBonds(amount, key));
+		addLogEntry(bondsCustomer.getName()+" "+bondsCustomer.getLastName()+" köpte "+amount+" stycken "+key+".");
 		updateObservers();
 		return allOk;
 	}
@@ -210,6 +221,7 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 		 * Method for bond sell
 		 */
 		boolean allOk = bondsCustomer.getBonds().sellBonds(amount, key);
+		addLogEntry(bondsCustomer.getName()+" "+bondsCustomer.getLastName()+" sålde "+amount+" stycken "+key+".");
 		updateObservers();
 		return allOk;
 	}
@@ -224,6 +236,7 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 		boolean allOk = false;
 			if (mortCustomer.getMortgage().applyForMortgage(years, amount)){
 				mortCustomer.addFunds(amount);
+				addLogEntry(mortCustomer.getName()+" "+mortCustomer.getLastName()+" tog ett lån på "+amount+" att återbetala under "+years+" år.");
 				allOk = true;
 			}
 		updateObservers();
@@ -242,6 +255,7 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 			double totalAmount = mortCustomer.getMortgage().calculateTotalCost(years, amount);
 			mortCustomer.getMortgage().payOffMortgage();
 			mortCustomer.withdrawFunds(totalAmount);
+			addLogEntry(mortCustomer.getName()+" "+mortCustomer.getLastName()+" betalade av sitt lån (inklusive ränta) på "+totalAmount+" SEK." );
 			allOk = true;
 		}
 		updateObservers();
@@ -310,6 +324,7 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 					tableIndex = tableArray.indexOf(currCustomer);
 					tableArray.remove(tableIndex);
 					indexNr = currCustomer.getIndex();
+					addLogEntry(currCustomer.getName()+" "+currCustomer.getLastName()+" avslutade sitt konto.");
 					customerDB.removeFromDB(indexNr);
 					view.setCurrentString("Ingen kund vald.");
 				}
@@ -324,6 +339,7 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 				tableIndex = tableArray.indexOf(currCustomer);
 				tableArray.remove(tableIndex);
 				indexNr = currCustomer.getIndex();
+				addLogEntry(currCustomer.getName()+" "+currCustomer.getLastName()+" avslutade sitt konto.");
 				customerDB.removeFromDB(indexNr);
 				view.setCurrentString("Ingen kund vald.");
 			}
@@ -340,6 +356,7 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 		if (Pattern.matches("[a-zA-Z]+", amount) == false) {
 			currCustomer.addFunds(Double.parseDouble(amount));
 			view.setCurrentString(currCustomer.toString());
+			addLogEntry(currCustomer.getName() + " " + currCustomer.getLastName()+" gjorde en insättning på "+amount+" SEK.");
 			view.textMode();
 		} else {
 			JOptionPane.showMessageDialog(view, "Ickenumrerisk inmatning. Insättning ej utförd!", "Fel vid insättning",
@@ -356,6 +373,7 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 		if (Pattern.matches("[a-zA-Z]+", amount) == false) {
 			if (currCustomer.withdrawFunds(Double.parseDouble(amount))) {
 				view.setCurrentString(currCustomer.toString());
+				addLogEntry(currCustomer.getName() + " " + currCustomer.getLastName()+" gjorde ett uttag på "+amount+" SEK.");
 				view.textMode();
 			} else {
 				JOptionPane.showMessageDialog(view, "Det saknas täckning för uttaget", "Saknas täckning",
@@ -410,5 +428,25 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 		 */
 		view.tableMode(customerArray);
 	}
+
+	private void addLogEntry (String logEntry){
+		/*
+		 * Adds new entry to log
+		 */
+		eventLog.addLogEntry(logEntry);
+	}
+
+	private void welcomeMsg(){
+		view.setCurrentString("[b]ANK kontohanteringssystem startat v"+SOFTWARE_VERSION
+				+"\nDatabas med "+customerDB.getNumberOfEntries()+" poster laddad."
+				+"\n\nAnvänd knapp för ny kund eller sök efter befintlig kunder."); 
+		view.textMode();
+	}
+	
+	public void outputLog(){
+		view.setCurrentString(eventLog.printLog());
+		view.textMode();
+	}
+
 
 }

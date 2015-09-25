@@ -16,6 +16,10 @@ public final class GuiConstants {
 	// Prevent instansiation.	
 	private GuiConstants(){}
 	
+	// Software version
+	
+	public static final String SOFTWARE_VERSION = "0.9";
+	
 	// Dimensions
 	public static final Dimension BUTTONDIM = new Dimension(120,40);
 	

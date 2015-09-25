@@ -128,9 +128,6 @@ public class BondsFrame extends KontoFrame implements IUpdateObserver {
 		/*
 		 * Method to add the sell tab to frame
 		 */
-		// TESTING
-		System.out.println("Sell tab skall addas!");
-		// TESTING
 		sellBondsPanel = new BondsSellPanel(currCustomer, this);
 		rightSidePanel.addTab("Sälj", sellBondsPanel);
 		sellTabActive = true;

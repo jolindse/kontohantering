@@ -54,4 +54,7 @@ public class CustomerDB {
 		customerBase = csv.readDB();
 	}
 
+	public int getNumberOfEntries(){
+		return customerBase.size();
+	}
 }

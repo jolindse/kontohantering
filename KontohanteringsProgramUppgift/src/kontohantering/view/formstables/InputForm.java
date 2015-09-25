@@ -168,7 +168,7 @@ public class InputForm extends JPanel {
 		 */
 
 		fieldInitialDeposit = new JTextField(20);
-
+		fieldInitialDeposit.setEnabled(false);
 		chkbxInitialDeposit = new JCheckBox("Initial insättning?");
 		chkbxInitialDeposit.setFocusable(false);
 		chkbxInitialDeposit.addActionListener(new ActionListener() {

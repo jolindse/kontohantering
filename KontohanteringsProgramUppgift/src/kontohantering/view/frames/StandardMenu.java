@@ -37,18 +37,18 @@ public class StandardMenu extends JMenuBar {
 
 		JMenuBar menuBar = this;
 
-		// File menu
+		// FILE MENU
 
 		JMenu fileMenu = new JMenu("Arkiv");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
+
 		JMenuItem exportCustomers = new JMenuItem("Exportera databas");
 		JMenuItem saveDB = new JMenuItem("Spara databas");
 		JMenuItem exitProgram = new JMenuItem("Avsluta");
-
 		exportCustomers.setMnemonic(KeyEvent.VK_E);
 		saveDB.setMnemonic(KeyEvent.VK_S);
 		exitProgram.setMnemonic(KeyEvent.VK_Q);
-		
+
 		saveDB.addActionListener(new ActionListener() {
 
 			@Override
@@ -71,7 +71,27 @@ public class StandardMenu extends JMenuBar {
 		fileMenu.addSeparator();
 		fileMenu.add(exitProgram);
 		
+		// VIEW MENU
+		
+		JMenu viewMenu = new JMenu("Visa");
+		viewMenu.setMnemonic(KeyEvent.VK_V);
+		JMenuItem showLog = new JMenuItem("Visa log");
+		JMenuItem about = new JMenuItem("Om");
+		
+		showLog.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.outputLog();
+			}
+		});
+		
+		viewMenu.add(showLog);
+		viewMenu.addSeparator();
+		viewMenu.add(about);
+		
 		menuBar.add(fileMenu);
+		menuBar.add(viewMenu);
 
 	}
 
