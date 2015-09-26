@@ -1,8 +1,10 @@
 package kontohantering.logic;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import kontohantering.data.Customer;
@@ -429,7 +431,7 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 		view.tableMode(customerArray);
 	}
 
-	private void addLogEntry (String logEntry){
+	public void addLogEntry (String logEntry){
 		/*
 		 * Adds new entry to log
 		 */
@@ -437,6 +439,9 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 	}
 
 	private void welcomeMsg(){
+		/*
+		 * Ran at startup.
+		 */
 		view.setCurrentString("[b]ANK kontohanteringssystem startat v"+SOFTWARE_VERSION
 				+"\nDatabas med "+customerDB.getNumberOfEntries()+" poster laddad."
 				+"\n\nAnvänd knapp för ny kund eller sök efter befintlig kunder."); 
@@ -444,8 +449,30 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 	}
 	
 	public void outputLog(){
+		/*
+		 * Called by menu option to output log of events
+		 */
 		view.setCurrentString(eventLog.printLog());
 		view.textMode();
+	}
+	
+	public void exportCustomerBase(){
+		/*
+		 *  Called by menu option to export the database to text file
+		 */
+		JFileChooser fc = new JFileChooser();
+		int returnValue = fc.showSaveDialog(view);
+		if(returnValue == JFileChooser.APPROVE_OPTION){
+			File currFile = new File(fc.getSelectedFile()+".txt");
+			if(customerDB.exportDB(currFile.toString())){
+				JOptionPane.showMessageDialog(view, "Kundbas exporterad.");
+				addLogEntry("Kundbas exporterad till "+currFile.toString());
+			} else {
+				JOptionPane.showMessageDialog(view, "Det gick inte att spara kundbasen.");
+				addLogEntry("Misslyckad exportering av kundbas till "+currFile.toString());
+			}
+		}
+		
 	}
 
 

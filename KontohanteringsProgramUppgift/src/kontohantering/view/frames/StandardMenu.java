@@ -48,6 +48,14 @@ public class StandardMenu extends JMenuBar {
 		exportCustomers.setMnemonic(KeyEvent.VK_E);
 		saveDB.setMnemonic(KeyEvent.VK_S);
 		exitProgram.setMnemonic(KeyEvent.VK_Q);
+		
+		exportCustomers.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.exportCustomerBase();
+			}
+		});
 
 		saveDB.addActionListener(new ActionListener() {
 
@@ -83,6 +91,15 @@ public class StandardMenu extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.outputLog();
+			}
+		});
+		
+		about.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AboutFrame aboutFrame = new AboutFrame();
+				
 			}
 		});
 		
