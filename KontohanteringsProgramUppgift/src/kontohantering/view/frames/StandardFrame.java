@@ -16,6 +16,7 @@ import kontohantering.view.panels.BottomButtonPanel;
 import kontohantering.view.panels.OutputPanel;
 import kontohantering.view.panels.SideButtonPanel;
 import kontohantering.view.panels.TopLogoPanel;
+import static kontohantering.view.GuiConstants.SOFTWARE_VERSION;
 
 /* Mainframe class
  * ----------------
@@ -37,7 +38,7 @@ public class StandardFrame extends KontoFrame implements IUpdateObserver {
 	public StandardFrame() {
 
 		// Set displayed name of windows and layout
-		super("[b]ank kontohantering v0.9",900, 800);
+		super("[b]ank kontohantering v"+SOFTWARE_VERSION,900, 800);
 		setLayout(new BorderLayout());
 		
 		// Set listener for GUI updates

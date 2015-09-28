@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -91,16 +93,22 @@ public class BondsSellPanel extends JPanel {
 		
 		fieldAmount = new JTextField();
 		fieldAmount.setColumns(10);
-		fieldAmount.addFocusListener(new FocusListener() {
+		fieldAmount.addKeyListener(new KeyListener() {
 			
 			@Override
-			public void focusLost(FocusEvent e) {
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
 				checkAndUpdate();
 				
 			}
 			
 			@Override
-			public void focusGained(FocusEvent e) {
+			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
@@ -262,6 +270,10 @@ public class BondsSellPanel extends JPanel {
 				fieldAmount.setBackground(Color.WHITE);
 				updateTotalWorth(currAmount, currKey);
 				allOk = true;
+			} else if (fieldAmount.getText().length() == 0){
+				fieldAmount.setBackground(Color.WHITE);
+				updateTotalWorth(0, currKey);
+				allOk = false;
 			} else {
 				fieldAmount.setBackground(Color.RED);
 				allOk = false;

@@ -95,16 +95,22 @@ public class BondsBuyPanel extends JPanel {
 		
 		fieldAmount = new JTextField();
 		fieldAmount.setColumns(10);
-		fieldAmount.addFocusListener(new FocusListener() {
+		fieldAmount.addKeyListener(new KeyListener() {
 			
 			@Override
-			public void focusLost(FocusEvent e) {
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
 				checkAndUpdate();
 				
 			}
 			
 			@Override
-			public void focusGained(FocusEvent e) {
+			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
@@ -223,8 +229,13 @@ public class BondsBuyPanel extends JPanel {
 			String currKey = (String) bondsBox.getSelectedItem();
 			updateTotalPrice(currAmount, currKey);
 			allOk = true;
-		} else {
+		} else if (fieldAmount.getText().length() == 0){
+			fieldAmount.setBackground(Color.WHITE);
+			updateTotalPrice(0, currKey);
+			allOk = false;
+		}else {
 			fieldAmount.setBackground(Color.RED);
+			allOk = false;
 		}
 		return allOk;
 	}

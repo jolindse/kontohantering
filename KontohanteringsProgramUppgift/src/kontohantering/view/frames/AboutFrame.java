@@ -6,8 +6,11 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+
+/*
+ * About frame class. Shows some info about application.
+ */
 
 public class AboutFrame extends KontoFrame {
 
@@ -18,11 +21,12 @@ public class AboutFrame extends KontoFrame {
 	
 	public AboutFrame(){
 		super("Om [b]ank Kontohantering",300,400);
-		AboutFrame frameHandler = this;
 		setLayout(new GridBagLayout());
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		String info = "<html>[b]ank Kontohantering ger möjlighet att utföra alla<br> former av bankärenden på bankens kunder.</html>";
+		String info = "<html><b>[b]ank Kontohantering</b> ger möjlighet att utföra alla"
+				+ "<br>former av bankärenden på bankens befintliga"
+				+ "<br>kunder eller lägga till nya.</html>";
 		String version = "Mjukvaruversion "+SOFTWARE_VERSION;
 		String autor = "Utvecklare Johan Lindström 2015";
 		

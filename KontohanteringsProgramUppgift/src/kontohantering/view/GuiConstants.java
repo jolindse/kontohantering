@@ -18,7 +18,7 @@ public final class GuiConstants {
 	
 	// Software version
 	
-	public static final String SOFTWARE_VERSION = "0.9";
+	public static final String SOFTWARE_VERSION = "0.95b";
 	
 	// Dimensions
 	public static final Dimension BUTTONDIM = new Dimension(120,40);

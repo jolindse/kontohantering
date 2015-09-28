@@ -12,6 +12,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.regex.Pattern;
 
 import javax.swing.JButton;
@@ -254,16 +256,22 @@ public class MortgagePanel extends JPanel {
 		fieldAmount = new JTextField(20);
 		fieldAmount.setColumns(10);
 		fieldAmount.setText("");
-		fieldAmount.addFocusListener(new FocusListener() {
+		fieldAmount.addKeyListener(new KeyListener() {
 			
 			@Override
-			public void focusLost(FocusEvent e) {
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
 				checkInput();
 				
 			}
 			
 			@Override
-			public void focusGained(FocusEvent e) {
+			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
@@ -285,6 +293,7 @@ public class MortgagePanel extends JPanel {
 		lblMonthPayment = new JLabel("");
 		lblTotalCost = new JLabel("");
 		btnLoan = new JButton("Låna");
+		btnLoan.setFocusable(false);
 		btnLoan.setPreferredSize(BUTTONDIM);
 		btnLoan.setMaximumSize(BUTTONDIM);
 		btnLoan.setMinimumSize(BUTTONDIM);
@@ -292,6 +301,7 @@ public class MortgagePanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(checkInput()){
 				double amount = Double.parseDouble(fieldAmount.getText());
 				int years = comboYears.getSelectedIndex()+1;
 				if(mortListener.applyForMortgage(amount, years, currCustomer)){
@@ -299,7 +309,7 @@ public class MortgagePanel extends JPanel {
 				} else {
 					JOptionPane.showMessageDialog(mortPanel, "Ansökan gick inte igenom. Kontrollera uppgifterna");
 				}
-				
+				}
 			}
 		});
 		
@@ -420,12 +430,12 @@ public class MortgagePanel extends JPanel {
 		gc.weighty = 0;
 		gc.fill = GridBagConstraints.NONE;
 		gc.anchor = GridBagConstraints.LINE_END;
-		gc.insets = new Insets(0, 20, 20, 0);
+		gc.insets = new Insets(20, 20, 20, 20);
 		add(btnLoan, gc);
 		
 	}
 	
-	private void checkInput(){
+	private boolean checkInput(){
 		/* 
 		 *  Checks that input is ok and marks if not
 		 */
@@ -433,7 +443,7 @@ public class MortgagePanel extends JPanel {
 		double currAmount = 0;
 		int currYears = 0;
 		
-		if (fieldAmount.getText().length() > 0 && Pattern.matches("[a-zA-Z]+", fieldAmount.getText()) == false){
+		if (fieldAmount.getText().length() > 0 && (Pattern.matches("[0-9]+", fieldAmount.getText()))){
 			currAmount = Double.parseDouble(fieldAmount.getText());
 			if (currAmount <= currMortgage.getMaxAmount()) {
 				currYears = comboYears.getSelectedIndex() + 1;
@@ -451,6 +461,7 @@ public class MortgagePanel extends JPanel {
 			lblMonthPayment.setText(String.format("%.2f", currMonthPayment));
 			lblTotalCost.setText(String.format("%.2f", currTotalCost));
 		}
+		return allOk;
 	}
 
 	private void closeFrame(){
