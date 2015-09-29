@@ -18,6 +18,7 @@ public abstract class KontoFrame extends JFrame {
 	super(frameName);
 	Dimension size = new Dimension(width, height);
 	
+	
 	// Set displayed name of windows and layout
 	this.setIconImage(Toolkit.getDefaultToolkit().getImage("prgresources/bankLogoSymbolSmall.png"));
 	
@@ -75,6 +76,7 @@ public abstract class KontoFrame extends JFrame {
 	
 	// Set size and closure behavior
 	this.setSize(size);
+	setLocationRelativeTo(null); 
 	this.setResizable(false);
 	this.setVisible(true);
 	}

@@ -442,7 +442,7 @@ public class Controller implements IFormListener, IUpdateSub, ITableListener, IB
 		/*
 		 * Ran at startup.
 		 */
-		view.setCurrentString("[b]ANK kontohanteringssystem startat v"+SOFTWARE_VERSION
+		view.setCurrentString("[b]ank kontohanteringssystem startat v"+SOFTWARE_VERSION
 				+"\nDatabas med "+customerDB.getNumberOfEntries()+" poster laddad."
 				+"\n\nAnvänd knapp för ny kund eller sök efter befintlig kunder."); 
 		view.textMode();

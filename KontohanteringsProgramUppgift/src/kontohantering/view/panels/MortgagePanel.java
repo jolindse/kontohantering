@@ -83,7 +83,7 @@ public class MortgagePanel extends JPanel {
 		lblYearsInfo = new JLabel("Antal år");
 		lblMonthPaymentInfo = new JLabel("Månadskostnad");
 		lblMaxAmmountInfo = new JLabel("Maximalt lånebelopp");
-		lblMaxAmmount = new JLabel(Double.toString(currMortgage.getMaxAmount()));
+		lblMaxAmmount = new JLabel(formatNumber(currMortgage.getMaxAmount()));
 		lblInterestInfo = new JLabel("Ränta");
 		lblInterest = new JLabel(Double.toString(currMortgage.getInterest()*100)+" %");
 		lblTotalCostInfo = new JLabel("Total lånekostnad");
@@ -105,10 +105,10 @@ public class MortgagePanel extends JPanel {
 		 *  Method used if customer allready has a mortgage
 		 */
 		
-		lblAmount = new JLabel(String.format("%.2f",currMortgage.getAmount()));
+		lblAmount = new JLabel(formatNumber(currMortgage.getAmount()));
 		lblYears = new JLabel(Integer.toString(currMortgage.getYears()));
-		lblMonthPayment = new JLabel(String.format("%.2f",currMortgage.calculateMonthlyPayments(currMortgage.getYears(), currMortgage.getAmount())));
-		lblTotalCost = new JLabel(String.format("%.2f",currMortgage.calculateTotalCost(currMortgage.getYears(), currMortgage.getAmount())));
+		lblMonthPayment = new JLabel(formatNumber(currMortgage.calculateMonthlyPayments(currMortgage.getYears(), currMortgage.getAmount())));
+		lblTotalCost = new JLabel(formatNumber(currMortgage.calculateTotalCost(currMortgage.getYears(), currMortgage.getAmount())));
 		btnPay = new JButton("Slutbetala lån");
 		btnPay.setPreferredSize(BUTTONDIM);
 		btnPay.setMaximumSize(BUTTONDIM);
@@ -462,6 +462,14 @@ public class MortgagePanel extends JPanel {
 			lblTotalCost.setText(String.format("%.2f", currTotalCost));
 		}
 		return allOk;
+	}
+	
+	private String formatNumber(Double currNumber){
+		/*
+		 * Formats double input to string with two decimals for output
+		 */
+		String strReturn = String.format("%.2f", currNumber);
+		return strReturn;
 	}
 
 	private void closeFrame(){

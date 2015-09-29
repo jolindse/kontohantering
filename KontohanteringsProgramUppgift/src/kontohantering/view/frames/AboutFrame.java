@@ -3,10 +3,14 @@ import static kontohantering.view.GuiConstants.LOGOFULL;
 import static kontohantering.view.GuiConstants.SOFTWARE_VERSION;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.JLabel;
+import javax.swing.border.Border;
 
 /*
  * About frame class. Shows some info about application.
@@ -20,13 +24,13 @@ public class AboutFrame extends KontoFrame {
 	private JLabel lblLogo;
 	
 	public AboutFrame(){
-		super("Om [b]ank Kontohantering",300,400);
+		super("Om [b]ank Kontohantering",400,400);
 		setLayout(new GridBagLayout());
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		String info = "<html><b>[b]ank Kontohantering</b> ger möjlighet att utföra alla"
-				+ "<br>former av bankärenden på bankens befintliga"
-				+ "<br>kunder eller lägga till nya.</html>";
+		String info = "<html><center><b>[b]ank Kontohantering</b></center>"
+				+ "<br>Ger möjlighet att utföra alla former av bankärenden på bankens befintliga"
+				+ "kunder eller lägga till nya.</html>";
 		String version = "Mjukvaruversion "+SOFTWARE_VERSION;
 		String autor = "Utvecklare Johan Lindström 2015";
 		
@@ -50,9 +54,11 @@ public class AboutFrame extends KontoFrame {
 		
 		gc.gridx = 0;
 		gc.gridy = 1;
-		gc.weightx = 0.1;
-		gc.weighty = 0.1;
-		gc.fill = GridBagConstraints.CENTER;
+		gc.weightx =0.1;
+		gc.weighty = 0.5;
+		gc.insets = new Insets(20, 20, 20, 20);
+		gc.fill = GridBagConstraints.HORIZONTAL;
+		gc.anchor = GridBagConstraints.CENTER;
 		add(lblInfo,gc);
 		
 		// Version row

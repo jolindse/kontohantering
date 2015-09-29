@@ -13,12 +13,12 @@ import javax.swing.ImageIcon;
 public final class GuiConstants {
 
 	
-	// Prevent instansiation.	
+	// Prevents instansiation.	
 	private GuiConstants(){}
 	
 	// Software version
 	
-	public static final String SOFTWARE_VERSION = "0.95b";
+	public static final String SOFTWARE_VERSION = "1.0";
 	
 	// Dimensions
 	public static final Dimension BUTTONDIM = new Dimension(120,40);
